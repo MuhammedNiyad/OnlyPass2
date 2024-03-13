@@ -1,5 +1,6 @@
+/* eslint-disable prettier/prettier */
 import { Button, Form, Input, Radio, Space, Upload } from 'antd';
-import React from 'react';
+// import React from 'react';
 import { UploadOutlined } from '@ant-design/icons';
 import TextArea from 'antd/es/input/TextArea';
 

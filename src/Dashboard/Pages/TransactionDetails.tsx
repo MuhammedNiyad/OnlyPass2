@@ -1,9 +1,10 @@
+/* eslint-disable prettier/prettier */
 import svg2 from '../../../public/svg2-onlypass.svg';
 import svg3 from '../../../public/svg3-onlypass.svg';
 import svg4 from '../../../public/svg4-onlypass.svg';
 import PageHeader from '../components/common_components/PageHeader';
-import customerImg from '../../../public/n.png';
-import { FaEdit } from 'react-icons/fa';
+// import customerImg from '../../../public/n.png';
+// import { FaEdit } from 'react-icons/fa';
 import { useState } from 'react';
 import { Modal } from 'antd';
 import EditCustomer from '../components/Customer/EditCustomer';
