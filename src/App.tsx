@@ -10,7 +10,7 @@ function App() {
       </div>
       <div className="content flex-1  bg-green-400 h-full   ">
         {/* <Navbar /> */}
-        <div className="h-full overflow-y-scroll">
+        <div className="h-full">
           <Outlet />
         </div>
       </div>

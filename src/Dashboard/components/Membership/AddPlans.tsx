@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { Button, Form, Input, Radio, Upload } from 'antd';
+import { Button, Checkbox, Form, Input, Radio, Upload } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import TextArea from 'antd/es/input/TextArea';
 import { ApiClientPrivate } from '../../../utils/axios';
@@ -69,8 +69,7 @@ const AddPlans = (props: any) => {
         onFinish={onFinish}
         // onChange={handleInputChange}
         className=""
-        labelCol={{ span: 7 }}
-      >
+        labelCol={{ span: 7 }}>
         <div className="px-5">
           <div className="text-start">
             <div className="font-semibold  text-[16px] ">
@@ -96,8 +95,7 @@ const AddPlans = (props: any) => {
                   label="Plan Name"
                   name={'name'}
                   className="text-left"
-                  rules={[{ required: true, message: 'Please Enter Plan Name' }]}
-                >
+                  rules={[{ required: true, message: 'Please Enter Plan Name' }]}>
                   <Input
                     name="planName"
                     //   value={reduxState.facilityName}
@@ -111,8 +109,7 @@ const AddPlans = (props: any) => {
                   label="No.of Days"
                   name={'no_of_days'}
                   // rules={[{ required: true, message: 'Please enter the slogan ' }]}
-                  className="text-[14px]"
-                >
+                  className="text-[14px]">
                   <Input
                     name="days"
                     className="md:w-[350px]"
@@ -125,8 +122,7 @@ const AddPlans = (props: any) => {
                   label="No.of Accesses"
                   name={'no_of_access'}
                   // rules={[{ required: true, message: 'Please enter the slogan ' }]}
-                  className="text-[14px]"
-                >
+                  className="text-[14px]">
                   <Input
                     name="access"
                     className="md:w-[350px]"
@@ -139,8 +135,7 @@ const AddPlans = (props: any) => {
                   label="No.of Accesses per Day"
                   name={'per_day_access'}
                   // rules={[{ required: true, message: 'Please enter the slogan ' }]}
-                  className="text-[14px]"
-                >
+                  className="text-[14px]">
                   <Input
                     name="accessPerDay"
                     className="md:w-[350px]"
@@ -170,11 +165,11 @@ const AddPlans = (props: any) => {
                   name={'feature'}
                   //   rules={[{ required: true, message: '!' }]}
                 >
-                  <Radio.Group name="feture">
-                    <Radio value="hold"> Hold </Radio>
-                    <Radio value="upgrade"> Upgrade </Radio>
-                    <Radio value="payback"> Payback </Radio>
-                  </Radio.Group>
+                  <Checkbox.Group name="feature">
+                    <Checkbox value="hold"> Hold </Checkbox>
+                    <Checkbox value="upgrade"> Upgrade </Checkbox>
+                    <Checkbox value="payback"> Payback </Checkbox>
+                  </Checkbox.Group>
                 </Form.Item>
               </div>
               <div className="Amount">
@@ -182,8 +177,7 @@ const AddPlans = (props: any) => {
                   label="Amount"
                   className="text-[14px]"
                   name={'amount'}
-                  rules={[{ required: true, message: 'enter the actual Amount' }]}
-                >
+                  rules={[{ required: true, message: 'enter the actual Amount' }]}>
                   <Input
                     name="amount"
                     className="md:w-[350px]"
@@ -196,8 +190,7 @@ const AddPlans = (props: any) => {
                   label="Offer Amount"
                   className="text-[14px]"
                   name={'offer_amount'}
-                  rules={[{ required: true, message: 'Enter Offer Amount' }]}
-                >
+                  rules={[{ required: true, message: 'Enter Offer Amount' }]}>
                   <Input
                     name="offerAmount"
                     className="md:w-[350px]"
@@ -224,13 +217,11 @@ const AddPlans = (props: any) => {
                         uploadBgImg(value);
                       }}
                       action="https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188"
-                      listType="picture"
-                    >
+                      listType="picture">
                       <div className="flex items-center gap-3">
                         <Button
                           //   disabled={remove === true}
-                          icon={<UploadOutlined />}
-                        >
+                          icon={<UploadOutlined />}>
                           Upload
                         </Button>
                         <h1 className="text-[14px] font-normal text-[#7e7e7e]">

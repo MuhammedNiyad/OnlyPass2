@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Form, Select, Table, Tag } from 'antd';
 import React from 'react';
 import svg2 from '../../../public/svg2-onlypass.svg';
@@ -5,8 +6,21 @@ import svg3 from '../../../public/svg3-onlypass.svg';
 import svg4 from '../../../public/svg4-onlypass.svg';
 import PageHeader from '../components/common_components/PageHeader';
 import { Link } from 'react-router-dom';
+import { ApiClientPrivate } from '../../utils/axios';
+import { useQuery } from 'react-query';
 
 const Customer: React.FC = () => {
+
+  const fetchCustomerData = () => {
+    return ApiClientPrivate.get(`/customer/all`);
+    // return response;
+  };
+  const {data:mainData} = useQuery('fetchCustomerData', fetchCustomerData);
+ 
+ 
+  // console.log({mainData});
+  
+
   const columns = [
     {
       title: 'Name',
@@ -30,49 +44,51 @@ const Customer: React.FC = () => {
     },
     {
       title: 'Type',
-      dataIndex: 'type',
-      key: 'type'
+      // dataIndex: 'type',
+      key: 'type',
+      render:(record) =>{
+        const type = record.is_offline === true? "offline": "onlyPass"
+        return type
+      }
     },
 
     {
       title: 'Membership',
       key: 'membership',
-      dataIndex: 'membership',
-      render: (membership: any) => (
-        <>
-          {membership.map((tag: any) => {
-            let color = tag === 'Inactive' ? 'red' : 'green';
-
-            return (
-              <Tag color={color} key={tag}>
-                {tag.toUpperCase()}
-              </Tag>
-            );
-          })}
-        </>
-      )
+      
+      render: (membership:any) => {
+        // console.log(membership)
+        
+        const color = membership?.activeMembership.length === 0 ? 'red' : 'green';
+        const status = membership?.activeMembership.length === 0 ? 'Inactive' : 'Active';
+        return (
+          <Tag color={color} key={status}>
+            {status.toUpperCase()}
+          </Tag>
+        );
+      }
     }
   ];
-  const dummyCustomer = [
-    {
-      key: 1,
-      name: 'salman',
-      gender: 'male',
-      phoneNumber: '7559889699',
-      email: 'salmanSb0786@gmail.com',
-      type: 'onlypass',
-      membership: ['Active']
-    },
-    {
-      key: 2,
-      name: 'Mohammed Niyad',
-      gender: 'male',
-      phoneNumber: '7894561230',
-      email: 'niyad123@gmail.com',
-      type: 'onlypass',
-      membership: ['Inactive']
-    }
-  ];
+  // const dummyCustomer = [
+  //   {
+  //     key: 1,
+  //     name: 'salman',
+  //     gender: 'male',
+  //     phoneNumber: '7559889699',
+  //     email: 'salmanSb0786@gmail.com',
+  //     type: 'onlypass',
+  //     membership: ['Active']
+  //   },
+  //   {
+  //     key: 2,
+  //     name: 'Mohammed Niyad',
+  //     gender: 'male',
+  //     phoneNumber: '7894561230',
+  //     email: 'niyad123@gmail.com',
+  //     type: 'onlypass',
+  //     membership: ['Inactive']
+  //   }
+  // ];
   const details = [
     {
       icon: svg4,
@@ -170,7 +186,7 @@ const Customer: React.FC = () => {
 
           <Table
             columns={columns}
-            dataSource={dummyCustomer}
+            dataSource={mainData?.data}
             //   dataSource={tableData}
             pagination={{ pageSize: 10 }}
             className=""

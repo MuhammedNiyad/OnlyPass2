@@ -1,67 +1,69 @@
 /* eslint-disable prettier/prettier */
-import { Form, Input, Radio, Upload, UploadFile } from 'antd';
-// import { UploadOutlined } from '@ant-design/icons';
+import { Button, Checkbox, Form, Input, Radio, Upload, UploadFile } from 'antd';
+import { UploadOutlined } from '@ant-design/icons';
 import TextArea from 'antd/es/input/TextArea';
 import { useEffect, useState } from 'react';
 import { plansBgImage } from '../../../utils/urls';
-// import { ApiClientPrivate } from '../../../utils/axios';
-// import { useMutation } from 'react-query';
-// import { useState } from 'react';
+import { ApiClientPrivate } from '../../../utils/axios';
+import { useMutation } from 'react-query';
 // import { useParams } from 'react-router-dom';
 
 const ShowModal = (props: any) => {
   //   const { id } = useParams();
+  // console.log('dataaaaaaaa: ', props.data);
 
-  //    const [bgImage, setBgImage] = useState();
-  //   const createMembershipPlans = (formData: FormData) => {
+  // const [bgImage, setBgImage] = useState();
+  const createMembershipPlans = (formData: FormData) => {
+    return ApiClientPrivate.put(`/membership/membership-plans/update/${props.data._id}`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    });
+  };
 
-  //  return ApiClientPrivate.put(`/membership/membership-plans/create`, formData, {
-  //     headers: {
-  //       'Content-Type': 'multipart/form-data',
-  //     },
-  //  });
-  //  }
+  const mutation = useMutation((formData: any) => {
+    console.log('form daata: ', formData);
+    return createMembershipPlans(formData);
+  });
 
-  //    const mutation = useMutation((formData: any) => {
-  //     return createMembershipPlans(formData)
-  //    })
+  const onFinish = (values: any) => {
+    // Create a FormData object
+    const formData = new FormData();
+    console.log('Values:', values);
 
-  //   const onFinish = (values: any) => {
-  //  // Create a FormData object
-  //  const formData = new FormData();
+    // Append all form values to the FormData object
+    for (const key in values) {
+      if (values.hasOwnProperty(key)) {
+        formData.append(key, values[key]);
+      }
+    }
+    // Append the file to the FormData object
+    // Assuming the file is stored in a variable called `file`
+    // You might need to adjust this based on how you're handling file uploads
+    if (values.bg_image?.file) {
+      // console.log(">>>>>>",bgImage);
 
-  // Append all form values to the FormData object
-  //  for (const key in values) {
-  //     if (values.hasOwnProperty(key)) {
-  //       formData.append(key, values[key]);
-  //     }
-  //  }
-  //     formData.append('membership_id', String(id));
-  //  // Append the file to the FormData object
-  //  // Assuming the file is stored in a variable called `file`
-  //  // You might need to adjust this based on how you're handling file uploads
-  //     if (bgImage) {
-  //       // console.log(">>>>>>",bgImage);
+      formData.append('bg_image', values.bg_image?.file.originFileObj);
+    }
+    console.log(values.bg_image?.file);
+    
 
-  //     formData.append('bg_image', bgImage);
-  //  }
+    mutation.mutate(formData, {
+      onError(error) {
+        console.log(error);
+      },
+      onSuccess() {
+        props.update.setIsShowModalOpen(false);
+        props.update.setIsEdit(false);
+      }
+    });
+  };
 
-  //  mutation.mutate(formData, {
-  //     onError(error) {
-  //       console.log(error);
-  //     },
-  //     onSuccess() {
-  //       props.save(false);
-  //     }
-  //  });
-  //   };
-
-  //   const uploadBgImg = (value:any) => {
-  //     const imgUrl = value.file.originFileObj;
-  //     setBgImage(imgUrl)
-  //     // console.log(imgUrl);
-
-  //   }
+  // const uploadBgImg = (value: any) => {
+  //   const imgUrl = value.file.originFileObj;
+  //   setBgImage(imgUrl);
+  //   // console.log(imgUrl);
+  // };
   const [form] = Form.useForm();
   useEffect(() => {
     form.setFieldsValue({
@@ -74,8 +76,8 @@ const ShowModal = (props: any) => {
       feature: props.data.feature,
       amount: props.data.amount,
       offer_amount: props.data.offer_amount,
-      help_text: props.data.help_text,
-      bg_image: props.data.bg_image
+      help_text: props.data.help_text
+      // bg_image: props.data.bg_image
     });
   }, [props.data, form]);
   const [fileList] = useState<UploadFile[]>(
@@ -84,7 +86,7 @@ const ShowModal = (props: any) => {
           {
             uid: '1',
             name: props.data.bg_image,
-            // status: 'done',
+            status: 'done',
             url: props.data.bg_image ? `${plansBgImage}/${props.data.bg_image}` : ''
           }
         ]
@@ -98,11 +100,10 @@ const ShowModal = (props: any) => {
       </div>
       <Form
         form={form}
-        //    onFinish={onFinish}
+        onFinish={onFinish}
         // onChange={handleInputChange}
         className=""
-        labelCol={{ span: 7 }}
-      >
+        labelCol={{ span: 7 }}>
         <div className="px-5">
           <div className="text-start">
             <div className="font-semibold  text-[16px] ">
@@ -115,9 +116,8 @@ const ShowModal = (props: any) => {
                   label="Status"
                   className=""
                   name={'status'}
-                  // rules={[{ required: true, message: 'Please Select your Category!' }]}
-                >
-                  <Radio.Group name="" disabled>
+                  rules={[{ required: true, message: 'Please Select your Category!' }]}>
+                  <Radio.Group name="" disabled={!props.edit}>
                     <Radio value="enable"> Enable </Radio>
                     <Radio value="disable"> Disable </Radio>
                   </Radio.Group>
@@ -128,14 +128,13 @@ const ShowModal = (props: any) => {
                   label="Plan Name"
                   name={'name'}
                   className="text-left"
-                  rules={[{ required: true, message: 'Please Enter Plan Name' }]}
-                >
+                  rules={[{ required: true, message: 'Please Enter Plan Name' }]}>
                   <Input
                     name="planName"
                     //   value={reduxState.facilityName}
                     className="md:w-[350px]"
                     placeholder="Enter plan Name"
-                    disabled
+                    disabled={!props.edit}
                   />
                 </Form.Item>
               </div>
@@ -144,13 +143,12 @@ const ShowModal = (props: any) => {
                   label="No.of Days"
                   name={'no_of_days'}
                   // rules={[{ required: true, message: 'Please enter the slogan ' }]}
-                  className="text-[14px]"
-                >
+                  className="text-[14px]">
                   <Input
                     name="days"
                     className="md:w-[350px]"
                     placeholder="Enter the validity of the package in days "
-                    disabled
+                    disabled={!props.edit}
                   />
                 </Form.Item>
               </div>
@@ -159,13 +157,12 @@ const ShowModal = (props: any) => {
                   label="No.of Accesses"
                   name={'no_of_access'}
                   // rules={[{ required: true, message: 'Please enter the slogan ' }]}
-                  className="text-[14px]"
-                >
+                  className="text-[14px]">
                   <Input
                     name="access"
                     className="md:w-[350px]"
                     placeholder="Number of days x number access per day"
-                    disabled
+                    disabled={!props.edit}
                   />
                 </Form.Item>
               </div>
@@ -174,13 +171,12 @@ const ShowModal = (props: any) => {
                   label="No.of Accesses per Day"
                   name={'per_day_access'}
                   // rules={[{ required: true, message: 'Please enter the slogan ' }]}
-                  className="text-[14px]"
-                >
+                  className="text-[14px]">
                   <Input
                     name="accessPerDay"
                     className="md:w-[350px]"
                     placeholder="Enter the validity of the package in days "
-                    disabled
+                    disabled={!props.edit}
                   />
                 </Form.Item>
               </div>
@@ -188,15 +184,18 @@ const ShowModal = (props: any) => {
                 <Form.Item
                   label="Description"
                   name={'description'}
-                  // rules={[{ min: 10, max: 100, message: 'Description must be at most 100 characters' }]}
-                >
+                  rules={
+                    [
+                      // { min: 10, max: 100, message: 'Description must be at most 100 characters' }
+                    ]
+                  }>
                   <TextArea
                     name="description"
                     rows={4}
                     className="w-[350px] text-[14px]"
                     maxLength={150}
                     placeholder="Describe the facility in fewer than 100 characters"
-                    disabled
+                    disabled={!props.edit}
                   />
                 </Form.Item>
               </div>
@@ -207,11 +206,11 @@ const ShowModal = (props: any) => {
                   name={'feature'}
                   //   rules={[{ required: true, message: '!' }]}
                 >
-                  <Radio.Group name="feture" disabled>
-                    <Radio value="hold"> Hold </Radio>
-                    <Radio value="upgrade"> Upgrade </Radio>
-                    <Radio value="payback"> Payback </Radio>
-                  </Radio.Group>
+                  <Checkbox.Group name="feture" disabled={!props.edit}>
+                    <Checkbox value="hold"> Hold </Checkbox>
+                    <Checkbox value="upgrade"> Upgrade </Checkbox>
+                    <Checkbox value="payback"> Payback </Checkbox>
+                  </Checkbox.Group>
                 </Form.Item>
               </div>
               <div className="Amount">
@@ -219,13 +218,12 @@ const ShowModal = (props: any) => {
                   label="Amount"
                   className="text-[14px]"
                   name={'amount'}
-                  rules={[{ required: true, message: 'enter the actual Amount' }]}
-                >
+                  rules={[{ required: true, message: 'enter the actual Amount' }]}>
                   <Input
                     name="amount"
                     className="md:w-[350px]"
                     placeholder="Enter the actual Amount"
-                    disabled
+                    disabled={!props.edit}
                   />
                 </Form.Item>
               </div>
@@ -234,13 +232,12 @@ const ShowModal = (props: any) => {
                   label="Offer Amount"
                   className="text-[14px]"
                   name={'offer_amount'}
-                  rules={[{ required: true, message: 'Enter Offer Amount' }]}
-                >
+                  rules={[{ required: true, message: 'Enter Offer Amount' }]}>
                   <Input
                     name="offerAmount"
                     className="md:w-[350px]"
                     placeholder="Enter the offer Amount"
-                    disabled
+                    disabled={!props.edit}
                   />
                 </Form.Item>
               </div>
@@ -255,7 +252,7 @@ const ShowModal = (props: any) => {
                     name="offerPrice"
                     className="md:w-[350px]"
                     placeholder="Need any Help ?"
-                    disabled
+                    disabled={!props.edit}
                   />
                 </Form.Item>
               </div>
@@ -263,27 +260,27 @@ const ShowModal = (props: any) => {
                 <Form.Item label="Background Images" name={'bg_Image'} className="text-[14px]">
                   <div className="">
                     <Upload
-                      disabled
+                      disabled={!props.edit}
                       maxCount={1}
-                      //  onChange={(value: any) => {
-                      //     uploadBgImg(value)
-                      //   }}
-
+                      // onChange={(value: any) => {
+                      //   //uploadBgImg(value);
+                      //   console.log({ value });
+                      // }}
+                      beforeUpload={() => {return false}}
                       listType="picture"
-                      defaultFileList={[...fileList]}
-                    >
-                      {/* <div className="flex items-center gap-3"> */}
-                      {/* <Button
-												  disabled
-                            // disabled={remove === true}
-                          icon={<UploadOutlined />}
-                        >
+                      action="#"
+                      defaultFileList={[...fileList]}>
+                      <div className={`flex items-center gap-3 ${!props.edit ? 'hidden' : ''}`}>
+                        <Button
+                          disabled={!props.edit}
+                          // disabled={remove === true}
+                          icon={<UploadOutlined />}>
                           Upload
-                        </Button> */}
-                      {/* <h1 className="text-[14px] font-normal text-[#7e7e7e]">
+                        </Button>
+                        <h1 className="text-[14px] font-normal text-[#7e7e7e]">
                           Accepted Formats - JPG , jpeg , png
-                        </h1> */}
-                      {/* </div> */}
+                        </h1>
+                      </div>
                     </Upload>
                   </div>
                 </Form.Item>
@@ -294,9 +291,12 @@ const ShowModal = (props: any) => {
         <div className="flex gap-3 justify-center">
           {/* <Button className="bg-white border-black rounded-none">Cancel</Button> */}
 
-          {/* <Button type="primary" className="bg-black text-white  rounded-none" htmlType="submit">
-            Save
-          </Button> */}
+          <Button
+            type="primary"
+            className={`bg-black text-white rounded-none ${!props.edit ? 'hidden' : ''}`}
+            htmlType="submit">
+            Update
+          </Button>
         </div>
       </Form>
     </div>

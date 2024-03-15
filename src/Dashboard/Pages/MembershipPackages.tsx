@@ -75,19 +75,19 @@ const MembershipPackages: React.FC = () => {
       // dataIndex: 'PackageName',
       key: 'name',
       render: (record: any) => <Link to={`/Plans/${record._id}`}>{record.name}</Link>,
-      width: 200
+      width: 150
     },
     {
       title: 'Tier',
       dataIndex: 'tier_id',
-      key: 'tier_id',
-      width: 100
+      key: 'tier_id'
+      // width: 100
     },
     {
       title: 'Description',
       dataIndex: 'description',
       key: 'description',
-      width: 125,
+      width: 200,
       ellipsis: { showTitle: false }
     },
     {
@@ -97,8 +97,8 @@ const MembershipPackages: React.FC = () => {
         <div>
           {mainData?.Plans.filter((it: any) => it.membership_id === record._id).length} Nos.
         </div>
-      ),
-      width: 100
+      )
+      // width: 100
     },
 
     {
@@ -122,7 +122,7 @@ const MembershipPackages: React.FC = () => {
             setIsEditModalOpen(true);
             setSelectedItem(record);
           }}
-          className="text-blue-500 underline">
+          className="text-blue-500 underline cursor-pointer">
           Set up
         </p>
       )

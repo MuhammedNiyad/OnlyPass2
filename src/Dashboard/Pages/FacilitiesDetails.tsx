@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import svg2 from '../../../public/svg2-onlypass.svg';
 import svg3 from '../../../public/svg3-onlypass.svg';
 import svg4 from '../../../public/svg4-onlypass.svg';

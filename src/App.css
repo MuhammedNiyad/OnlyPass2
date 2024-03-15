@@ -31,3 +31,7 @@
 }
 
 /* sidebar css */
+
+.ant-upload-list-item .ant-upload-list-item-error {
+  border-color: black !important;
+}

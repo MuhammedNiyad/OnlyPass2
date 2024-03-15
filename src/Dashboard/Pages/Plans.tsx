@@ -24,6 +24,8 @@ const Plans = () => {
   console.log('000', mainData);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isShowModalOpen, setIsShowModalOpen] = useState(false);
+  const [isEdit, setIsEdit] = useState(false);
+  console.log('edit >>>>', isEdit);
 
   const [selectedItem, setSelectedItem] = useState();
 
@@ -75,12 +77,6 @@ const Plans = () => {
 
   const columns = [
     {
-      title: 'Date & Time',
-      dataIndex: 'createdAt',
-      key: 'dateAndTime',
-      width: 150
-    },
-    {
       title: 'Plan Name',
       // dataIndex: 'name',
       key: 'planName',
@@ -90,7 +86,7 @@ const Plans = () => {
             setIsShowModalOpen(true);
             setSelectedItem(record);
           }}
-          className="">
+          className="cursor-pointer hover:text-blue-500">
           {record.name}
         </p>
       )
@@ -104,6 +100,7 @@ const Plans = () => {
       title: 'Description',
       dataIndex: 'description',
       key: 'description',
+      width: 150,
       ellipsis: { showTitle: false }
     },
     {
@@ -125,6 +122,11 @@ const Plans = () => {
       key: 'amount'
     },
     {
+      title: 'Offer Amount',
+      dataIndex: 'offer_amount',
+      key: 'offerAmount'
+    },
+    {
       title: 'Status',
       key: 'sts',
       render: (record: any) => (
@@ -135,6 +137,22 @@ const Plans = () => {
             statusChange(value, record._id);
           }}
         />
+      )
+    },
+    {
+      title: '',
+      key: 'edit',
+      width: 70,
+      render: (record: any) => (
+        <p
+          onClick={() => {
+            setIsShowModalOpen(true);
+            setIsEdit(true);
+            setSelectedItem(record);
+          }}
+          className="text-blue-500 underline cursor-pointer">
+          Edit
+        </p>
       )
     }
   ];
@@ -224,6 +242,7 @@ const Plans = () => {
           </div>
         </div>
       </div>
+      {/* <<<<<<<< ADD PLANS >>>>>>> */}
       <Modal
         title=" "
         width={700}
@@ -232,14 +251,17 @@ const Plans = () => {
         footer={false}>
         <AddPlans save={setIsModalOpen} data={selectedItem} />
       </Modal>
-
+      {/* <<<<<<<<< SHOW OR EDIT PLANS >>>>>>>>>> */}
       <Modal
         title=" "
         width={700}
         open={isShowModalOpen}
-        onCancel={() => setIsShowModalOpen(false)}
+        onCancel={() => {
+          setIsShowModalOpen(false);
+          setIsEdit(false);
+        }}
         footer={false}>
-        <ShowModal data={selectedItem} />
+      <ShowModal data={selectedItem} edit={isEdit} update={{setIsShowModalOpen,setIsEdit}} />
       </Modal>
     </div>
   );

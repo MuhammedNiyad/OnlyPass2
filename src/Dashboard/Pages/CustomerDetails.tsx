@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import svg2 from '../../../public/svg2-onlypass.svg';
 import svg3 from '../../../public/svg3-onlypass.svg';
 import svg4 from '../../../public/svg4-onlypass.svg';
@@ -7,8 +8,22 @@ import { FaEdit } from 'react-icons/fa';
 import { useState } from 'react';
 import { Modal } from 'antd';
 import EditCustomer from '../components/Customer/EditCustomer';
+import { ApiClientPrivate } from '../../utils/axios';
+import { useQuery } from 'react-query';
+import { useParams } from 'react-router-dom';
 
 const CustomerDeatils: React.FC = () => {
+  const { id } = useParams();
+
+  const fetchCustomerData = () => {
+    return ApiClientPrivate.get(`/customer/one/${id}`);
+    // return response;
+  };
+  const { data: mainData } = useQuery('fetchCustomerData', fetchCustomerData);
+
+  const data = mainData?.data;
+  console.log('>>>>>', data);
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const details = [
     {
@@ -40,18 +55,18 @@ const CustomerDeatils: React.FC = () => {
     {
       id: 2,
       label: ' Gender ',
-      input: 'male'
+      input: data.gender
     },
 
     {
       id: 3,
       label: 'Customer Name ',
-      input: 'salman'
+      input: data.name
     },
     {
       id: 4,
       label: 'Email Address',
-      input: 'salman134@gmail.com'
+      input: data.email
     },
     {
       id: 5,
@@ -61,19 +76,19 @@ const CustomerDeatils: React.FC = () => {
     {
       id: 6,
       label: 'Customer  Number',
-      input: '7559889699'
+      input: data.phoneNumber
     }
   ];
   const personalInfo = [
     {
       id: 1,
       label: 'Height',
-      value: 165
+      value: data.height
     },
     {
       id: 2,
       label: 'Weight',
-      value: 49
+      value: data.weight
     }
   ];
 
@@ -81,12 +96,12 @@ const CustomerDeatils: React.FC = () => {
     {
       id: 1,
       label: 'Contact person',
-      values: 'Niyad'
+      values: data.emergencyContactName
     },
     {
       id: 2,
       label: ' Phone Number',
-      values: '789654123'
+      values: data.emergencyContactNumber
     }
   ];
 
@@ -121,7 +136,7 @@ const CustomerDeatils: React.FC = () => {
     {
       id: 1,
       label: 'Status',
-      values: 'Active'
+      values: data?.activeMembership.length === 0 ? 'Inactive' : 'Active'
     },
     {
       id: 2,
@@ -141,7 +156,7 @@ const CustomerDeatils: React.FC = () => {
     {
       id: 5,
       label: 'Referral Code',
-      values: 'OP1457'
+      values: data?.referral_code,
     },
     {
       id: 6,
@@ -173,11 +188,7 @@ const CustomerDeatils: React.FC = () => {
   return (
     <div className="">
       <div className=" bg-[#F2F2F2] px-2 sm:px-10 md:px-16 pb-10 ">
-        <PageHeader
-          details={details}
-          //   name={mainData?.data.facilityName}
-          name={'salman'}
-        />
+        <PageHeader details={details} name={data.name} />
         {/* Table Section */}
 
         <div className="bg-white px-2 sm:px-5 md:px-10 pb-10 ">
@@ -211,8 +222,7 @@ const CustomerDeatils: React.FC = () => {
                     </div>
                     <div
                       onClick={() => setIsModalOpen(true)}
-                      className="flex items-center gap-1 bg-[#F2F2F2] w-[84px] h-[24px] px-2 justify-center"
-                    >
+                      className="flex items-center gap-1 bg-[#F2F2F2] w-[84px] h-[24px] px-2 justify-center">
                       <FaEdit />
                       <p>Edit</p>
                     </div>
@@ -221,8 +231,7 @@ const CustomerDeatils: React.FC = () => {
                   {BasicInfo.map((item: any, index: any) => (
                     <div
                       key={index}
-                      className="Basic_info_detail mt-3 flex gap-5  lg:flex items-center m-3 p-1"
-                    >
+                      className="Basic_info_detail mt-3 flex gap-5  lg:flex items-center m-3 p-1">
                       <div className="label w-[150px] text-[#7E7E7E]">
                         <h1>{item.label}</h1>
                       </div>
@@ -265,8 +274,7 @@ const CustomerDeatils: React.FC = () => {
                 {personalInfo.map((item: any, index: any) => (
                   <div
                     key={index}
-                    className="Personal_info mt-3 flex gap-5  lg:flex items-center m-3 p-1 "
-                  >
+                    className="Personal_info mt-3 flex gap-5  lg:flex items-center m-3 p-1 ">
                     <div className="label w-[150px] text-[#7E7E7E]">
                       <h1>{item.label}</h1>
                     </div>
@@ -285,8 +293,7 @@ const CustomerDeatils: React.FC = () => {
                 {EmergencyContact.map((item: any, index: any) => (
                   <div
                     key={index}
-                    className="EmergencyContact mt-3 flex gap-5  lg:flex items-center m-3 p-1 "
-                  >
+                    className="EmergencyContact mt-3 flex gap-5  lg:flex items-center m-3 p-1 ">
                     <div className="label w-[150px] text-[#7E7E7E]">
                       <h1>{item.label}</h1>
                     </div>
