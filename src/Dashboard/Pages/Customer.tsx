@@ -46,7 +46,7 @@ const Customer: React.FC = () => {
       title: 'Type',
       // dataIndex: 'type',
       key: 'type',
-      render:(record) =>{
+      render:(record: any) =>{
         const type = record.is_offline === true? "offline": "onlyPass"
         return type
       }
