@@ -1,9 +1,11 @@
+/* eslint-disable prettier/prettier */
 import { Button, Form, Input, Radio, Upload } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import TextArea from 'antd/es/input/TextArea';
 
 const AddAmenities = ({
-  newAmenityName,
+  // newAmenityName,
+  setNewAmenityStatus,
   onAmenityChange,
   setNewAmenityName,
   setNewAmenityDescription
@@ -18,8 +20,7 @@ const AddAmenities = ({
         // onFinish={handleNext}
         // onChange={handleInputChange}
         className=""
-        labelCol={{ span: 7 }}
-      >
+        labelCol={{ span: 7 }}>
         <div className="">
           <div className="text-start">
             <div className="font-semibold  text-[16px] ">
@@ -31,12 +32,16 @@ const AddAmenities = ({
                 <Form.Item
                   label="Status"
                   className=""
-                  name={'sts'}
+                  name={'status'}
+
                   // rules={[{ required: true, message: 'Please Select your Category!' }]}
                 >
-                  <Radio.Group name="" defaultValue="B2B" className="custom-radio-group">
-                    <Radio value="enable"> Enable </Radio>
-                    <Radio value="disable"> Disable </Radio>
+                  <Radio.Group
+                    name=""
+                    defaultValue={true}
+                    className="custom-radio-group">
+                    <Radio value={true}> Enable </Radio>
+                    <Radio value={false}> Disable </Radio>
                   </Radio.Group>
                 </Form.Item>
               </div>
@@ -51,7 +56,7 @@ const AddAmenities = ({
                     //   value={reduxState.facilityName}
                     className="md:w-[300px]"
                     placeholder="Enter Amenity Name"
-                    value={newAmenityName}
+                    // value={newAmenityName}
                     onChange={(e) => setNewAmenityName(e.target.value)}
                   />
                 </Form.Item>
@@ -79,8 +84,7 @@ const AddAmenities = ({
                     name="amenityicon"
                     showUploadList={false}
                     beforeUpload={() => false}
-                    onChange={onAmenityChange}
-                  >
+                    onChange={onAmenityChange}>
                     <div className="flex items-center gap-3">
                       <Button icon={<UploadOutlined />}>Upload</Button>
                       <h1 className="text-[14px] font-normal text-[#7e7e7e]">

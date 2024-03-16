@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable prettier/prettier */
 import { Button, Checkbox, Form, Input, Radio, Upload } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
@@ -216,7 +217,9 @@ const AddPlans = (props: any) => {
                       onChange={(value: any) => {
                         uploadBgImg(value);
                       }}
-                      action="https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188"
+                      beforeUpload={() => {
+                        return false;
+                      }}
                       listType="picture">
                       <div className="flex items-center gap-3">
                         <Button

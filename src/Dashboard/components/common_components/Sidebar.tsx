@@ -100,7 +100,7 @@ const Sidebar = () => {
           className="border-2 border-[#5C5C5C] rounded-md p-[3px] font-extrabold"
         />
       ),
-      path: '/MembershipPackages'
+      // path: '/MembershipPackages'
     }
   ];
 
@@ -280,8 +280,8 @@ const Sidebar = () => {
 
         <div className="common flex flex-col  flex-1 z-10 ">
           <div className=" text-[#5C5C5C] h-[615px] ">
-            {sideBarItems.map((it: any) => (
-              <div className="mb-7 ">
+            {sideBarItems.map((it: any, ind:number) => (
+              <div key={ind} className="mb-7 ">
                 <NavLink
                   to={it.path}
                   key={it.id}

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable prettier/prettier */
 import { Button, Checkbox, Form, Input, Radio, Upload, UploadFile } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
@@ -12,7 +13,7 @@ const ShowModal = (props: any) => {
   //   const { id } = useParams();
   // console.log('dataaaaaaaa: ', props.data);
 
-  // const [bgImage, setBgImage] = useState();
+  const [bgImage, setBgImage] = useState();
   const createMembershipPlans = (formData: FormData) => {
     return ApiClientPrivate.put(`/membership/membership-plans/update/${props.data._id}`, formData, {
       headers: {
@@ -36,16 +37,15 @@ const ShowModal = (props: any) => {
       if (values.hasOwnProperty(key)) {
         formData.append(key, values[key]);
       }
+      // Append the file to the FormData object
+      // Assuming the file is stored in a variable called `file`
+      // You might need to adjust this based on how you're handling file uploads
     }
-    // Append the file to the FormData object
-    // Assuming the file is stored in a variable called `file`
-    // You might need to adjust this based on how you're handling file uploads
-    if (values.bg_image?.file) {
-      // console.log(">>>>>>",bgImage);
-
-      formData.append('bg_image', values.bg_image?.file.originFileObj);
+      
+      if (bgImage) {
+        console.log(">>>>>>",bgImage);
+        formData.append('bg_image', bgImage);
     }
-    console.log(values.bg_image?.file);
     
 
     mutation.mutate(formData, {
@@ -59,11 +59,13 @@ const ShowModal = (props: any) => {
     });
   };
 
-  // const uploadBgImg = (value: any) => {
-  //   const imgUrl = value.file.originFileObj;
-  //   setBgImage(imgUrl);
-  //   // console.log(imgUrl);
-  // };
+  const uploadBgImg = (value: any) => {
+    const imgUrl = value.fileList[0].originFileObj;
+    console.log("image---url: ", imgUrl);
+    
+    setBgImage(imgUrl);
+    console.log("bg----image:",bgImage);
+  };
   const [form] = Form.useForm();
   useEffect(() => {
     form.setFieldsValue({
@@ -262,10 +264,10 @@ const ShowModal = (props: any) => {
                     <Upload
                       disabled={!props.edit}
                       maxCount={1}
-                      // onChange={(value: any) => {
-                      //   //uploadBgImg(value);
-                      //   console.log({ value });
-                      // }}
+                      onChange={(value: any) => {
+                        uploadBgImg(value);
+                        console.log({ value });
+                      }}
                       beforeUpload={() => {return false}}
                       listType="picture"
                       action="#"

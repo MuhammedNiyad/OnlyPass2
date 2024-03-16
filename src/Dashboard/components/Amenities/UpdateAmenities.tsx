@@ -1,22 +1,24 @@
-import { Button, Form, Input, Radio, Upload, UploadFile } from 'antd';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable prettier/prettier */
 import { UploadOutlined } from '@ant-design/icons';
+import { Button, Form, Input, Radio, Upload, UploadFile } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
 import { useEffect, useState } from 'react';
-import { iconURL } from '../../../utils/urls';
 
 const UpdateAmenities = ({
   amenityData,
-  handleUpdateAmenity,
-  onAmenityChange
+  handleUpdateAmenity
 }: {
   amenityData: any;
   handleUpdateAmenity: (updatedData: any) => void;
-  onAmenityChange: any;
 }) => {
+
+  console.log("update:", amenityData);
+  
   const [form] = Form.useForm();
   useEffect(() => {
     form.setFieldsValue({
-      sts: amenityData.status, // Assuming there is a 'status' property in Amenity
+      status: amenityData.status, // Assuming there is a 'status' property in Amenity
       amenityName: amenityData.name,
       description: amenityData.description,
       icon: amenityData.icon
@@ -32,7 +34,7 @@ const UpdateAmenities = ({
             uid: '1',
             name: amenityData.icon,
             // status: 'done',
-            url: amenityData.icon ? `${iconURL}/${amenityData.icon}` : ''
+            url: amenityData.icon ? `${amenityData.icon}` : ''
           }
         ]
       : []
@@ -46,11 +48,9 @@ const UpdateAmenities = ({
       <Form
         form={form}
         onFinish={(values) => handleUpdateAmenity({ ...values, id: amenityData._id })}
-        // onFinish={ handleUpdateAmenity}
         // onChange={handleInputChange}
         className=""
-        labelCol={{ span: 7 }}
-      >
+        labelCol={{ span: 7 }}>
         <div className="">
           <div className="text-start">
             <div className="font-semibold  text-[16px] ">
@@ -62,12 +62,12 @@ const UpdateAmenities = ({
                 <Form.Item
                   label="Status"
                   className=""
-                  name={'sts'}
+                  name={'status'}
                   // rules={[{ required: true, message: 'Please Select your Category!' }]}
                 >
-                  <Radio.Group name="" defaultValue="B2B" className="custom-radio-group">
-                    <Radio value="enable"> Enable </Radio>
-                    <Radio value="disable"> Disable </Radio>
+                  <Radio.Group name="" defaultValue="true" className="custom-radio-group">
+                    <Radio value="true"> Enable </Radio>
+                    <Radio value="false"> Disable </Radio>
                   </Radio.Group>
                 </Form.Item>
               </div>
@@ -106,15 +106,22 @@ const UpdateAmenities = ({
                     maxCount={1}
                     onChange={onAmenityChange}
                     listType="picture"
-                    defaultFileList={[...fileList]}
-                  >
+                    beforeUpload={() => {return false}}
+                    defaultFileList={[...fileList]}>
                     <Button icon={<UploadOutlined />}>Upload</Button>
                   </Upload>
                 </Form.Item>
               </div>
-              <Form.Item>
-                <Button htmlType="submit">Update</Button>
-              </Form.Item>
+              <div className="flex mt-10 justify-center">
+                <Form.Item>
+                  <Button
+                    type="primary"
+                    className={`bg-black text-white rounded-none`}
+                    htmlType="submit">
+                    Update
+                  </Button>
+                </Form.Item>
+              </div>
             </div>
           </div>
         </div>

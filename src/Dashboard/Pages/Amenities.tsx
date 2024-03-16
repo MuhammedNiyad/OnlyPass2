@@ -1,14 +1,14 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable prettier/prettier */
 import { Button, Modal, Switch, Table } from 'antd';
 import React, { ChangeEvent, useEffect, useState } from 'react';
 import { BiPlus } from 'react-icons/bi';
-import { FaEdit } from 'react-icons/fa';
-import { MdDeleteForever } from 'react-icons/md';
+// import { FaEdit } from 'react-icons/fa';
+// import { MdDeleteForever } from 'react-icons/md';
 import svg2 from '../../../public/svg2-onlypass.svg';
 import svg3 from '../../../public/svg3-onlypass.svg';
 import svg4 from '../../../public/svg4-onlypass.svg';
 import { ApiClientPrivate } from '../../utils/axios';
-import { iconURL } from '../../utils/urls';
 import PageHeader from '../components/common_components/PageHeader';
 import UpdateAmenities from '../components/Amenities/UpdateAmenities';
 import AddAmenities from '../components/Amenities/AddAmenities';
@@ -26,6 +26,7 @@ const Amenities: React.FC = () => {
   const [newAmenityName, setNewAmenityName] = useState<string>('');
   const [newAmenityDescription, setNewAmenityDescription] = useState<string>('');
   const [newAmenityIcon, setnewAmenityIcon] = useState<File | null>(null);
+  const [newAmenityStatus, setNewAmenityStatus] = useState(true);
   const [selectedAmenity, setSelectedAmenity] = useState<Amenity | null>(null);
 
   const fetchData = async () => {
@@ -50,6 +51,7 @@ const Amenities: React.FC = () => {
       // Make the API call to update the amenity
 
       const formData = new FormData();
+      formData.append('status', updatedData.status);
       formData.append('name', updatedData.amenityName);
       formData.append('description', updatedData.description);
       formData.append(
@@ -106,11 +108,11 @@ const Amenities: React.FC = () => {
     key: i + 1
   }));
 
-  const statusChange = (checked: boolean) => {
-    console.log(`switch to ${checked}`);
+  const statusChange = async (value: boolean, id: string) => {
+    // console.log(`switch to ${value}`);
     try {
-      //
-    } catch (error:any) {
+      await ApiClientPrivate.put(`/amenities/update-amenities/${id}`, { status: value });
+    } catch (error: any) {
       alert(error.message);
     }
   };
@@ -138,81 +140,78 @@ const Amenities: React.FC = () => {
 
   const columns = [
     {
-      title: 's.No',
-      dataIndex: 'key',
-      key: 'sNo',
+      title: 'Image',
+      // dataIndex: 'key',
+      key: 'Image',
+      render: (record: any) => (
+        <img src={`${record.icon} `} alt="icon" className="w-[48px] bg-gray-100" />
+      ),
       width: 100
     },
     {
       title: 'Name',
       // dataIndex: 'name',
       key: 'name',
-      width: 300,
-      render: (record: any) => (
-        <div className="flex items-center gap-3">
-          <img src={`${iconURL}/${record.icon} `} alt={record} style={{ width: '25px' }} />
-          <a>{record.name}</a>
-        </div>
-      )
+      width: 250,
+      render: (record: any) => <h1 className="font-medium text-base">{record.name}</h1>
     },
     {
       title: 'Descriptions',
       // dataIndex: 'descriptions',
       key: 'descriptions',
-      render: (record: any) => (
-        <div className="flex items-start ">
-          <p>{record.description}</p>
-        </div>
-      )
+      render: (record: any) => <p>{record.description}</p>,
+      width: 250,
+      ellipsis: { showTitle: false }
     },
     {
       title: 'Status',
       key: 'action',
       render: (record: any) => (
-        <div className="flex items-center ">
-          <Switch
-            size="small"
-            defaultChecked={record.status}
-            onChange={statusChange}
-            className="bg-red-200"
-          />
-        </div>
+        <Switch
+          size="small"
+          defaultChecked={record.status}
+          onChange={(value: boolean) => statusChange(value, record._id)}
+          className="bg-red-200"
+        />
       )
     },
     {
       title: 'Options',
       key: 'action',
       render: (record: any) => (
-        <div className="flex items-center gap-2 " onClick={() => handleEditClick(record)}>
-          Edit <FaEdit />
+        <div
+          className=" text-blue-500 underline cursor-pointer  "
+          onClick={() => handleEditClick(record)}>
+          Edit
         </div>
       )
-    },
-    {
-      // title: 'Enable/ Disable',
-      key: 'action',
-      render: (record: any) => (
-        <MdDeleteForever
-          size={20}
-          className="hover:text-red-300 scale-100 hover:scale-110 duration-200"
-          onClick={() => deleteAmenities(record._id)}
-        />
-      )
     }
+    // {
+    //   // title: 'Enable/ Disable',
+    //   key: 'action',
+    //   render: (record: any) => (
+    //     <MdDeleteForever
+    //       size={20}
+    //       className="hover:text-red-300 scale-100 hover:scale-110 duration-200"
+    //       onClick={() => deleteAmenities(record._id)}
+    //     />
+    //   )
+    // }
   ];
 
-  const deleteAmenities = async (id: string) => {
-    console.log('mm', id);
+  // const deleteAmenities = async (id: string) => {
+  //   console.log('mm', id);
 
-    try {
-      const res = await ApiClientPrivate.delete(`/amenities/remove/${id}`);
-      if (res) {
-        window.location.reload();
-      }
-    } catch (error) {
-      alert('cannot delete amenities ');
-    }
-  };
+  //   try {
+  //     const res = await ApiClientPrivate.delete(`/amenities/remove/${id}`);
+  //     if (res) {
+  //       window.location.reload();
+  //     }
+  //   } catch (error) {
+  //     alert('cannot delete amenities ');
+  //   }
+  // };
+
   const showModal = () => {
     setNewAmenityName('');
     setNewAmenityDescription('');
@@ -241,6 +240,7 @@ const Amenities: React.FC = () => {
       setNewAmenityDescription('');
 
       const formData = new FormData();
+      formData.append('status', newAmenityStatus);
       formData.append('name', newAmenityName);
       formData.append('description', newAmenityDescription);
       formData.append('icon', newAmenityIcon as File);
@@ -290,12 +290,13 @@ const Amenities: React.FC = () => {
             </div>
           </div>
         </div>
-        <Table
-          columns={columns}
-          dataSource={tableData} // Use filteredData instead of amentyData
-          pagination={{ pageSize: 10 }}
-          className="  shadow-lg "
-        />
+        <div className="p-5">
+          <Table
+            columns={columns}
+            dataSource={tableData} // Use filteredData instead of amentyData
+            pagination={{ pageSize: 10 }}
+          />
+        </div>
       </div>
 
       <Modal
@@ -321,7 +322,8 @@ const Amenities: React.FC = () => {
           </div>
         ]}>
         <AddAmenities
-          newAmenityName={newAmenityName}
+          newAmenityStatus={setNewAmenityStatus}
+          // newAmenityName={newAmenityName}
           onAmenityChange={onAmenityChange}
           setNewAmenityName={setNewAmenityName}
           setNewAmenityDescription={setNewAmenityDescription}
@@ -349,7 +351,7 @@ const Amenities: React.FC = () => {
         <UpdateAmenities
           amenityData={selectedAmenity}
           handleUpdateAmenity={handleUpdateAmenity}
-          onAmenityChange={onAmenityChange}
+          // onAmenityChange={onAmenityChange}
         />
       </Modal>
     </div>

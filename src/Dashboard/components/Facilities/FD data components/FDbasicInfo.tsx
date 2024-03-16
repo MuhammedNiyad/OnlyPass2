@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Modal } from 'antd';
 import { useState } from 'react';
 import { FaEdit } from 'react-icons/fa';
@@ -55,7 +56,7 @@ const FDbasicInfo = ({ data, mainData }: any) => {
               </div>
               <div className="flex   items-center gap-4">
                 <img
-                  src={`${dataLogo}/${mainData?.data.logoUrl}`}
+                  src={`${mainData?.data.logoUrl}`}
                   alt="gym logo"
                   className="w-[80px] h-[80px]"
                 />
@@ -68,7 +69,7 @@ const FDbasicInfo = ({ data, mainData }: any) => {
                 {Facilityimages?.map((url: any, index: any) => (
                   <img
                     key={index} // Add a unique key for each image
-                    src={`${dataImages}/${url}`}
+                    src={`${url}`}
                     alt={`Facility Image ${index + 1}`}
                     className="w-[80px] h-[80px]"
                   />

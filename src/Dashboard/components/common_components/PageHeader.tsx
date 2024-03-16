@@ -50,8 +50,8 @@ const PageHeader = (props: any) => {
       {/* Facility Result Show */}
 
       <div className="flex justify-between bg-white mb-3 md:mb-7 lg:mb-16 py-3 md:py-5 lg:py-10 p-2">
-        {props.details.map((it: any) => (
-          <div className="flex items-center p-2 gap-1 border-r w-1/3 justify-center last:border-none ">
+        {props.details.map((it: any, ind:number) => (
+          <div key={ind} className="flex items-center p-2 gap-1 border-r w-1/3 justify-center last:border-none ">
             <div>
               {screen <= 854 ? (
                 <Avatar size={60} src={it.icon} />
