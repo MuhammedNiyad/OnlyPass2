@@ -13,7 +13,7 @@ import { NavLink, useLocation } from 'react-router-dom';
 import image1 from '../../../../public/javad.jpg';
 
 const Sidebar = () => {
-  const [sidebarOpen, setSidebarOpen] = useState(true); //true bcz client request
+  const [sidebarOpen, setSidebarOpen] = useState(false); //true bcz client request
   const [selectedItem, setSelectedItem] = useState({ id: '0', open: true });
 
   const openSubMenu = (id: string) => {
@@ -59,8 +59,8 @@ const Sidebar = () => {
       name: 'Dashboard',
       icon: (
         <LiaKeySolid
-          size={30}
-          className="border-2 border-[#5C5C5C] rounded-md p-[3px] font-extrabold"
+          size={25}
+          className="border-2 border-[#5C5C5C] rounded-lg p-[3px] font-extrabold"
         />
       ),
       path: '/'
@@ -68,7 +68,7 @@ const Sidebar = () => {
     {
       name: 'Facilities',
       icon: (
-        <LuBox size={30} className="border-2 border-[#5C5C5C] rounded-md p-[3px] font-extrabold" />
+        <LuBox size={25} className="border-2 border-[#5C5C5C] rounded-lg p-[3px] font-extrabold" />
       ),
       path: '/Facilities'
     },
@@ -76,8 +76,8 @@ const Sidebar = () => {
       name: 'customers',
       icon: (
         <FaRegUser
-          size={30}
-          className="border-2 border-[#5C5C5C] rounded-md p-[3px] font-extrabold"
+          size={25}
+          className="border-2 border-[#5C5C5C] rounded-lg p-[3px] font-extrabold"
         />
       ),
       path: '/Customer'
@@ -86,8 +86,8 @@ const Sidebar = () => {
       name: 'Payments',
       icon: (
         <CiWallet
-          size={30}
-          className="border-2 border-[#5C5C5C] rounded-md p-[3px] font-extrabold"
+          size={25}
+          className="border-2 border-[#5C5C5C] rounded-lg p-[3px] font-extrabold"
         />
       ),
       path: '/Payment'
@@ -96,11 +96,11 @@ const Sidebar = () => {
       name: 'Manages',
       icon: (
         <CiDiscount1
-          size={30}
-          className="border-2 border-[#5C5C5C] rounded-md p-[3px] font-extrabold"
+          size={25}
+          className="border-2 border-[#5C5C5C] rounded-lg p-[3px] font-extrabold"
         />
       ),
-      // path: '/MembershipPackages'
+      path: '/MembershipPackages'
     }
   ];
 
@@ -237,32 +237,34 @@ const Sidebar = () => {
   ];
 
   return (
-    <div id="sidebar " className="flex flex-col pr-3 h-full ">
+    <div id="sidebar " className="flex flex-col h-full overflow-y-scroll ">
       {/* <<<<<< SIDE MINIMIZE ICON >>>>>>> */}
       <div className={`${sidebarOpen === true ? 'hidden' : 'block'}`}>
-        <div className="md:w-24 px-2 md:px-5">
-          <div className="mb-10 pt-10 flex justify-center">
+        <div className="md:w-24 px-3 md:px-5 overflow-y-scroll pb-3">
+          <div className="mb-3 pt-7 flex justify-center">
             <TbSettings2 size={40} />
           </div>
-          <div onClick={() => setSidebarOpen(!sidebarOpen)}>
-            {
-              // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              sidebarIcons.map((it: any, ind: any) => (
-                <NavLink
-                  to={it.path}
-                  key={ind}
-                  className={({ isActive }) =>
-                    `${
-                      isActive ? 'text-white bg-black ' : 'hover:bg-slate-100'
-                    } py-1 md:py-3 rounded-lg my-5 flex justify-center `
-                  }>
-                  {it.icon}
-                </NavLink>
-              ))
-            }
-          </div>
-          <div className="flex justify-center">
-            <img src={image1} alt="" className="h-10 w-10 rounded-full" />
+          <div className='flex flex-col gap-28 overflow-y-scroll'>
+            <div onClick={() => setSidebarOpen(!sidebarOpen)}>
+              {
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                sidebarIcons.map((it: any, ind: any) => (
+                  <NavLink
+                    to={it.path}
+                    key={ind}
+                    className={({ isActive }) =>
+                      `${
+                        isActive ? 'text-white bg-black ' : 'hover:bg-slate-100'
+                      }py-2 sm:py-2 sm:mx-2 rounded-xl my-5 flex justify-center `
+                    }>
+                    {it.icon}
+                  </NavLink>
+                ))
+              }
+            </div>
+            <div className="flex justify-center">
+              <img src={image1} alt="" className="h-10 w-10 rounded-full" />
+            </div>
           </div>
         </div>
       </div>
@@ -270,7 +272,7 @@ const Sidebar = () => {
       {/* <<<<<<< SIDE BAR MENU >>>>>>>> */}
 
       <div
-        className={`pl-5 bg-white rounded-md h-full overflow-y-scroll flex flex-col  ${sidebarOpen === true ? 'block' : 'hidden'} `}>
+        className={`pl-5 bg-white  rounded-md h-full overflow-y-scroll flex flex-col  ${sidebarOpen === true ? 'block' : 'hidden'} `}>
         <div className="mb-10 pt-10 flex items-center">
           <TbSettings2 size={40} />
           <h1 className="font-bold text-xl">
@@ -278,9 +280,9 @@ const Sidebar = () => {
           </h1>
         </div>
 
-        <div className="common flex flex-col  flex-1 z-10 ">
+        <div className="common flex flex-col flex-1 z-10 ">
           <div className=" text-[#5C5C5C] h-[615px] ">
-            {sideBarItems.map((it: any, ind:number) => (
+            {sideBarItems.map((it: any, ind: number) => (
               <div key={ind} className="mb-7 ">
                 <NavLink
                   to={it.path}
