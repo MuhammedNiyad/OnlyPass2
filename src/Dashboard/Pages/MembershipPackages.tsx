@@ -131,7 +131,7 @@ const MembershipPackages: React.FC = () => {
 
   return (
     <div>
-      <div className=" bg-[#F2F2F2] px-2 sm:px-10 md:px-16 pb-10 ">
+      <div className=" bg-[#F2F2F2] px-5 sm:px-10 md:px-12 py-10">
         <PageHeader details={details} name={'Membership'} />
         {/* Table Section */}
         <div className="w-fit sm:w-auto bg-white p-10 mb-8">

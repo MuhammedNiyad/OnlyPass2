@@ -273,7 +273,7 @@ const Amenities: React.FC = () => {
   };
 
   return (
-    <div className="bg-[#F2F2F2] px-16 pb-10">
+    <div className="bg-[#F2F2F2] px-5 sm:px-10 md:px-12 py-10">
       <PageHeader details={details} name={'Amenities'} searchFunction={onChangeSearch} />
       {/* table-Secion */}
       <div className="bg-white">

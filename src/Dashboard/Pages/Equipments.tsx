@@ -1,11 +1,18 @@
+/* eslint-disable prettier/prettier */
 import { UploadOutlined } from '@ant-design/icons';
-import { Button, Card, Input, Modal, Switch, Upload } from 'antd';
+import { Button, Card, Input, Modal, Switch, Table, Upload } from 'antd';
 import React, { ChangeEvent, useEffect, useState } from 'react';
 import { PiPlusCircle } from 'react-icons/pi';
 import { ApiClientPrivate } from '../../utils/axios';
 import { imaageURL } from '../../utils/urls';
 import { RiSearchLine } from 'react-icons/ri';
 import { MdDeleteForever } from 'react-icons/md';
+import PageHeader from '../components/common_components/PageHeader';
+import svg2 from '../../../public/svg2-onlypass.svg';
+import svg3 from '../../../public/svg3-onlypass.svg';
+import svg4 from '../../../public/svg4-onlypass.svg';
+import { BiPlus } from 'react-icons/bi';
+import AddEquipments from '../components/Equipments/AddEquipments';
 
 interface Equipment {
   key: string;
@@ -26,8 +33,8 @@ const Equipments: React.FC = () => {
       console.log(res.data);
       setEquipmetsData(res.data);
       setFilteredData(res.data);
-    } catch (errpr) {
-      console.log(errpr);
+    } catch (error) {
+      console.log(error);
     }
   };
   useEffect(() => {
@@ -35,9 +42,9 @@ const Equipments: React.FC = () => {
   }, []);
 
   // console.log('equi' , equipmentsData);
-  const onChange = (checked: boolean) => {
-    console.log(`switch to ${checked}`);
-  };
+  // const onChange = (checked: boolean) => {
+  //   console.log(`switch to ${checked}`);
+  // };
   const showModal = () => {
     setIsModalVisible(true);
   };
@@ -89,98 +96,134 @@ const Equipments: React.FC = () => {
     setFilteredData(filtered);
   };
 
-  const deleteEquipment = async (id: string) => {
-    try {
-      const res = await ApiClientPrivate.delete(`/equipments/delete-equipment/${id}`);
-      if (res) {
-        window.location.reload();
-      }
-    } catch (error) {
-      alert('cannot delete amenities ');
+  const tableData = filteredData?.map((It: any, i: number) => ({
+    ...It,
+    key: i + 1
+  }));
+
+  const details = [
+    {
+      icon: svg4,
+      head: 'Total Customer',
+      value: '5,423',
+      percentage: '16'
+    },
+    {
+      icon: svg3,
+      head: 'Membership Sold',
+      value: '1893',
+      percentage: '1'
+    },
+    {
+      icon: svg2,
+      head: 'Active Now',
+      value: '189',
+      percentage: '39'
     }
-  };
+  ];
+
+  const columns = [
+    {
+      title: 'Image',
+      // dataIndex: 'key',
+      key: 'Image',
+      render: (record: any) => (
+        <img src={`${record.icon} `} alt="icon" className="w-[48px] bg-gray-100" />
+      ),
+      width: 100
+    },
+    {
+      title: 'Name',
+      // dataIndex: 'name',
+      key: 'name',
+      width: 250,
+      render: (record: any) => <h1 className="font-medium text-base">{record.name}</h1>
+    },
+    {
+      title: 'Descriptions',
+      // dataIndex: 'descriptions',
+      key: 'descriptions',
+      render: (record: any) => <p>{record.description}</p>,
+      width: 250,
+      ellipsis: { showTitle: false }
+    },
+    {
+      title: 'Status',
+      key: 'action',
+      render: (record: any) => (
+        <Switch
+          size="small"
+          defaultChecked={record.status}
+          // onChange={(value: boolean) => statusChange(value, record._id)}
+          className="bg-red-200"
+        />
+      )
+    },
+    {
+      title: 'Options',
+      key: 'action',
+      render: (record: any) => (
+        <div
+          className=" text-blue-500 underline cursor-pointer  "
+          // onClick={() => handleEditClick(record)}
+        >
+          Edit
+        </div>
+      )
+    }
+    // {
+    //   // title: 'Enable/ Disable',
+    //   key: 'action',
+    //   render: (record: any) => (
+    //     <MdDeleteForever
+    //       size={20}
+    //       className="hover:text-red-300 scale-100 hover:scale-110 duration-200"
+    //       onClick={() => deleteEquipment(record._id)}
+    //     />
+    //   )
+    // }
+  ];
+
+  // const deleteEquipment = async (id: string) => {
+  //   try {
+  //     const res = await ApiClientPrivate.delete(`/equipments/delete-equipment/${id}`);
+  //     if (res) {
+  //       window.location.reload();
+  //     }
+  //   } catch (error) {
+  //     alert('cannot delete amenities ');
+  //   }
+  // };
 
   return (
-    <div className="bg-[#F2F2F2] px-16 pb-10">
-      {/* header-Section */}
-      <div className="headerSection ">
-        <div className="py-10 text-3xl font-semibold  flex justify-between ">
-          <h1>Equipments</h1>
-
-          <div className="relative">
-            <input
-              type="text"
-              placeholder="Search"
-              onChange={onChangeSearch}
-              className="lg:w-[500px] w-[250px] h-[40px] text-sm pl-8 outline-none"
-            />
-            <div className="absolute inset-y-0 left-0 flex items-center pl-2 pointer-events-none">
-              <RiSearchLine className="text-gray-500" size={18} />
+    <div className=" bg-[#F2F2F2] px-5 sm:px-10 md:px-12 py-10">
+      <PageHeader details={details} name={'Equipments'} searchFunction={onChangeSearch} />
+      {/* table-Secion */}
+      <div className="bg-white">
+        <div className="section1 flex items-center gap-1 lg:gap-5 h-[70px] py-16 px-3   ">
+          <div className="heading font-bold  text-[20px] lg:text-[22px]">
+            <h1>Equipment List </h1>
+          </div>
+          <div className="buttonDev">
+            <div
+              className="bg-black text-white flex items-center gap-2 w-[94px] h-[28px] text-[12px]  justify-center font-normal rounded-sm shadow-lg "
+              onClick={showModal}>
+              <p>Add New</p>
+              <BiPlus />
             </div>
           </div>
-          <div className="bg-black w-fit text-white text-sm flex p-2 rounded-lg hover:shadow-lg">
-            <button className="md:flex md:items-center gap-2 hidden " onClick={showModal}>
-              <PiPlusCircle size={20} /> New Equipments
-            </button>
-            <button className=" items-center md:hidden " onClick={showModal}>
-              <PiPlusCircle size={20} />
-            </button>
-          </div>
+        </div>
+        <div className="p-5">
+          <Table
+            columns={columns}
+            dataSource={tableData} // Use filteredData instead of amentyData
+            pagination={{ pageSize: 10 }}
+          />
         </div>
       </div>
-      {/* CardSection */}
-      <div className="Card-Section grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid lg:grid-cols-4 gap-3">
-        {filteredData.map(({ _id, image, name }) => (
-          <div className="mx-auto" key={_id}>
-            <Card className="lg:w-[250px]   p-1 shadow-md">
-              <div className="flex">
-                <img
-                  alt={name}
-                  src={`${imaageURL}/${image}`}
-                  className="p-2  border-b-2 w-[200px] h-[200px]"
-                />
-                <div className="-mt-4 ml-1 w-fit" onClick={() => deleteEquipment(_id)}>
-                  <MdDeleteForever
-                    size={16}
-                    className="hover:text-red-500 duration-300 scale-100 hover:scale-125"
-                  />
-                </div>
-              </div>
-              <div className="flex items-center justify-between mt-3">
-                <Meta title={name} />
-                <Switch size="small" defaultChecked onChange={onChange} />
-              </div>
-            </Card>
-          </div>
-        ))}
-      </div>
-      <Modal
-        title="Add New Equipment"
-        open={isModalVisible}
-        onCancel={handleCancel}
-        footer={[
-          <Button key="cancel" onClick={handleCancel}>
-            Cancel
-          </Button>,
-          <Button key="add" type="primary" onClick={handleAddEquipment} className="bg-blue-500">
-            Add
-          </Button>
-        ]}
-      >
-        <Input
-          placeholder="Equipment Name"
-          value={newEquipmentName}
-          onChange={onEquipmentNameChange}
-          className="mb-3"
-        />
-        <Upload
-          name="equipmentImage"
-          showUploadList={false}
-          beforeUpload={() => false}
-          onChange={onEquipmentImageChange}
-        >
-          <Button icon={<UploadOutlined />}>Upload Image</Button>
-        </Upload>
+
+      <Modal title="" open={isModalVisible} onCancel={handleCancel} footer={false}>
+        <AddEquipments isModalVisible={setIsModalVisible} />
       </Modal>
     </div>
   );

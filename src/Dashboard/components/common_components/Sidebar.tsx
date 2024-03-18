@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable prettier/prettier */
 import { useEffect, useState } from 'react';
 import { CiDiscount1, CiMoneyCheck1, CiWallet } from 'react-icons/ci';
@@ -13,7 +14,7 @@ import { NavLink, useLocation } from 'react-router-dom';
 import image1 from '../../../../public/javad.jpg';
 
 const Sidebar = () => {
-  const [sidebarOpen, setSidebarOpen] = useState(false); //true bcz client request
+  const [sidebarOpen, setSidebarOpen] = useState(true); //true bcz client request
   const [selectedItem, setSelectedItem] = useState({ id: '0', open: true });
 
   const openSubMenu = (id: string) => {
@@ -110,7 +111,7 @@ const Sidebar = () => {
       // eslint-disable-next-line prettier/prettier
       icon: (
         <LiaKeySolid
-          size={30}
+          size={25}
           className="border-2 border-[#5C5C5C]   rounded-md p-[3px] font-extrabold"
         />
       ),
@@ -120,7 +121,7 @@ const Sidebar = () => {
     {
       id: '2',
       icon: (
-        <LuBox size={30} className="border-2 border-[#5C5C5C] rounded-md p-[3px] font-extrabold" />
+        <LuBox size={25} className="border-2 border-[#5C5C5C] rounded-md p-[3px] font-extrabold" />
       ),
       MenuItem: 'Facilities',
       path: '/Facilities',
@@ -155,7 +156,7 @@ const Sidebar = () => {
       id: '3',
       icon: (
         <FaRegUser
-          size={30}
+          size={25}
           className="border-2 border-[#5C5C5C] rounded-md p-[3px] font-extrabold"
         />
       ),
@@ -166,7 +167,7 @@ const Sidebar = () => {
       id: '4',
       icon: (
         <CiWallet
-          size={30}
+          size={25}
           className="border-2 border-[#5C5C5C] rounded-md p-[3px] font-extrabold"
         />
       ),
@@ -177,7 +178,7 @@ const Sidebar = () => {
       id: '5',
       icon: (
         <CiDiscount1
-          size={30}
+          size={25}
           className="border-2 border-[#5C5C5C] rounded-md p-[3px] font-extrabold"
         />
       ),
@@ -188,7 +189,7 @@ const Sidebar = () => {
           id: '5-1',
           subIcon: (
             <CiMoneyCheck1
-              size={30}
+              size={22}
               className="border-2 border-[#5C5C5C] rounded-md p-[3px] font-extrabold"
             />
           ),
@@ -199,7 +200,7 @@ const Sidebar = () => {
           id: '5-2',
           subIcon: (
             <CiDiscount1
-              size={30}
+              size={22}
               className="border-2 border-[#5C5C5C] rounded-md p-[3px] font-extrabold"
             />
           ),
@@ -211,7 +212,7 @@ const Sidebar = () => {
           id: '5-3',
           subIcon: (
             <FaDumbbell
-              size={30}
+              size={22}
               className="border-2 border-[#5C5C5C] rounded-md p-[3px] font-extrabold"
             />
           ),
@@ -223,7 +224,7 @@ const Sidebar = () => {
           id: '9',
           subIcon: (
             <IoNewspaperOutline
-              size={30}
+              size={22}
               className="border-2 border-[#5C5C5C] rounded-md p-[3px] font-extrabold"
             />
           ),
@@ -244,7 +245,7 @@ const Sidebar = () => {
           <div className="mb-3 pt-7 flex justify-center">
             <TbSettings2 size={40} />
           </div>
-          <div className='flex flex-col gap-28 overflow-y-scroll'>
+          <div className="flex flex-col gap-28 overflow-y-scroll">
             <div onClick={() => setSidebarOpen(!sidebarOpen)}>
               {
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -272,7 +273,7 @@ const Sidebar = () => {
       {/* <<<<<<< SIDE BAR MENU >>>>>>>> */}
 
       <div
-        className={`pl-5 bg-white  rounded-md h-full overflow-y-scroll flex flex-col  ${sidebarOpen === true ? 'block' : 'hidden'} `}>
+        className={`px-5 bg-white w-[300px] rounded-md h-full overflow-y-scroll flex flex-col  ${sidebarOpen === true ? 'block' : 'hidden'} `}>
         <div className="mb-10 pt-10 flex items-center">
           <TbSettings2 size={40} />
           <h1 className="font-bold text-xl">
@@ -280,17 +281,17 @@ const Sidebar = () => {
           </h1>
         </div>
 
-        <div className="common flex flex-col flex-1 z-10 ">
+        <div className="common flex flex-col  z-10 ">
           <div className=" text-[#5C5C5C] h-[615px] ">
             {sideBarItems.map((it: any, ind: number) => (
-              <div key={ind} className="mb-7 ">
+              <div key={ind} className="mb-3 ">
                 <NavLink
                   to={it.path}
                   key={it.id}
                   onClick={() => openSubMenu(it.id)}
                   className={`${
                     location.pathname === it.path ? 'text-white bg-black' : 'hover:bg-slate-100'
-                  } p-3 font-semibold font-name text-md  flex items-center gap-3 rounded-md  `}>
+                  } p-3 font-semibold font-name text-md  flex items-center gap-3  `}>
                   <div>{it.icon}</div>
 
                   <div className="flex justify-between items-center w-52">
@@ -309,7 +310,7 @@ const Sidebar = () => {
                     <NavLink
                       to={subMenuItem.path}
                       key={subMenuItem.id}
-                      className={`bg-slate-100 p-3 mt-1 ml-10 font-name text-md  items-center gap-3 rounded-md  ${
+                      className={`hover:border-l-4 border-black duration-75 p-2 mt-1 ml-10 font-name text-md  items-center gap-3  ${
                         selectedItem.open === true ? 'flex ' : 'hidden '
                       } `}>
                       <div className="flex gap-3 items-center">

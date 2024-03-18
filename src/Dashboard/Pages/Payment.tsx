@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Form, Select, Table, Tag } from 'antd';
 import React from 'react';
 import svg2 from '../../../public/svg2-onlypass.svg';
@@ -122,7 +123,7 @@ const Payment: React.FC = () => {
   ];
   return (
     <div>
-      <div className=" bg-[#F2F2F2] px-2 sm:px-10 md:px-16 pb-10">
+      <div className="bg-[#F2F2F2] px-5 sm:px-10 md:px-12 py-10">
         <PageHeader details={details} name={'Payment'} />
         {/* Table Section */}
         <div className="w-fit sm:w-auto bg-white p-10 mb-8">

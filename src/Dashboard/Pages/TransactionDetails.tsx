@@ -106,7 +106,7 @@ const TransactionDetails: React.FC = () => {
 
   return (
     <div className="">
-      <div className=" bg-[#F2F2F2] px-2 sm:px-10 md:px-16 pb-10 ">
+      <div className=" bg-[#F2F2F2] px-5 sm:px-10 md:px-12 py-10">
         <PageHeader
           details={details}
           //   name={mainData?.data.facilityName}

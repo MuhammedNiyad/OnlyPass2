@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Form, Modal, Select, Switch, Table } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -105,20 +106,19 @@ const Facilities: React.FC = () => {
   ];
   return (
     <div>
-      <div className=" bg-[#F2F2F2] px-2 sm:px-10 md:px-16 pb-10 ">
+      <div className=" bg-[#F2F2F2] px-5 sm:px-10 md:px-12 py-10">
         <PageHeader details={details} name={'Facilities'} searchFunction={onChangeSearch} />
         {/* Table Section */}
-        <div className="w-fit sm:w-auto bg-white p-2 md:p-10 mb-8 ">
-          <div className="mainDev flex h-[100px] items-center justify-between ">
-            <div className="section1 flex items-center gap-1 lg:gap-5 h-[70px] px-3 ">
+        <div className="w-full overflow-x-scroll bg-white p-4 md:p-10 ">
+          <div className="mainDev flex md:flex-row flex-col items-center md:justify-between justify-start ">
+            <div className="section1 flex items-center gap-3 lg:gap-5  px-3 ">
               <div className="heading font-bold  text-[20px] lg:text-[22px]">
                 <h1>All Facilities </h1>
               </div>
               <div className="buttonDev">
                 <div
                   className="bg-black text-white flex items-center gap-2 w-[94px] h-[28px] text-[12px]  justify-center font-normal rounded-sm shadow-lg "
-                  onClick={() => setIsModalOpen(true)}
-                >
+                  onClick={() => setIsModalOpen(true)}>
                   <p>Add New</p>
                   <BiPlus />
                 </div>
@@ -126,7 +126,7 @@ const Facilities: React.FC = () => {
             </div>
 
             <div className="section1 flex h-[70px]  ">
-              <div className="dropDown font-bold  text-lg flex items-center justify-between h-full w-full">
+              <div className="dropDown font-bold  text-lg flex  items-center justify-between h-full w-full">
                 <Form className=" h-full flex  gap-5 lg:gap-10 justify-end w-full ">
                   <Form.Item label="" name="filter" className="flex items-center  h-full ">
                     <Select
@@ -191,13 +191,14 @@ const Facilities: React.FC = () => {
               </div>
             </div>
           </div>
-
-          <Table
-            columns={columns}
-            dataSource={tableData}
-            pagination={{ pageSize: 10 }}
-            className=""
-          />
+          <div className="w-full">
+            <Table
+              columns={columns}
+              dataSource={tableData}
+              pagination={{ pageSize: 10 }}
+              className=""
+            />
+          </div>
         </div>
       </div>
       <Modal
@@ -206,8 +207,7 @@ const Facilities: React.FC = () => {
         width={700}
         open={isModalOpen}
         onCancel={() => setIsModalOpen(false)}
-        footer={false}
-      >
+        footer={false}>
         <Forms />
       </Modal>
     </div>
