@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Button, Form, Input } from 'antd';
 import { useDispatch } from 'react-redux';
 import { nextButton, prevButton } from '../../../Redux/Features/ButtonSlice';
@@ -79,70 +80,83 @@ const Location = () => {
 
   return (
     <div className="">
-      <div className="font-semibold ">
+      <div className="font-montserrat">
         <Form
           form={form}
           onFinish={handleNext}
           onChange={handleInputChange}
           labelCol={{ span: 7 }}
-          className="text-start"
-        >
+          colon={false}
+          className="text-start">
           <div>
-            <div className="font-semibold text-center text-2xl mb-10">
+            <div className="font-semibold text-start font-montserrat text-2xl mb-10">
               <h1>Location</h1>
             </div>
 
             <div>
               {/* Address...........! */}
               <Form.Item
-                label="Address"
+                label={<p className="text-[#7E7E7E] font-montserrat">Address</p>}
                 name={'address'}
                 className="text-start"
-                rules={[{ required: true, message: 'Enter address field' }]}
-              >
-                <TextArea rows={3} name="address" className="md:w-[350px]" />
+                rules={[{ required: true, message: 'Enter address field' }]}>
+                <TextArea rows={3} name="address" className="md:w-[350px] rounded-none" />
               </Form.Item>
               {/* Pin code ...........! */}
               <Form.Item
-                label="Pin Code"
+                label={<p className="text-[#7E7E7E] font-montserrat">Pin-Code</p>}
                 name={'pin_code'}
                 rules={[
                   { required: true, message: 'Please enter Pin-code' },
                   { pattern: /^[0-9]+$/, message: 'Please enter valid Pin number' },
                   { min: 6, message: 'Pin number must be at least 6 digits' },
                   { max: 6, message: 'Pin number must be at most 6 digits' }
-                ]}
-              >
+                ]}>
                 <Input
                   name="pin_code"
                   type="tel"
-                  className="w-[100px]"
+                  className="w-[100px] rounded-none"
                   maxLength={6}
                   value={pincode}
                   onChange={handlePincodeChange}
                 />
               </Form.Item>
               {/* State ............! */}
-              <Form.Item label="State" className="" name="state">
-                <Input disabled value={'Kerala'} name="state" className="md:w-[350px]" />
+              <Form.Item
+                label={<p className="text-[#7E7E7E] font-montserrat">State</p>}
+                className=""
+                name="state">
+                <Input
+                  disabled
+                  value={'Kerala'}
+                  name="state"
+                  className="md:w-[350px] rounded-none"
+                />
               </Form.Item>
               {/* Country ...........! */}
-              <Form.Item label="Country" className="" name="country">
-                <Input disabled value="India" name="country" className="md:w-[350px]" />
+              <Form.Item
+                label={<p className="text-[#7E7E7E] font-montserrat">Country</p>}
+                className=""
+                name="country">
+                <Input
+                  disabled
+                  value="India"
+                  name="country"
+                  className="md:w-[350px] rounded-none"
+                />
               </Form.Item>
               {/* Latitude Longitude */}
               <Form.Item
-                label="Latitude_Longitude"
+                label={<p className="text-[#7E7E7E] font-montserrat">Latitude-Longitude</p>}
                 name="latitude_longitude"
-                rules={[{ required: true, message: 'latitude_longitude ' }]}
-              >
-                <Input name="latitude_longitude" className="md:w-[350px]" />
+                rules={[{ required: true, message: 'latitude_longitude ' }]}>
+                <Input name="latitude_longitude" className="md:w-[350px] rounded-none" />
               </Form.Item>
             </div>
           </div>
 
           <div>
-            <div className="font-semibold text-center text-2xl my-10">
+            <div className="font-semibold text-center font-montserrat text-2xl my-10">
               <h1>Time</h1>
             </div>
             <div className="flex justify-center">
@@ -150,12 +164,12 @@ const Location = () => {
             </div>
           </div>
 
-          <div className="flex gap-3 justify-center">
-            <Button className="bg-black text-white rounded-none" htmlType="submit">
-              Next
-            </Button>
-            <Button className="bg-white rounded-none" onClick={handlePrevious}>
+          <div className="flex gap-3 justify-center ">
+            <Button className="bg-white rounded-none font-montserrat" onClick={handlePrevious}>
               Previous
+            </Button>
+            <Button className="bg-black text-white font-montserrat rounded-none" htmlType="submit">
+              Next
             </Button>
           </div>
         </Form>

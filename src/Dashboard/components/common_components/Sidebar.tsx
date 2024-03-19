@@ -139,6 +139,29 @@ const Sidebar = () => {
         },
         {
           id: '2-2',
+          subIcon: (
+            <CiDiscount1
+              size={22}
+              className="border-2 border-[#5C5C5C] rounded-md p-[3px] font-extrabold"
+            />
+          ),
+          name: 'Amenities',
+          path: '/Amenities'
+        },
+
+        {
+          id: '2-3',
+          subIcon: (
+            <FaDumbbell
+              size={22}
+              className="border-2 border-[#5C5C5C] rounded-md p-[3px] font-extrabold"
+            />
+          ),
+          name: 'Equipments',
+          path: '/Equipments'
+        },
+        {
+          id: '2-4',
           name: 'Tier Management',
           subIcon: (
             <SiNginxproxymanager
@@ -198,30 +221,6 @@ const Sidebar = () => {
         },
         {
           id: '5-2',
-          subIcon: (
-            <CiDiscount1
-              size={22}
-              className="border-2 border-[#5C5C5C] rounded-md p-[3px] font-extrabold"
-            />
-          ),
-          name: 'Amenities',
-          path: '/Amenities'
-        },
-
-        {
-          id: '5-3',
-          subIcon: (
-            <FaDumbbell
-              size={22}
-              className="border-2 border-[#5C5C5C] rounded-md p-[3px] font-extrabold"
-            />
-          ),
-          name: 'Equipments',
-          path: '/Equipments'
-        },
-
-        {
-          id: '9',
           subIcon: (
             <IoNewspaperOutline
               size={22}

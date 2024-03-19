@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Steps } from 'antd';
 import { useSelector } from 'react-redux';
 import AmenitiesForm from '../components/Facilities/Facility_Form/AmenitiesForm';
@@ -7,7 +8,7 @@ import Location from '../components/Facilities/Facility_Form/Location';
 import Membership from '../components/Facilities/Facility_Form/Membership';
 const steps = [
   {
-    title: 'Basic Information',
+    title:'Basic Info',
     content: <BasicInfo />
   },
   {
@@ -33,7 +34,7 @@ const Forms = () => {
   const items = steps.map((item) => ({ key: item.title, title: item.title }));
   return (
     <div className="">
-      <div className="step-section ">
+      <div className="step-section font-montserrat ">
         <Steps current={setCurrentStep} items={items} className="pt-2 mt-2 b" />
         {/* <div className="p-4 m-1 -mt-4 md:m-2 flex  ">
           <Link to={'/Facilities'} className="flex items-center gap-4">
@@ -44,7 +45,7 @@ const Forms = () => {
           </Link>
         </div> */}
 
-        <div className="mx-auto w-[500px] m-7 md:w-[600px]     rounded-lg ">
+        <div className="mx-auto w-[500px] m-7 md:w-[600px] rounded-lg ">
           {steps[setCurrentStep].content}
         </div>
       </div>

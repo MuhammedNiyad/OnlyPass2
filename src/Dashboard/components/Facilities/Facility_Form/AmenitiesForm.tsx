@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Button, Checkbox } from 'antd';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
@@ -65,49 +66,46 @@ const AmenitiesForm = () => {
 
   return (
     <div className="max-w-[500px] mx-auto mt-8">
-      <div className="font-semibold text-center text-2xl mb-10">
+      <div className="font-semibold text-start font-montserrat text-2xl mb-10">
         <h1>Amenities</h1>
       </div>
 
       {amentyData.map((item: any) => (
         <div
           key={item._id}
-          className="amentiesCheckBox flex bg-white mb-3 rounded-md shadow-md p-4 justify-between hover:bg-slate-100"
-        >
-          <div className="w-[150px] md:w-[200px] flex items-center gap-3">
-            <img src={`${iconURL}/${item.icon}`} alt="" className="w-5" />
+          className="amentiesCheckBox flex bg-white mb-3 rounded-none shadow-md p-4 justify-between hover:bg-slate-100">
+          <div className="w-[150px] md:w-[200px] flex items-center font-montserrat text-[#7E7E7E] gap-3">
+            <img src={`${item.icon}`} alt="" className="w-5" />
             {item.name}
           </div>
           <div className="flex items-center gap-3 ">
-            <div className="PaidSection">Free</div>
+            <div className="PaidSection font-montserrat text-[#7E7E7E]">Free</div>
             <Checkbox
               checked={
                 (amenities.length > 0 &&
                   amenities?.find((it) => it.amenities_name == item.name)?.isPaid === 'free') ||
                 selectedTypes[item.name] === 'free'
               }
-              onChange={(e: any) => handleTypeChange(item.name, item.icon, 'free', e)}
-            ></Checkbox>
+              onChange={(e: any) => handleTypeChange(item.name, item.icon, 'free', e)}></Checkbox>
           </div>
           <div className="flex items-center gap-3 ">
-            <div className="PaidSection">Paid</div>
+            <div className="PaidSection font-montserrat text-[#7E7E7E]">Paid</div>
             <Checkbox
               checked={
                 (amenities.length > 0 &&
                   amenities?.find((it) => it.amenities_name == item.name)?.isPaid === 'paid') ||
                 selectedTypes[item.name] === 'paid'
               }
-              onChange={(e: any) => handleTypeChange(item.name, item.icon, 'paid', e)}
-            ></Checkbox>
+              onChange={(e: any) => handleTypeChange(item.name, item.icon, 'paid', e)}></Checkbox>
           </div>
         </div>
       ))}
       <div className="flex gap-3 justify-center">
-        <Button className="bg-black rounded-none text-white " onClick={handleNext}>
-          Next
-        </Button>
-        <Button className="bg-white  rounded-none" onClick={handlePrevious}>
+        <Button className="bg-white font-montserrat rounded-none" onClick={handlePrevious}>
           Previous
+        </Button>
+        <Button className="bg-black font-montserrat rounded-none text-white " onClick={handleNext}>
+          Next
         </Button>
       </div>
     </div>

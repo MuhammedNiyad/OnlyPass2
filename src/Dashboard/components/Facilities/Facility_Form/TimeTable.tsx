@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Switch, Tooltip } from 'antd';
 import React, { useState } from 'react';
 import { IoTimeOutline } from 'react-icons/io5';
@@ -20,7 +21,7 @@ const TimeTable = () => {
 
   return (
     <div className="bg-white rounded-md px-5 mx-3 mb-5 ">
-      <div className=" w-[400px] md:w-[500px]  flex justify-between items-center px-4 h-16 border-b-[1px]">
+      <div className=" w-[400px] md:w-[500px] font-montserrat flex justify-between items-center px-4 h-16 border-b-[1px]">
         <div className="md:w-[150px]">DAY</div>
         <div className="md:w-[250px] text-center">MORNING</div>
         <div className="md:w-[250px] text-center">EVENING</div>
@@ -30,8 +31,7 @@ const TimeTable = () => {
         {facilityTiming.map((item, ind) => (
           <div
             key={ind}
-            className="border-b-[1px] w-[400px] md:w-[500px] flex justify-between items-center p-4 relative"
-          >
+            className="border-b-[1px] w-[400px] font-montserrat md:w-[500px] flex justify-between items-center p-4 relative">
             <div className="w-[100px]">{item.day}</div>
             <div className="flex flex-col gap-2">
               <SwitchHoliday
@@ -83,8 +83,7 @@ const TimeTable = () => {
             </div>
             <Tooltip title="Fill all fields with same Time">
               <div
-                className={`${item.day === 'Monday' ? 'flex' : 'hidden'} absolute left-3 top-24`}
-              >
+                className={`${item.day === 'Monday' ? 'flex' : 'hidden'} absolute left-3 top-24`}>
                 <IoMdColorFill
                   size={20}
                   className="duration-300 scale-[1.2] hover:scale-[1.5]"
@@ -266,14 +265,14 @@ export const TimeMorning: React.FC<TimeMorningProps> = (props) => {
       <input
         type="text"
         placeholder={props.holder}
-        className="md:w-[150px] w-[120px] border rounded-md px-2 py-1 focus:outline outline-blue-400 focus:shadow-md placeholder-gray-300 placeholder:font-light "
+        className="md:w-[150px] w-[120px] border rounded-none px-2 py-1 focus:outline outline-blue-400 focus:shadow-md placeholder-gray-300 placeholder:font-light "
         onClick={handleTimeClick}
         value={props.disabled ? '' : selectedTime || props.defValue}
         disabled={props.disabled}
         readOnly
       />
       {isDropdownOpen && (
-        <div className="absolute mt-1 bg-white border rounded-md shadow-md z-10 overflow-scroll w-[100px] h-44 overflow-x-hidden md:w-[150px] ">
+        <div className="absolute mt-1 bg-white border rounded-none shadow-md z-10 overflow-scroll w-[100px] h-44 overflow-x-hidden md:w-[150px] ">
           {timeAM.map((time) => (
             <div
               key={time.time}
@@ -285,8 +284,7 @@ export const TimeMorning: React.FC<TimeMorningProps> = (props) => {
                   holder: props.holder,
                   timeType: props.timetype
                 })
-              }
-            >
+              }>
               {time.time}
             </div>
           ))}
@@ -458,14 +456,14 @@ export const TimeEvening: React.FC<TimeEveningProps> = (props) => {
       <input
         type="text"
         placeholder={props.holder}
-        className="md:w-[150px] w-[120px] border rounded-md px-2 py-1 focus:outline outline-blue-400 focus:shadow-md placeholder-gray-300 placeholder:font-light"
+        className="md:w-[150px] w-[120px] border rounded-none px-2 py-1 focus:outline outline-blue-400 focus:shadow-md placeholder-gray-300 placeholder:font-light"
         onClick={handleTimeClick}
         value={props.disabled ? '' : selectedTime || props.defValue}
         disabled={props.disabled}
         readOnly
       />
       {isDropdownOpen && (
-        <div className="absolute mt-1 bg-white border rounded-md shadow-md z-10 overflow-scroll w-[100px] h-44 overflow-x-hidden md:w-[150px] ">
+        <div className="absolute mt-1 bg-white border rounded-none shadow-md z-10 overflow-scroll w-[100px] h-44 overflow-x-hidden md:w-[150px] ">
           {timePM.map((time) => (
             <div
               key={time.time}
@@ -477,8 +475,7 @@ export const TimeEvening: React.FC<TimeEveningProps> = (props) => {
                   holder: props.holder,
                   timeType: props.timetype
                 })
-              }
-            >
+              }>
               {time.time}
             </div>
           ))}

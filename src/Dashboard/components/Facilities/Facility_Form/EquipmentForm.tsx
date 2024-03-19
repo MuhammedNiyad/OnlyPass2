@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Checkbox, message } from 'antd';
 import { useEffect, useState } from 'react';
 import { ApiClientPrivate } from '../../../../utils/axios';
@@ -72,20 +73,19 @@ const EquipmentForm = () => {
   return (
     <div>
       <div className="max-w-[500px] mx-auto mt-8">
-        <div className="font-semibold text-center text-2xl mb-10">
+        <div className="font-semibold text-start font-montserrat text-2xl mb-10">
           <h1>Equipments</h1>
         </div>
 
-        <div className="List-Section">
+        <div className="List-Section font-montserrat text-[#7E7E7E]">
           {equipmentsData.map((item, ind) => (
             <label>
               <div
                 key={ind}
-                className="object-section border flex items-center justify-between p-2 mb-4 bg-white rounded-md shadow-md"
-              >
+                className="object-section border flex items-center justify-between p-2 mb-4 bg-white rounded-md shadow-md">
                 <div className="flex items-center gap-3 ">
                   <div className="image-section">
-                    <img src={`${imaageURL}/${item.image}`} alt="image" className="h-20 w-24" />
+                    <img src={`${item.image}`} alt="image" className="h-16 w-20" />
                   </div>
                   <div className="Name-section">{item.name}</div>
                 </div>
@@ -95,8 +95,9 @@ const EquipmentForm = () => {
                       equipments.length > 0 &&
                       equipments?.find((it: any) => it.equipment_id === item._id)
                     }
-                    onChange={(e) => onChange(e.target.checked, item._id, item.name, item.image)}
-                  ></Checkbox>
+                    onChange={(e) =>
+                      onChange(e.target.checked, item._id, item.name, item.image)
+                    }></Checkbox>
                 </div>
               </div>
             </label>
@@ -104,11 +105,14 @@ const EquipmentForm = () => {
         </div>
       </div>
       <div className="flex gap-3 justify-center">
-        <Button type="primary" className="bg-black rounded-none text-white " onClick={handleDone}>
-          Done
-        </Button>
-        <Button className="bg-white rounded-none " onClick={handlePrevious}>
+        <Button className="bg-white rounded-none font-montserrat " onClick={handlePrevious}>
           Previous
+        </Button>
+        <Button
+          type="primary"
+          className="bg-black rounded-none font-montserrat text-white "
+          onClick={handleDone}>
+          Done
         </Button>
       </div>
     </div>

@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Button, Checkbox, Form, Input, Select } from 'antd';
 import { useDispatch } from 'react-redux';
 import { nextButton, prevButton } from '../../../Redux/Features/ButtonSlice';
@@ -104,66 +105,73 @@ const Membership = () => {
 
   return (
     <div className="max-w-[500px] mx-auto mt-8">
-      <Form form={form} onFinish={handleNext}>
-        <div className="font-semibold text-center text-2xl mb-10">
+      <Form form={form} onFinish={handleNext} colon={false}>
+        <div className="font-semibold text-start font-montserrat text-2xl mb-10">
           <h1>Membership options</h1>
         </div>
-        {data.map((item) => (
-          <div key={item.id} className="flex items-center gap-5 mb-3 ">
-            <Form.Item
-              name={item.name}
-              valuePropName="checked"
-              // wrapperCol={{ span: 30 }}
-            >
-              <div className=" w-[150px] md:w-[200px]  flex justify-between gap-3">
-                {item.label}
-
-                <Checkbox
-                  name={item.name}
-                  checked={checkedState[item.name as keyof typeof checkedState]}
-                  onChange={handleCheckBox}
-                >
-                  {' '}
-                </Checkbox>
-              </div>
-            </Form.Item>
-
-            <div className="flex gap-1 w-40">
+        <div>
+          {data.map((item) => (
+            <div key={item.id} className="flex items-center gap-5 mb-3">
               <Form.Item
-                label="Price"
                 name={item.name}
-                hidden={!checkedState[item.name as keyof typeof checkedState]}
-                rules={
-                  checkedState[item.name as keyof typeof checkedState]
-                    ? [
-                        {
-                          required: true,
-                          message: 'Enter price'
-                        }
-                      ]
-                    : undefined // Set to undefined if no rule should be applied
-                }
+                valuePropName="checked"
+                // wrapperCol={{ span: 30 }}
               >
-                <Input
-                  className="w-20 price"
-                  name={item.name}
-                  type="tel"
-                  maxLength={5}
-                  onChange={(value) => handlePriceChange(item.name, +value.target.value)}
-                />
-              </Form.Item>
-            </div>
-          </div>
-        ))}
+                <div className=" w-[150px] md:w-[200px]  flex justify-between font-montserrat text-[#7E7E7E] gap-3">
+                  {item.label}
 
-        <Form.Item label="Other Options" labelCol={{ span: 7 }} name={'other'}>
-          <Input name="other" className="w-52" onChange={handleOtherchange} />
+                  <Checkbox
+                    name={item.name}
+                    checked={checkedState[item.name as keyof typeof checkedState]}
+                    onChange={handleCheckBox}>
+                    {' '}
+                  </Checkbox>
+                </div>
+              </Form.Item>
+
+              <div className="flex gap-1 w-40">
+                <Form.Item
+                  label={<p className="text-[#7E7E7E] font-montserrat">Price</p>}
+                  name={item.name}
+                  hidden={!checkedState[item.name as keyof typeof checkedState]}
+                  rules={
+                    checkedState[item.name as keyof typeof checkedState]
+                      ? [
+                          {
+                            required: true,
+                            message: 'Enter price'
+                          }
+                        ]
+                      : undefined // Set to undefined if no rule should be applied
+                  }>
+                  <Input
+                    className="w-20 price rounded-none"
+                    name={item.name}
+                    type="tel"
+                    maxLength={5}
+                    onChange={(value) => handlePriceChange(item.name, +value.target.value)}
+                  />
+                </Form.Item>
+              </div>
+            </div>
+          ))}
+        </div>
+        <Form.Item
+          label={<p className="text-[#7E7E7E] font-montserrat">Other Option</p>}
+          labelCol={{ span: 7 }}
+          name={'other'}>
+          <Input name="other" className="w-52 rounded-none" onChange={handleOtherchange} />
         </Form.Item>
 
-        <Form.Item label="Facility Tier" name="tier" className="text-start" labelCol={{ span: 7 }}>
+        <Form.Item
+          label={<p className="text-[#7E7E7E] font-montserrat">Facility Tier</p>}
+          name="tier"
+          className="text-start"
+          labelCol={{ span: 7 }}>
           <Select
             defaultValue={{ value: '', label: 'Select tier' }}
             style={{ width: 205 }}
+            className='font-montserrat'
             onChange={handleChange}
             options={[
               {
@@ -185,11 +193,11 @@ const Membership = () => {
           />
         </Form.Item>
         <div className="flex gap-3 justify-center ">
-          <Button className="bg-black rounded-none text-white " htmlType="submit">
-            Next
-          </Button>
-          <Button className="bg-white rounded-none " onClick={handlePrevious}>
+          <Button className="bg-white rounded-none font-montserrat " onClick={handlePrevious}>
             Previous
+          </Button>
+          <Button className="bg-black rounded-none font-montserrat text-white " htmlType="submit">
+            Next
           </Button>
         </div>
       </Form>

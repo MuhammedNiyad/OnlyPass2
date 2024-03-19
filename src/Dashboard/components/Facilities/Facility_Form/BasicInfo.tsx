@@ -1,6 +1,7 @@
+/* eslint-disable prettier/prettier */
 import { UploadOutlined } from '@ant-design/icons';
 import type { UploadFile } from 'antd';
-import { Button, Form, Input, Radio, Space, Upload } from 'antd';
+import { Button, Checkbox, Col, Form, Input, Radio, Row, Space, Upload } from 'antd';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useDebounce } from '../../../../Hook/CustomHook';
@@ -155,30 +156,28 @@ const BasicInfo = () => {
   };
 
   return (
-    <div className="font-semibold  ">
+    <div className="">
       <Form
         form={form}
         onFinish={handleNext}
         onChange={handleInputChange}
         className=""
-        labelCol={{ span: 7 }}
-      >
+        colon={false}
+        labelCol={{ span: 7 }}>
         <div>
           <div className="text-start">
-            <div className="font-semibold  text-xl mb-10">
+            <div className="font-semibold font-montserrat text-xl mb-10">
               <h1>Basic Information</h1>
             </div>
             <Form.Item
-              label="Facility Type :"
+              label={<p className="text-[#7E7E7E] font-montserrat">Facility Type</p>}
               className="text-left"
               name={'facility_type'}
-              rules={[{ required: true, message: 'Please Select your Type!' }]}
-            >
+              rules={[{ required: true, message: 'Please Select your Type!' }]}>
               <Radio.Group
                 name="facility_type"
                 defaultValue="access"
-                className="custom-radio-group"
-              >
+                className="custom-radio-group">
                 <Radio value="access"> Access </Radio>
                 <Radio value="pass"> Pass </Radio>
               </Radio.Group>
@@ -187,16 +186,26 @@ const BasicInfo = () => {
 
           <div className="">
             <Form.Item
-              label="Gender :"
-              className="text-start"
+              label={<p className="text-[#7E7E7E] font-montserrat">Gender</p>}
+              className="text-start  "
               name={'gender'}
-              rules={[{ required: true, message: 'Please Select your Type!' }]}
-            >
-              <Radio.Group name="gender" className="custom-radio-group">
-                <Radio value="gents"> Gents </Radio>
-                <Radio value="ladies"> Ladies </Radio>
-                <Radio value="unisex"> Unisex (mixed) </Radio>
-              </Radio.Group>
+              rules={[{ required: true, message: 'Please Select your Type!' }]}>
+              <Checkbox.Group name="gender" className="custom-checkbox-group">
+                <Row>
+                  <Col span={8}>
+                    <Checkbox value="gents"> Gents </Checkbox>
+                  </Col>
+                  <Col span={8}>
+                    <Checkbox value="ladies"> Ladies </Checkbox>
+                  </Col>
+                  <Col span={8}>
+                    <Checkbox value="unisex" className="text-nowrap">
+                      {' '}
+                      Unisex (mixed){' '}
+                    </Checkbox>
+                  </Col>
+                </Row>
+              </Checkbox.Group>
             </Form.Item>
           </div>
         </div>
@@ -204,30 +213,31 @@ const BasicInfo = () => {
         <div>
           <div>
             <Form.Item
-              label="Facility Name"
+              label={<p className="text-[#7E7E7E] font-montserrat">Facility Name</p>}
               name={'facilityName'}
               className="text-left"
-              rules={[{ required: true, message: 'Please Enter Facilicty name' }]}
-            >
-              <Input name="facilityName" value={reduxState.facilityName} className="md:w-[350px]" />
+              rules={[{ required: true, message: 'Please Enter Facilicty name' }]}>
+              <Input
+                name="facilityName"
+                value={reduxState.facilityName}
+                className="md:w-[350px] rounded-none"
+              />
             </Form.Item>
             <Form.Item
-              label="Email"
+              label={<p className="text-[#7E7E7E] font-montserrat">Email</p>}
               name={'emailAddress'}
-              rules={[{ required: true, message: 'Please Enter Email Address' }]}
-              className=""
-            >
-              <Input name="emailAddress" className="md:w-[350px]" />
+              // rules={[{ required: true, message: 'Please Enter Email Address' }]}
+              className="">
+              <Input name="emailAddress" className="md:w-[350px] rounded-none" />
             </Form.Item>
             <Form.Item
-              label="Contact Person"
+              label={<p className="text-[#7E7E7E] font-montserrat">Contact Person</p>}
               name={'contactPerson'}
-              rules={[{ required: true, message: 'Please Enter Contact person name' }]}
-            >
-              <Input name="contactPerson" className="md:w-[350px]" />
+              rules={[{ required: true, message: 'Please Enter Contact person name' }]}>
+              <Input name="contactPerson" className="md:w-[350px] rounded-none" />
             </Form.Item>
             <Form.Item
-              label=" Phone No "
+              label={<p className="text-[#7E7E7E] font-montserrat">Phone Number</p>}
               name={'phoneNumber'}
               rules={[
                 { required: true, message: 'Please enter phone number' },
@@ -235,45 +245,48 @@ const BasicInfo = () => {
                 { min: 10, message: 'Phone number must be at least 10 digits' },
                 { max: 10, message: 'Phone number must be at most 10 digits' }
               ]}
-              className="text-left"
-            >
-              <Space.Compact className="md:w-[350px]">
+              className="text-left">
+              <Space.Compact className="md:w-[350px] rounded-none gap-5">
                 <Input
                   type="tel"
                   name="phonCode"
-                  className="w-[15%]"
+                  className="w-[15%] rounded-none"
                   defaultValue={'+91'}
                   disabled
                 />
                 <Input
                   type="tel"
                   name="phoneNumber"
-                  className="w-[85%]"
+                  className="w-[80%] rounded-none"
                   value={reduxState.phoneNumber}
                   maxLength={10}
                 />
               </Space.Compact>
             </Form.Item>
 
-            <Form.Item label="Website url" className="" name={'websiteURL'}>
-              <Input name="websiteURL" className="md:w-[350px]" />
+            <Form.Item
+              label={<p className="text-[#7E7E7E] font-montserrat">Website URL</p>}
+              className=""
+              name={'websiteURL'}>
+              <Input name="websiteURL" className="md:w-[350px] rounded-none" />
             </Form.Item>
 
-            <Form.Item label="Logo" name={'logo'}>
+            <Form.Item label={<p className="text-[#7E7E7E] font-montserrat">Logo</p>} name={'logo'}>
               <div className="w-[200px]">
                 <Upload
                   maxCount={1}
                   onChange={(e) => {
                     if (remove === false) debouncedNormFileLogo(e);
                   }}
-                  action="https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188"
                   listType="picture"
                   onRemove={handleLogoRemove}
                   // fileList={fileList}
 
-                  defaultFileList={[...fileList]}
-                >
-                  <Button disabled={remove === true} icon={<UploadOutlined />}>
+                  defaultFileList={[...fileList]}>
+                  <Button
+                    disabled={remove === true}
+                    className="rounded-none font-montserrat"
+                    icon={<UploadOutlined />}>
                     Upload
                   </Button>
                 </Upload>
@@ -281,30 +294,39 @@ const BasicInfo = () => {
             </Form.Item>
 
             <Form.Item
-              label="Description"
+              label={<p className="text-[#7E7E7E] font-montserrat">Description</p>}
               name={'description'}
-              rules={[{ min: 10, max: 100, message: 'Description must be at most 100 characters' }]}
-            >
-              <TextArea name="description" rows={4} className="w-[350px]" maxLength={150} />
+              rules={[
+                { min: 10, max: 100, message: 'Description must be at most 100 characters' }
+              ]}>
+              <TextArea
+                name="description"
+                rows={4}
+                className="w-[350px] rounded-none"
+                maxLength={150}
+              />
             </Form.Item>
 
             <div className=" ">
-              <Form.Item label="Images (min.5 Nos)" name={'images'}>
+              <Form.Item
+                label={<p className="text-[#7E7E7E] font-montserrat">Images</p>}
+                name={'images'}>
                 <Upload
                   // {...props}
                   onChange={() => debouncedNormFileImages(form.getFieldValue('images'))}
                   multiple
-                  defaultFileList={imgFileList}
-                >
-                  <Button icon={<UploadOutlined />}>Click to Upload</Button>
-                  <h1 className="text-red-600">(preview size is 16:9)</h1>
+                  defaultFileList={imgFileList}>
+                  <Button icon={<UploadOutlined />} className="rounded-none font-montserrat">
+                    Upload
+                  </Button>
+                  <h1 className="text-black opacity-50">(preview size is 16:9)</h1>
                 </Upload>
               </Form.Item>
             </div>
           </div>
         </div>
         <div className="flex gap-3 justify-center">
-          <Button className="bg-black text-white rounded-none" htmlType="submit">
+          <Button className="bg-black text-white font-montserrat rounded-none" htmlType="submit">
             Next
           </Button>
         </div>

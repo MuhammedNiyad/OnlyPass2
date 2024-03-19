@@ -12,6 +12,7 @@ import { ApiClientPrivate } from '../../utils/axios';
 import PageHeader from '../components/common_components/PageHeader';
 import UpdateAmenities from '../components/Amenities/UpdateAmenities';
 import AddAmenities from '../components/Amenities/AddAmenities';
+import { useQuery } from 'react-query';
 interface Amenity {
   key: string;
   name: string;
@@ -23,77 +24,26 @@ const Amenities: React.FC = () => {
   const [filteredData, setFilteredData] = useState<Amenity[]>([]);
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
   const [isUpdateModalOpen, setisUpdateModalOpen] = useState<boolean>(false);
-  const [newAmenityName, setNewAmenityName] = useState<string>('');
-  const [newAmenityDescription, setNewAmenityDescription] = useState<string>('');
-  const [newAmenityIcon, setnewAmenityIcon] = useState<File | null>(null);
-  const [newAmenityStatus, setNewAmenityStatus] = useState(true);
   const [selectedAmenity, setSelectedAmenity] = useState<Amenity | null>(null);
 
-  const fetchData = async () => {
-    try {
-      const res = await ApiClientPrivate.get('/amenities');
-      setAmentyData(res.data);
-      setFilteredData(res.data);
-      // Set filtered data initially with all data
-    } catch (error) {
-      console.log(error);
-    }
+  // Equipment Data Fatching.......
+  const fetchEquipments = () => {
+    return ApiClientPrivate.get(`/amenities`);
+    // return response;
   };
+  const { data: mainData, refetch } = useQuery('fetchEquipments', fetchEquipments);
+  // console.log('equipments data :', mainData?.data);
 
+  // assign fetched data to states
   useEffect(() => {
-    fetchData();
-  }, []);
+    setAmentyData(mainData?.data);
+    setFilteredData(mainData?.data);
+  }, [mainData, refetch]);
 
-  const handleUpdateAmenity = async (updatedData: any) => {
-    console.log('aaaaaaaaaaaaaaaaaaaaaa', updatedData);
-
-    try {
-      // Make the API call to update the amenity
-
-      const formData = new FormData();
-      formData.append('status', updatedData.status);
-      formData.append('name', updatedData.amenityName);
-      formData.append('description', updatedData.description);
-      formData.append(
-        'icon',
-        updatedData.icon.file?.originFileObj
-          ? updatedData.icon.file?.originFileObj
-          : (updatedData.icon as File)
-      );
-      const res = await ApiClientPrivate.put(
-        `/amenities/update-amenities/${updatedData.id}`,
-        formData,
-        {
-          headers: {
-            'Content-Type': 'multipart/form-data'
-          }
-        }
-      );
-
-      if (res.status === 200) {
-        console.log('heello');
-
-        // Optionally, you can handle success, e.g., show a success message
-        console.log('Amenity updated successfully');
-        // Close the modal or perform any other action as needed
-        handleCancel();
-        window.location.reload();
-      } else {
-        // Optionally, handle the case where the update fails
-        console.error('Failed to update amenity');
-      }
-    } catch (error) {
-      console.log('hiiiiiiiii');
-
-      // Handle errors, e.g., show an error message
-      console.error('Error updating amenity:', error);
-    }
-  };
-
-  const handleEditClick = (amenity: Amenity) => {
-    setSelectedAmenity(amenity);
-    setisUpdateModalOpen(true);
-  };
+  // this useEffect for if add or update an amenity then refresh the data
+  useEffect(() => {
+    refetch();
+  }, [isModalVisible, isUpdateModalOpen, refetch]);
 
   const onChangeSearch = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -145,22 +95,33 @@ const Amenities: React.FC = () => {
       key: 'Image',
       render: (record: any) => (
         <img src={`${record.icon} `} alt="icon" className="w-[48px] bg-gray-100" />
-      ),
-      width: 100
+      )
+      // width: 100
     },
     {
       title: 'Name',
       // dataIndex: 'name',
       key: 'name',
-      width: 250,
-      render: (record: any) => <h1 className="font-medium text-base">{record.name}</h1>
+      // width: 250,
+      render: (record: any) => (
+        <h1
+          className="font-medium text-base hover:text-blue-800 hover:underline cursor-pointer"
+          onClick={() => {
+            setisUpdateModalOpen(true);
+            setSelectedAmenity(record);
+          }}>
+          {record.name}
+        </h1>
+      )
     },
     {
       title: 'Descriptions',
       // dataIndex: 'descriptions',
       key: 'descriptions',
-      render: (record: any) => <p>{record.description}</p>,
-      width: 250,
+      render: (record: any) => (
+        <p>{record.description !== 'undefined' ? record.description : ''}</p>
+      ),
+      // width: 250,
       ellipsis: { showTitle: false }
     },
     {
@@ -175,100 +136,43 @@ const Amenities: React.FC = () => {
         />
       )
     },
-    {
-      title: 'Options',
-      key: 'action',
-      render: (record: any) => (
-        <div
-          className=" text-blue-500 underline cursor-pointer  "
-          onClick={() => handleEditClick(record)}>
-          Edit
-        </div>
-      )
-    }
+    // {
+    //   title: 'Options',
+    //   key: 'action',
+    //   render: (record: any) => (
+    //     <div
+    //       className=" text-blue-500 underline cursor-pointer  "
+    //       onClick={() => handleEditClick(record)}>
+    //       Edit
+    //     </div>
+    //   )
+    // },
     // {
     //   // title: 'Enable/ Disable',
     //   key: 'action',
     //   render: (record: any) => (
-    //     <MdDeleteForever
-    //       size={20}
-    //       className="hover:text-red-300 scale-100 hover:scale-110 duration-200"
-    //       onClick={() => deleteAmenities(record._id)}
-    //     />
+    //     <p
+    //       className="text-blue-500 underline cursor-pointer"
+    //       onClick={() => {
+    //         deleteAmenities(record._id);
+    //       }}>
+    //       Delete
+    //     </p>
     //   )
     // }
   ];
 
-  // const deleteAmenities = async (id: string) => {
-  //   console.log('mm', id);
+  // this function for delete amenities
+  const deleteAmenities = async (id: string) => {
+    // console.log('mm', id);
 
-  //   try {
-  //     const res = await ApiClientPrivate.delete(`/amenities/remove/${id}`);
-  //     if (res) {
-  //       window.location.reload();
-  //     }
-  //   } catch (error) {
-  //     alert('cannot delete amenities ');
-  //   }
-  // };
-
-  const showModal = () => {
-    setNewAmenityName('');
-    setNewAmenityDescription('');
-    setIsModalVisible(true);
-  };
-
-  const handleCancel = () => {
-    setIsModalVisible(false);
-    setisUpdateModalOpen(false);
-    setNewAmenityName('');
-    setNewAmenityDescription('');
-  };
-  const handleAddAmenity = async () => {
     try {
-      const newData = [
-        ...amentyData,
-        {
-          key: (amentyData.length + 1).toString(),
-          name: newAmenityName,
-          description: newAmenityDescription
-        }
-      ];
-      console.log(newData);
-      setIsModalVisible(false);
-      setNewAmenityName('');
-      setNewAmenityDescription('');
-
-      const formData = new FormData();
-      formData.append('status', newAmenityStatus);
-      formData.append('name', newAmenityName);
-      formData.append('description', newAmenityDescription);
-      formData.append('icon', newAmenityIcon as File);
-
-      await ApiClientPrivate.post('/amenities/create', formData, {
-        headers: {
-          'Content-Type': 'form-data'
-        }
-      });
-
-      // Fetch updated data from the server after adding a new equipment
-      fetchData();
-      setNewAmenityName('');
-      setNewAmenityDescription('');
-
-      // console.log('Equipment added:', newEquipmentName, newEquipmentImage);
-      setIsModalVisible(false);
+      const res = await ApiClientPrivate.delete(`/amenities/remove/${id}`);
+      if (res) {
+        window.location.reload();
+      }
     } catch (error) {
-      console.error('Error adding equipment:', error);
-    }
-  };
-
-  const onAmenityChange = (info: any) => {
-    try {
-      const imageUrl = info.file;
-      setnewAmenityIcon(imageUrl);
-    } catch (error) {
-      console.error('Error uploading image:', error);
+      alert('cannot delete amenities ');
     }
   };
 
@@ -276,15 +180,15 @@ const Amenities: React.FC = () => {
     <div className="bg-[#F2F2F2] px-5 sm:px-10 md:px-12 py-10">
       <PageHeader details={details} name={'Amenities'} searchFunction={onChangeSearch} />
       {/* table-Secion */}
-      <div className="bg-white">
+      <div className="w-full overflow-x-scroll bg-white p-4 md:p-10">
         <div className="section1 flex items-center gap-1 lg:gap-5 h-[70px] py-16 px-3   ">
           <div className="heading font-bold  text-[20px] lg:text-[22px]">
             <h1>Amenities List </h1>
           </div>
           <div className="buttonDev">
             <div
-              className="bg-black text-white flex items-center gap-2 w-[94px] h-[28px] text-[12px]  justify-center font-normal rounded-sm shadow-lg "
-              onClick={showModal}>
+              className="bg-black cursor-pointer text-white flex items-center gap-2 w-[94px] h-[28px] text-[12px]  justify-center font-normal rounded-sm shadow-lg "
+              onClick={() => setIsModalVisible(true)}>
               <p>Add New</p>
               <BiPlus />
             </div>
@@ -302,57 +206,18 @@ const Amenities: React.FC = () => {
       <Modal
         title=""
         open={isModalVisible}
-        onCancel={handleCancel}
-        footer={[
-          <div>
-            {/* <Button 
-            key="add"
-            onClick={handleCancel}
-          
-            className="bg-white text-balck  rounded-none"
-          >Cancel</Button> */}
-
-            <Button
-              key="add"
-              onClick={handleAddAmenity}
-              disabled={!newAmenityName.trim()}
-              className="bg-black  text-white rounded-none">
-              Add
-            </Button>
-          </div>
-        ]}>
-        <AddAmenities
-          newAmenityStatus={setNewAmenityStatus}
-          // newAmenityName={newAmenityName}
-          onAmenityChange={onAmenityChange}
-          setNewAmenityName={setNewAmenityName}
-          setNewAmenityDescription={setNewAmenityDescription}
-        />
+        onCancel={() => setIsModalVisible(false)}
+        footer={false}>
+        <AddAmenities modalClose={setIsModalVisible} />
       </Modal>
 
       {/* edit modal */}
       <Modal
         title=""
         open={isUpdateModalOpen}
-        onCancel={handleCancel}
-        // footer={[
-        //   <div>
-        //     <Button
-        //       key="Edit"
-        //             onClick={handleUpdateAmenity}
-        //       // disabled={!newAmenityName.trim()}
-        //       className="bg-black  text-white rounded-none"
-        //     >
-        //       Update
-        //     </Button>
-        //   </div>
-        // ]}
+        onCancel={()=>setisUpdateModalOpen(false)}
         footer={false}>
-        <UpdateAmenities
-          amenityData={selectedAmenity}
-          handleUpdateAmenity={handleUpdateAmenity}
-          // onAmenityChange={onAmenityChange}
-        />
+        <UpdateAmenities data={selectedAmenity} modalClose={setisUpdateModalOpen}/>
       </Modal>
     </div>
   );

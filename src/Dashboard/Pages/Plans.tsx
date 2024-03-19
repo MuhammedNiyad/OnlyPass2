@@ -30,10 +30,8 @@ const Plans = () => {
   const [selectedItem, setSelectedItem] = useState();
 
   useEffect(() => {
-    if (isModalOpen === false) {
-      refetch();
-    }
-  }, [isModalOpen]);
+    refetch();
+  }, [isModalOpen,refetch]);
 
   const statusChange = async (value: boolean, id: string) => {
     // console.log('hello=', value, id);

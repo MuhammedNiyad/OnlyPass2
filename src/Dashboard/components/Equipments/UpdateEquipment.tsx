@@ -1,18 +1,18 @@
 /* eslint-disable prettier/prettier */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { UploadOutlined } from '@ant-design/icons';
+
 import { Button, Form, Input, Radio, Upload, UploadFile } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
+import { UploadOutlined } from '@ant-design/icons';
 import { useEffect, useState } from 'react';
 import { ApiClientPrivate } from '../../../utils/axios';
 import { useMutation } from 'react-query';
 
-const UpdateAmenities = (props: any) => {
-  const [newAmenityIcon, setNewAmenityIcon] = useState();
+function UpdateEquipment(props: any) {
+  const [newEquipmentImg, setNewEquipmentImg] = useState();
 
-  const updateAmenity = (formData: FormData) => {
+  const updateEquipment = (formData: FormData) => {
     console.log({ formData });
-    return ApiClientPrivate.put(`/amenities/update-amenities/${props.data._id}`, formData, {
+    return ApiClientPrivate.put(`/equipments//update-equipment/${props.data._id}`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data'
       }
@@ -20,7 +20,7 @@ const UpdateAmenities = (props: any) => {
   };
 
   const mutation = useMutation((formData: any) => {
-    return updateAmenity(formData);
+    return updateEquipment(formData);
   });
 
   const onFinish = (values: any) => {
@@ -29,8 +29,8 @@ const UpdateAmenities = (props: any) => {
     formData.append('status', values.status);
     formData.append('description', values.description);
 
-    if (newAmenityIcon) {
-      formData.append('icon', newAmenityIcon);
+    if (newEquipmentImg) {
+      formData.append('image', newEquipmentImg);
     }
 
     mutation.mutate(formData, {
@@ -43,16 +43,16 @@ const UpdateAmenities = (props: any) => {
     });
   };
 
-  const amenityImageChange = (info: any) => {
+  const onEquipmentImageChange = (info: any) => {
     try {
-      const iconUrl = info.file;
+      const imageUrl = info.file;
       //   console.log({ suiii: info });
-      console.log('amenity icon url:', iconUrl);
+      console.log('equipment image url:', imageUrl);
 
-      setNewAmenityIcon(iconUrl);
+      setNewEquipmentImg(imageUrl);
       // return(<Alert message="Success Text" type="success" />)
     } catch (error) {
-      console.error('Error uploading icon:', error);
+      console.error('Error uploading image:', error);
     }
   };
 
@@ -65,17 +65,18 @@ const UpdateAmenities = (props: any) => {
     });
   }, [props.data, form]);
   const [fileList] = useState<UploadFile[]>(
-    props.data.icon
+    props.data.image
       ? [
           {
             uid: '1',
-            name: props.data.icon,
+            name: props.data.image,
             status: 'done',
-            url: props.data.icon ? `${props.data.icon}` : ''
+            url: props.data.image ? `${props.data.image}` : ''
           }
         ]
       : []
   );
+
   return (
     <div className=" ">
       <div className="text-[24px]  mb-10  w-full mt-2">
@@ -147,7 +148,7 @@ const UpdateAmenities = (props: any) => {
                     beforeUpload={() => {
                       return false;
                     }}
-                    onChange={amenityImageChange}
+                    onChange={onEquipmentImageChange}
                     defaultFileList={[...fileList]}
                     listType="picture">
                     <div className="flex items-center gap-3">
@@ -180,6 +181,6 @@ const UpdateAmenities = (props: any) => {
       </Form>
     </div>
   );
-};
+}
 
-export default UpdateAmenities;
+export default UpdateEquipment;

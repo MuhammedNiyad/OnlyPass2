@@ -1,18 +1,16 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable prettier/prettier */
-import { UploadOutlined } from '@ant-design/icons';
-import { Button, Card, Input, Modal, Switch, Table, Upload } from 'antd';
+import { Modal, Switch, Table } from 'antd';
 import React, { ChangeEvent, useEffect, useState } from 'react';
-import { PiPlusCircle } from 'react-icons/pi';
-import { ApiClientPrivate } from '../../utils/axios';
-import { imaageURL } from '../../utils/urls';
-import { RiSearchLine } from 'react-icons/ri';
-import { MdDeleteForever } from 'react-icons/md';
-import PageHeader from '../components/common_components/PageHeader';
+import { BiPlus } from 'react-icons/bi';
 import svg2 from '../../../public/svg2-onlypass.svg';
 import svg3 from '../../../public/svg3-onlypass.svg';
 import svg4 from '../../../public/svg4-onlypass.svg';
-import { BiPlus } from 'react-icons/bi';
+import { ApiClientPrivate } from '../../utils/axios';
 import AddEquipments from '../components/Equipments/AddEquipments';
+import PageHeader from '../components/common_components/PageHeader';
+import { useQuery } from 'react-query';
+import UpdateEquipment from '../components/Equipments/UpdateEquipment';
 
 interface Equipment {
   key: string;
@@ -20,71 +18,33 @@ interface Equipment {
   _id: string;
   image: string;
 }
-const { Meta } = Card;
 const Equipments: React.FC = () => {
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
-  const [newEquipmentName, setNewEquipmentName] = useState<string>('');
-  const [newEquipmentImage, setNewEquipmentImage] = useState<File | null>(null);
+  const [isUpdateModal, setIsUpdateModal] = useState<boolean>(false);
+  const [propsData, setPropsData] = useState();
   const [equipmentsData, setEquipmetsData] = useState([]);
   const [filteredData, setFilteredData] = useState<Equipment[]>([]);
-  const fetchData = async () => {
-    try {
-      const res = await ApiClientPrivate.get('/equipments/all-equipment');
-      console.log(res.data);
-      setEquipmetsData(res.data);
-      setFilteredData(res.data);
-    } catch (error) {
-      console.log(error);
-    }
+
+  // Equipment Data Fatching.......
+  const fetchEquipments = () => {
+    return ApiClientPrivate.get(`/equipments/all-equipment`);
+    // return response;
   };
+  const { data: mainData, refetch } = useQuery('fetchEquipments', fetchEquipments);
+  console.log('equipments data :', mainData?.data);
+
+  // assign fetched data to states
   useEffect(() => {
-    fetchData();
-  }, []);
+    setEquipmetsData(mainData?.data);
+    setFilteredData(mainData?.data);
+  }, [mainData, refetch]);
 
-  // console.log('equi' , equipmentsData);
-  // const onChange = (checked: boolean) => {
-  //   console.log(`switch to ${checked}`);
-  // };
-  const showModal = () => {
-    setIsModalVisible(true);
-  };
-  const handleAddEquipment = async () => {
-    try {
-      // console.log("fiii",{newEquipmentImage});
-      const formData = new FormData();
-      formData.append('name', newEquipmentName);
-      formData.append('image', newEquipmentImage as File);
+  console.log({ mainData });
 
-      await ApiClientPrivate.post('/equipments/create-equipments', formData, {
-        headers: {
-          'Content-Type': 'form-data'
-        }
-      });
-      // Fetch updated data from the server after adding a new equipment
-      fetchData();
-      console.log('Equipment added:', newEquipmentName, newEquipmentImage);
-      setIsModalVisible(false);
-    } catch (error) {
-      console.error('Error adding equipment:', error);
-    }
-  };
-  const handleCancel = () => {
-    setIsModalVisible(false);
-  };
-
-  const onEquipmentNameChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setNewEquipmentName(e.target.value);
-  };
-  const onEquipmentImageChange = (info: any) => {
-    try {
-      const imageUrl = info.file;
-      console.log({ suiii: info });
-
-      setNewEquipmentImage(imageUrl);
-    } catch (error) {
-      console.error('Error uploading image:', error);
-    }
-  };
+  // this useEffect for if add or update an equipment then refresh the data
+  useEffect(() => {
+    refetch();
+  }, [isModalVisible, isUpdateModal, refetch]);
 
   const onChangeSearch = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -100,6 +60,16 @@ const Equipments: React.FC = () => {
     ...It,
     key: i + 1
   }));
+
+  const statusChange = async (value: boolean, id: string) => {
+    // console.log(`switch to ${value}`);
+    try {
+      await ApiClientPrivate.put(`/equipments//update-equipment/${id}`, { status: value });
+      refetch();
+    } catch (error: any) {
+      alert(error.message);
+    }
+  };
 
   const details = [
     {
@@ -125,70 +95,84 @@ const Equipments: React.FC = () => {
   const columns = [
     {
       title: 'Image',
-      // dataIndex: 'key',
       key: 'Image',
       render: (record: any) => (
-        <img src={`${record.icon} `} alt="icon" className="w-[48px] bg-gray-100" />
-      ),
-      width: 100
+        <img src={`${record.image} `} alt="image" className="w-[48px] bg-gray-100" />
+      )
+      // width: 100
     },
     {
       title: 'Name',
-      // dataIndex: 'name',
       key: 'name',
-      width: 250,
-      render: (record: any) => <h1 className="font-medium text-base">{record.name}</h1>
+      // width: 250,
+      render: (record: any) => (
+        <h1
+          className="font-medium text-base hover:text-blue-800 hover:underline cursor-pointer"
+          onClick={() => {
+            setIsUpdateModal(true);
+            setPropsData(record);
+          }}>
+          {record.name}
+        </h1>
+      )
     },
     {
       title: 'Descriptions',
       // dataIndex: 'descriptions',
       key: 'descriptions',
-      render: (record: any) => <p>{record.description}</p>,
-      width: 250,
+      render: (record: any) => (
+        <p>{record.description !== 'undefined' ? record.description : ''}</p>
+      ),
+      // width: 250,
       ellipsis: { showTitle: false }
     },
     {
       title: 'Status',
       key: 'action',
-      render: (record: any) => (
-        <Switch
-          size="small"
-          defaultChecked={record.status}
-          // onChange={(value: boolean) => statusChange(value, record._id)}
-          className="bg-red-200"
-        />
-      )
-    },
-    {
-      title: 'Options',
-      key: 'action',
-      render: (record: any) => (
-        <div
-          className=" text-blue-500 underline cursor-pointer  "
-          // onClick={() => handleEditClick(record)}
-        >
-          Edit
-        </div>
-      )
+      render: (record: any) => {
+        console.log({ record });
+
+        return (
+          <Switch
+            size="small"
+            defaultChecked={record.status}
+            onChange={(value: boolean) => statusChange(value, record._id)}
+            className="bg-red-200"
+          />
+        );
+      }
     }
+    // {
+    //   title: 'Options',
+    //   key: 'action',
+    //   render: (record: any) => (
+    //     <div
+    //       className=" text-blue-500 underline cursor-pointer  "
+    //       // onClick={() => handleEditClick(record)}
+    //     >
+    //       Edit
+    //     </div>
+    //   )
+    // }
     // {
     //   // title: 'Enable/ Disable',
     //   key: 'action',
     //   render: (record: any) => (
-    //     <MdDeleteForever
-    //       size={20}
-    //       className="hover:text-red-300 scale-100 hover:scale-110 duration-200"
-    //       onClick={() => deleteEquipment(record._id)}
-    //     />
+    //     <p
+    //       className="text-blue-500 underline cursor-pointer"
+    //       onClick={() => deleteEquipment(record._id)}>
+    //       Delete
+    //     </p>
     //   )
     // }
   ];
 
+  // this function for delete equipment
   // const deleteEquipment = async (id: string) => {
   //   try {
   //     const res = await ApiClientPrivate.delete(`/equipments/delete-equipment/${id}`);
   //     if (res) {
-  //       window.location.reload();
+  //       refetch();
   //     }
   //   } catch (error) {
   //     alert('cannot delete amenities ');
@@ -199,15 +183,15 @@ const Equipments: React.FC = () => {
     <div className=" bg-[#F2F2F2] px-5 sm:px-10 md:px-12 py-10">
       <PageHeader details={details} name={'Equipments'} searchFunction={onChangeSearch} />
       {/* table-Secion */}
-      <div className="bg-white">
+      <div className="w-full overflow-x-scroll bg-white p-4 md:p-10 ">
         <div className="section1 flex items-center gap-1 lg:gap-5 h-[70px] py-16 px-3   ">
           <div className="heading font-bold  text-[20px] lg:text-[22px]">
             <h1>Equipment List </h1>
           </div>
           <div className="buttonDev">
             <div
-              className="bg-black text-white flex items-center gap-2 w-[94px] h-[28px] text-[12px]  justify-center font-normal rounded-sm shadow-lg "
-              onClick={showModal}>
+              className="bg-black cursor-pointer text-white flex items-center gap-2 w-[94px] h-[28px] text-[12px]  justify-center font-normal rounded-sm shadow-lg "
+              onClick={() => setIsModalVisible(true)}>
               <p>Add New</p>
               <BiPlus />
             </div>
@@ -222,8 +206,26 @@ const Equipments: React.FC = () => {
         </div>
       </div>
 
-      <Modal title="" open={isModalVisible} onCancel={handleCancel} footer={false}>
-        <AddEquipments isModalVisible={setIsModalVisible} />
+      {/* this modal for add equipment */}
+      <Modal
+        title=""
+        open={isModalVisible}
+        onCancel={() => {
+          setIsModalVisible(false);
+        }}
+        footer={false}>
+        <AddEquipments modalClose={setIsModalVisible} />
+      </Modal>
+
+      {/* this modal for update equipment */}
+      <Modal
+        title=""
+        open={isUpdateModal}
+        onCancel={() => {
+          setIsUpdateModal(false);
+        }}
+        footer={false}>
+        <UpdateEquipment data={propsData} modalClose={setIsUpdateModal} />
       </Modal>
     </div>
   );

@@ -8,16 +8,16 @@ import { useState } from 'react';
 import { useMutation } from 'react-query';
 import { ApiClientPrivate } from '../../../utils/axios';
 
-function AddEquipments(props:any) {
+function AddEquipments(props: any) {
   const [newEquipmentImg, setNewEquipmentImg] = useState();
 
   const addEquipment = (formData: FormData) => {
     console.log({ formData });
     return ApiClientPrivate.post(`/equipments/create-equipments`, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      });
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    });
   };
 
   const mutation = useMutation((formData: any) => {
@@ -30,16 +30,16 @@ function AddEquipments(props:any) {
     formData.append('status', values.status);
     formData.append('description', values.description);
 
-    if(newEquipmentImg){
-        formData.append("image", newEquipmentImg)
+    if (newEquipmentImg) {
+      formData.append('image', newEquipmentImg);
     }
 
-     mutation.mutate(formData, {
+    mutation.mutate(formData, {
       onError(error) {
         console.log(error);
       },
       onSuccess() {
-        props.isModalVisible(false);
+        props.modalClose(false);
       }
     });
   };
@@ -51,6 +51,7 @@ function AddEquipments(props:any) {
       console.log('equipment image url:', imageUrl);
 
       setNewEquipmentImg(imageUrl);
+      // return(<Alert message="Success Text" type="success" />)
     } catch (error) {
       console.error('Error uploading image:', error);
     }
@@ -79,7 +80,7 @@ function AddEquipments(props:any) {
                   label="Status"
                   className=""
                   name={'status'}
-
+                  initialValue={true}
                   // rules={[{ required: true, message: 'Please Select your Category!' }]}
                 >
                   <Radio.Group name="status" defaultValue={true} className="custom-radio-group">
@@ -123,18 +124,24 @@ function AddEquipments(props:any) {
               </div>
               <div className="Icon">
                 <Form.Item label="image" name={'image'} className="text-[14px]">
-                  <Upload
-                    name="equipmentImg"
-                    showUploadList={false}
-                    beforeUpload={() => false}
-                    onChange={onEquipmentImageChange}>
-                    <div className="flex items-center gap-3">
-                      <Button icon={<UploadOutlined />}>Upload</Button>
-                      <h1 className="text-[14px] font-normal text-[#7e7e7e]">
-                        Accepted Formats - JPG , jpeg , png
-                      </h1>
-                    </div>
-                  </Upload>
+                <Upload
+                      maxCount={1}
+                      beforeUpload={() => {
+                        return false;
+                      }}
+                      onChange={onEquipmentImageChange}
+                      listType="picture">
+                      <div className="flex items-center gap-3">
+                        <Button
+                          //   disabled={remove === true}
+                          icon={<UploadOutlined />}>
+                          Upload
+                        </Button>
+                        <h1 className="text-[14px] font-normal text-[#7e7e7e]">
+                          Accepted Formats - JPG , jpeg , png
+                        </h1>
+                      </div>
+                    </Upload>
                 </Form.Item>
               </div>
             </div>

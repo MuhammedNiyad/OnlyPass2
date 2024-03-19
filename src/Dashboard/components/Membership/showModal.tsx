@@ -266,11 +266,10 @@ const ShowModal = (props: any) => {
                       maxCount={1}
                       onChange={(value: any) => {
                         uploadBgImg(value);
-                        console.log({ value });
+                        // console.log({ value });
                       }}
                       beforeUpload={() => {return false}}
                       listType="picture"
-                      action="#"
                       defaultFileList={[...fileList]}>
                       <div className={`flex items-center gap-3 ${!props.edit ? 'hidden' : ''}`}>
                         <Button
