@@ -116,7 +116,7 @@ const Sidebar = () => {
         />
       ),
       MenuItem: 'Dashboard',
-      path: '/'
+      path: '/dashbord'
     },
     {
       id: '2',
@@ -135,7 +135,7 @@ const Sidebar = () => {
               className="border-2 border-[#5C5C5C] rounded-md p-[2px] font-extrabold"
             />
           ),
-          path: '/facilityCategories' // want to create the page
+          path: '/Facilities/facilityCategories' // want to create the page
         },
         {
           id: '2-2',
@@ -146,7 +146,7 @@ const Sidebar = () => {
             />
           ),
           name: 'Amenities',
-          path: '/Amenities'
+          path: '/Facilities/Amenities'
         },
 
         {
@@ -158,7 +158,7 @@ const Sidebar = () => {
             />
           ),
           name: 'Equipments',
-          path: '/Equipments'
+          path: '/Facilities/Equipments'
         },
         {
           id: '2-4',
@@ -169,7 +169,7 @@ const Sidebar = () => {
               className="border-2 border-[#5C5C5C] rounded-md p-[2px] font-extrabold"
             />
           ),
-          path: '/TierManagement ' // want to create the page
+          path: '/Facilities/TierManagement ' // want to create the page
         }
 
         // Add more submenus as needed
@@ -206,7 +206,7 @@ const Sidebar = () => {
         />
       ),
       MenuItem: 'Manage',
-      path: '/MembershipPackages',
+      path: '/Manage/MembershipPackages',
       subMenu: [
         {
           id: '5-1',
@@ -217,7 +217,7 @@ const Sidebar = () => {
             />
           ),
           name: 'Membership ',
-          path: '/MembershipPackages'
+          path: '/Manage/MembershipPackages'
         },
         {
           id: '5-2',
@@ -228,7 +228,7 @@ const Sidebar = () => {
             />
           ),
           name: 'User Roles',
-          path: '/UserRoles'
+          path: '/Manage/UserRoles'
         }
 
         // Add more submenus as needed
@@ -289,7 +289,7 @@ const Sidebar = () => {
                   key={it.id}
                   onClick={() => openSubMenu(it.id)}
                   className={`${
-                    location.pathname === it.path ? 'text-white bg-black' : 'hover:bg-slate-100'
+                    location.pathname === it.path || location.pathname.startsWith(it.path) ? 'text-white bg-black' : 'hover:bg-slate-100'
                   } p-3 font-semibold font-name text-md  flex items-center gap-3  `}>
                   <div>{it.icon}</div>
 
@@ -309,7 +309,9 @@ const Sidebar = () => {
                     <NavLink
                       to={subMenuItem.path}
                       key={subMenuItem.id}
-                      className={`hover:border-l-4 border-black duration-75 p-2 mt-1 ml-10 font-name text-md  items-center gap-3  ${
+                      className={`${
+                        location.pathname === subMenuItem.path? 'border-l-4 border-black' : ''
+                      }  hover:border-l-4 border-black duration-75 p-2 mt-1 ml-10 font-name text-md  items-center gap-3  ${
                         selectedItem.open === true ? 'flex ' : 'hidden '
                       } `}>
                       <div className="flex gap-3 items-center">

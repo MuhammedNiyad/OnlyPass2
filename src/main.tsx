@@ -25,20 +25,20 @@ const router = createBrowserRouter([
     element: <App />,
     children: [
       {
-        path: '/',
+        path: '/dashbord',
         element: <Dashboard />
-      },
-      {
-        path: '/Amenities',
-        element: <Amenities />
-      },
-      {
-        path: '/Equipments',
-        element: <Equipments />
       },
       {
         path: '/Facilities',
         element: <Facilities />
+      },
+      {
+        path: '/Facilities/Amenities',
+        element: <Amenities />
+      },
+      {
+        path: '/Facilities/Equipments',
+        element: <Equipments />
       },
       {
         path: '/Customer',
@@ -57,11 +57,11 @@ const router = createBrowserRouter([
         element: <TransactionDetails />
       },
       {
-        path: '/MembershipPackages',
+        path: '/Manage/MembershipPackages',
         element: <MembershipPackages />
       },
       {
-        path: '/FacilitiesDetails/:id',
+        path: '/Facilities/FacilitiesDetails/:id',
         element: <FacilitiesDetails />
       },
       {

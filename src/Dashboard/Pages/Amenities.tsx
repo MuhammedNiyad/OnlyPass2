@@ -26,12 +26,12 @@ const Amenities: React.FC = () => {
   const [isUpdateModalOpen, setisUpdateModalOpen] = useState<boolean>(false);
   const [selectedAmenity, setSelectedAmenity] = useState<Amenity | null>(null);
 
-  // Equipment Data Fatching.......
-  const fetchEquipments = () => {
+  // Amenities Data Fatching.......
+  const fetchAmenity = () => {
     return ApiClientPrivate.get(`/amenities`);
     // return response;
   };
-  const { data: mainData, refetch } = useQuery('fetchEquipments', fetchEquipments);
+  const { data: mainData, refetch } = useQuery('fetchAmenity', fetchAmenity);
   // console.log('equipments data :', mainData?.data);
 
   // assign fetched data to states
@@ -203,6 +203,7 @@ const Amenities: React.FC = () => {
         </div>
       </div>
 
+    {/* Add modal */}
       <Modal
         title=""
         open={isModalVisible}

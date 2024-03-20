@@ -58,7 +58,7 @@ const Facilities: React.FC = () => {
       title: 'Facilities',
       key: 'facilityName',
       render: (record: any) => (
-        <Link to={`/FacilitiesDetails/${record._id}`}>{record.facilityName}</Link>
+        <Link to={`/Facilities/FacilitiesDetails/${record._id}`}>{record.facilityName}</Link>
       )
     },
     {

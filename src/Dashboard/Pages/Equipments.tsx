@@ -31,7 +31,7 @@ const Equipments: React.FC = () => {
     // return response;
   };
   const { data: mainData, refetch } = useQuery('fetchEquipments', fetchEquipments);
-  console.log('equipments data :', mainData?.data);
+  // console.log('equipments data :', mainData?.data);
 
   // assign fetched data to states
   useEffect(() => {
