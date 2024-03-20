@@ -1,18 +1,18 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable prettier/prettier */
-import { Button, Modal, Switch, Table } from 'antd';
+import { Modal, Switch, Table } from 'antd';
 import React, { ChangeEvent, useEffect, useState } from 'react';
 import { BiPlus } from 'react-icons/bi';
 // import { FaEdit } from 'react-icons/fa';
 // import { MdDeleteForever } from 'react-icons/md';
+import { useQuery } from 'react-query';
 import svg2 from '../../../public/svg2-onlypass.svg';
 import svg3 from '../../../public/svg3-onlypass.svg';
 import svg4 from '../../../public/svg4-onlypass.svg';
 import { ApiClientPrivate } from '../../utils/axios';
-import PageHeader from '../components/common_components/PageHeader';
-import UpdateAmenities from '../components/Amenities/UpdateAmenities';
 import AddAmenities from '../components/Amenities/AddAmenities';
-import { useQuery } from 'react-query';
+import UpdateAmenities from '../components/Amenities/UpdateAmenities';
+import PageHeader from '../components/common_components/PageHeader';
 interface Amenity {
   key: string;
   name: string;
@@ -163,18 +163,18 @@ const Amenities: React.FC = () => {
   ];
 
   // this function for delete amenities
-  const deleteAmenities = async (id: string) => {
-    // console.log('mm', id);
+  // const deleteAmenities = async (id: string) => {
+  //   // console.log('mm', id);
 
-    try {
-      const res = await ApiClientPrivate.delete(`/amenities/remove/${id}`);
-      if (res) {
-        window.location.reload();
-      }
-    } catch (error) {
-      alert('cannot delete amenities ');
-    }
-  };
+  //   try {
+  //     const res = await ApiClientPrivate.delete(`/amenities/remove/${id}`);
+  //     if (res) {
+  //       window.location.reload();
+  //     }
+  //   } catch (error) {
+  //     alert('cannot delete amenities ');
+  //   }
+  // };
 
   return (
     <div className="bg-[#F2F2F2] px-5 sm:px-10 md:px-12 py-10">
