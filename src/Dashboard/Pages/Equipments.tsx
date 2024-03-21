@@ -94,7 +94,7 @@ const Equipments: React.FC = () => {
 
   const columns = [
     {
-      title: 'Image',
+      title: () => <div className="font-montserrat text-[#7E7E7E]">Image</div>,
       key: 'Image',
       render: (record: any) => (
         <img src={`${record.image} `} alt="image" className="w-[48px] bg-gray-100" />
@@ -102,12 +102,12 @@ const Equipments: React.FC = () => {
       // width: 100
     },
     {
-      title: 'Name',
+      title: () => <div className="font-montserrat text-[#7E7E7E]">Name</div>,
       key: 'name',
       // width: 250,
       render: (record: any) => (
         <h1
-          className="font-medium text-base hover:text-blue-800 hover:underline cursor-pointer"
+          className="font-medium text-base font-montserrat hover:text-blue-800 hover:underline cursor-pointer"
           onClick={() => {
             setIsUpdateModal(true);
             setPropsData(record);
@@ -117,17 +117,19 @@ const Equipments: React.FC = () => {
       )
     },
     {
-      title: 'Descriptions',
+      title: () => <div className="font-montserrat text-[#7E7E7E]">Description</div>,
       // dataIndex: 'descriptions',
       key: 'descriptions',
       render: (record: any) => (
-        <p>{record.description !== 'undefined' ? record.description : ''}</p>
+        <p className="font-montserrat">
+          {record.description !== 'undefined' ? record.description : ''}
+        </p>
       ),
       // width: 250,
       ellipsis: { showTitle: false }
     },
     {
-      title: 'Status',
+      title: () => <div className="font-montserrat text-[#7E7E7E]">Status</div>,
       key: 'action',
       render: (record: any) => {
         console.log({ record });

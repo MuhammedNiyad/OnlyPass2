@@ -6,7 +6,7 @@ import { ApiClientPrivate } from '../../../utils/axios';
 import { useMutation } from 'react-query';
 import { useState } from 'react';
 
-const AddAmenities = (props:any) => {
+const AddAmenities = (props: any) => {
   const [newAmenityIcon, setNewAmenityIcon] = useState();
 
   const addAmenity = (formData: FormData) => {
@@ -58,46 +58,50 @@ const AddAmenities = (props:any) => {
   return (
     <div className=" ">
       <div className="text-[24px]  mb-10  w-full mt-2">
-        <h1 className="font-medium text-[24px] ">Add a new Equipment</h1>
+        <h1 className="font-medium text-[24px] font-montserrat ">Add a new Equipment</h1>
       </div>
       <Form
         // form={form}
         onFinish={onFinish}
         // onChange={handleInputChange}
         className=""
+        colon={false}
         labelCol={{ span: 7 }}>
         <div className="">
           <div className="text-start">
-            <div className="font-semibold  text-[16px] ">
+            <div className="font-semibold font-montserrat mb-4 text-[16px] ">
               <h1>Basic Information</h1>
             </div>
 
             <div className="font-medium">
               <div className="Status">
                 <Form.Item
-                  label="Status"
-                  className=""
+                  label={<p className="text-[#7E7E7E] font-montserrat">Status</p>}
+                  className="font-montserrat"
                   name={'status'}
                   initialValue={true}
                   // rules={[{ required: true, message: 'Please Select your Category!' }]}
                 >
-                  <Radio.Group name="status" defaultValue={true} className="custom-radio-group">
+                  <Radio.Group
+                    name="status"
+                    defaultValue={true}
+                    className="custom-radio-group font-montserrat">
                     <Radio value={true}> Enable </Radio>
                     <Radio value={false}> Disable </Radio>
                   </Radio.Group>
                 </Form.Item>
               </div>
-              <div className="EquipmentName">
+              <div className="AmenityName">
                 <Form.Item
-                  label="Equipment Name"
+                  label={<p className="text-[#7E7E7E] font-montserrat">Amenity Name</p>}
                   name={'name'}
                   //   rules={[{ required: true, message: 'Please Enter Plan Name' }]}
                 >
                   <Input
                     name="name"
                     //   value={reduxState.facilityName}
-                    className="md:w-[300px]"
-                    placeholder="Enter Equipment Name"
+                    className="md:w-[300px] rounded-none"
+                    placeholder="Enter Amenity Name"
                     // value={newAmenityName}
                     // onChange={(e) => setNewAmenityName(e.target.value)}
                   />
@@ -105,7 +109,7 @@ const AddAmenities = (props:any) => {
               </div>
               <div className="Description">
                 <Form.Item
-                  label="Description"
+                  label={<p className="text-[#7E7E7E] font-montserrat">Description</p>}
                   name={'description'}
 
                   // rules={[{ min: 10, max: 100, message: 'Description must be at most 100 characters' }]}
@@ -114,32 +118,36 @@ const AddAmenities = (props:any) => {
                     name="description"
                     rows={4}
                     // onChange={(e) => setNewAmenityDescription(e.target.value)}
-                    className="w-[300px] text-[14px]"
+                    className="w-[300px] text-[14px] rounded-none"
                     maxLength={150}
                     placeholder="Describe the facility in fewer than 100 characters"
                   />
                 </Form.Item>
               </div>
               <div className="Icon">
-                <Form.Item label="image" name={'image'} className="text-[14px]">
-                <Upload
-                      maxCount={1}
-                      beforeUpload={() => {
-                        return false;
-                      }}
-                      onChange={onEquipmentImageChange}
-                      listType="picture">
-                      <div className="flex items-center gap-3">
-                        <Button
-                          //   disabled={remove === true}
-                          icon={<UploadOutlined />}>
-                          Upload
-                        </Button>
-                        <h1 className="text-[14px] font-normal text-[#7e7e7e]">
-                          Accepted Formats - JPG , jpeg , png
-                        </h1>
-                      </div>
-                    </Upload>
+                <Form.Item
+                  label={<p className="text-[#7E7E7E] font-montserrat">Icon</p>}
+                  name={'image'}
+                  className="text-[14px]">
+                  <Upload
+                    maxCount={1}
+                    beforeUpload={() => {
+                      return false;
+                    }}
+                    onChange={onEquipmentImageChange}
+                    listType="picture">
+                    <div className="flex items-center gap-3">
+                      <Button
+                        className="rounded-none"
+                        //   disabled={remove === true}
+                        icon={<UploadOutlined />}>
+                        Upload
+                      </Button>
+                      <h1 className="text-[14px] font-normal text-[#7e7e7e]">
+                        Accepted Formats - JPG , jpeg , png
+                      </h1>
+                    </div>
+                  </Upload>
                 </Form.Item>
               </div>
             </div>
@@ -159,6 +167,6 @@ const AddAmenities = (props:any) => {
       </Form>
     </div>
   );
-}
+};
 
 export default AddAmenities;

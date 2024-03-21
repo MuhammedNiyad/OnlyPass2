@@ -10,7 +10,7 @@ const FDbasicInfo = ({ data, mainData }: any) => {
 
   return (
     <div>
-      <div className="md:flex sm:px-10 md:px-1">
+      <div className="md:flex sm:px-1 md:px-1">
         <div className=" p-3 w-full ">
           <div className="basic_info ">
             <div className=" flex justify-between items-center font-semibold ">
@@ -19,8 +19,7 @@ const FDbasicInfo = ({ data, mainData }: any) => {
               </div>
               <div
                 onClick={() => setBasicModalOpen(true)}
-                className="flex items-center gap-1 bg-[#F2F2F2] w-[84px] h-[24px] px-2 justify-center"
-              >
+                className="flex items-center gap-1 bg-[#F2F2F2] w-[84px] h-[24px] px-2 justify-center">
                 <FaEdit />
                 <p>Edit</p>
               </div>
@@ -29,8 +28,7 @@ const FDbasicInfo = ({ data, mainData }: any) => {
             {data.map((item: any, index: any) => (
               <div
                 key={index}
-                className="Basic_info_detail mt-3 grid gap-5  lg:flex items-center m-3 p-1"
-              >
+                className="Basic_info_detail mt-3 grid gap-5  lg:flex items-center m-3 p-1">
                 <div className="label w-[150px]">
                   <h1>{item.label}</h1>
                 </div>
@@ -83,8 +81,7 @@ const FDbasicInfo = ({ data, mainData }: any) => {
         title=""
         open={basicModalOpen}
         onCancel={() => setBasicModalOpen(false)}
-        footer={false}
-      >
+        footer={false}>
         <UpdateBasicInfo facilityData={mainData?.data} cancel={() => setBasicModalOpen(false)} />
       </Modal>
     </div>

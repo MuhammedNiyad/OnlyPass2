@@ -218,11 +218,11 @@ const FacilitiesDetails: React.FC = () => {
   ];
   return (
     <div className="">
-      <div className=" bg-[#F2F2F2] px-5 sm:px-10 md:px-12 py-10">
+      <div className=" bg-[#F2F2F2] px-5 sm:px-5 md:px-12 py-10">
         <PageHeader details={details} name={mainData?.data.facilityName} searchHide={true} />
         {/* Table Section */}
 
-        <div className="bg-white px-2 sm:px-10 md:px-16 pb-10 ">
+        <div className="bg-white px-2 sm:px-5 md:px-14 pb-10 ">
           <div className="FdNavbar">
             <div className="flex  justify-between gap-3 items-center py-7 md:py-10">
               <div className="text-xl md:text-3xl font-semibold ">

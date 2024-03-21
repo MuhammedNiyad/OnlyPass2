@@ -1,4 +1,5 @@
 /* eslint-disable prettier/prettier */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Form, Modal, Select, Switch, Table } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -55,30 +56,45 @@ const Facilities: React.FC = () => {
   };
   const columns = [
     {
-      title: 'Facilities',
+      title: () => <div className="font-montserrat text-[#7E7E7E]">Logo</div>,
+      key: 'logo',
+      render: (record: any) => {
+        // console.log(record);
+
+        return <img src={`${record.logoUrl}`} alt="logo" className="w-10" />;
+      }
+    },
+    {
+      title: () => <div className="font-montserrat text-[#7E7E7E]">Facility Name</div>,
       key: 'facilityName',
       render: (record: any) => (
-        <Link to={`/Facilities/FacilitiesDetails/${record._id}`}>{record.facilityName}</Link>
+        <Link
+          to={`/Facilities/FacilitiesDetails/${record._id}`}
+          className="font-medium font-montserrat">
+          {record.facilityName}
+        </Link>
       )
     },
     {
-      title: 'Address',
-      dataIndex: 'address',
-      key: 'address'
+      title: () => <div className="font-montserrat text-[#7E7E7E]">Address</div>,
+      key: 'address',
+      render: (record: any) => <p className="font-montserrat">{record.address}</p>
     },
     {
-      title: 'Phone Number',
-      dataIndex: 'phoneNumber',
-      key: 'phoneNumber'
+      title: () => <div className="font-montserrat text-[#7E7E7E]">Phone No.</div>,
+      key: 'phoneNumber',
+      render: (record: any) => (
+        <p className="font-montserrat text-nowrap">+91 {record.phoneNumber}</p>
+      )
     },
     {
-      title: 'Onlypass',
+      title: () => <div className="font-montserrat text-[#7E7E7E]">OnlyPass</div>,
       key: 'action',
       render: () => <Switch defaultChecked onChange={onChange} size="small" />
     },
 
     {
-      title: 'Justgyms',
+      title: () => <div className="font-montserrat text-[#7E7E7E]">JustGym</div>,
       key: 'action',
       render: () => <Switch defaultChecked onChange={onChange} size="small" />
     }
@@ -117,7 +133,7 @@ const Facilities: React.FC = () => {
               </div>
               <div className="buttonDev">
                 <div
-                  className="bg-black text-white flex items-center gap-2 w-[94px] h-[28px] text-[12px]  justify-center font-normal rounded-sm shadow-lg "
+                  className="bg-black text-white flex cursor-pointer items-center gap-2 w-[94px] h-[28px] text-[12px]  justify-center font-normal rounded-sm shadow-lg "
                   onClick={() => setIsModalOpen(true)}>
                   <p>Add New</p>
                   <BiPlus />
@@ -132,6 +148,7 @@ const Facilities: React.FC = () => {
                     <Select
                       style={{ width: 154, height: 38, color: 'black' }}
                       defaultValue={{ value: '', label: 'Advance Filter' }}
+                      className="font-montserrat"
                       // onChange={handleChange}
 
                       options={[
@@ -162,6 +179,7 @@ const Facilities: React.FC = () => {
                         label: ' Sort by:Default'
                         // ${(<span className='font-bold'>Latest</span>)}
                       }}
+                      className="font-montserrat"
                       // onChange={handleChange}
                       options={[
                         {
@@ -196,7 +214,7 @@ const Facilities: React.FC = () => {
               columns={columns}
               dataSource={tableData}
               pagination={{ pageSize: 10 }}
-              className=""
+              className="font-montserrat"
             />
           </div>
         </div>

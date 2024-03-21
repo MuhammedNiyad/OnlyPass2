@@ -79,7 +79,7 @@ function UpdateEquipment(props: any) {
 
   return (
     <div className=" ">
-      <div className="text-[24px]  mb-10  w-full mt-2">
+      <div className="text-[24px] font-montserrat mb-10  w-full mt-2">
         <h1 className="font-medium text-[24px] ">Update Equipment</h1>
       </div>
       <Form
@@ -87,17 +87,18 @@ function UpdateEquipment(props: any) {
         onFinish={onFinish}
         // onChange={handleInputChange}
         className=""
+        colon={false}
         labelCol={{ span: 7 }}>
         <div className="">
           <div className="text-start">
-            <div className="font-semibold  text-[16px] ">
+            <div className="font-semibold font-montserrat mb-4 text-[16px] ">
               <h1>Basic Information</h1>
             </div>
 
             <div className="font-medium">
               <div className="Status">
                 <Form.Item
-                  label="Status"
+                  label={<p className="font-montserrat text-[#7e7e7e]">Status</p>}
                   name={'status'}
                   initialValue={true}
                   // rules={[{ required: true, message: 'Please Select your Category!' }]}
@@ -110,14 +111,14 @@ function UpdateEquipment(props: any) {
               </div>
               <div className="EquipmentName">
                 <Form.Item
-                  label="Equipment Name"
+                  label={<p className="font-montserrat text-[#7e7e7e]">Equipment Name</p>}
                   name={'name'}
                   //   rules={[{ required: true, message: 'Please Enter Plan Name' }]}
                 >
                   <Input
                     name="name"
                     //   value={reduxState.facilityName}
-                    className="md:w-[300px]"
+                    className="md:w-[300px] rounded-none"
                     placeholder="Enter Equipment Name"
                     // value={newAmenityName}
                     // onChange={(e) => setNewAmenityName(e.target.value)}
@@ -126,7 +127,7 @@ function UpdateEquipment(props: any) {
               </div>
               <div className="Description">
                 <Form.Item
-                  label="Description"
+                  label={<p className="font-montserrat text-[#7e7e7e]">Description</p>}
                   name={'description'}
 
                   // rules={[{ min: 10, max: 100, message: 'Description must be at most 100 characters' }]}
@@ -135,14 +136,17 @@ function UpdateEquipment(props: any) {
                     name="description"
                     rows={4}
                     // onChange={(e) => setNewAmenityDescription(e.target.value)}
-                    className="w-[300px] text-[14px]"
+                    className="w-[300px] text-[14px] rounded-none"
                     maxLength={150}
                     placeholder="Describe the facility in fewer than 100 characters"
                   />
                 </Form.Item>
               </div>
               <div className="Icon">
-                <Form.Item label="image" name={'image'} className="text-[14px]">
+                <Form.Item
+                  label={<p className="font-montserrat text-[#7e7e7e]">Image</p>}
+                  name={'image'}
+                  className="text-[14px]">
                   <Upload
                     maxCount={1}
                     beforeUpload={() => {
@@ -153,6 +157,7 @@ function UpdateEquipment(props: any) {
                     listType="picture">
                     <div className="flex items-center gap-3">
                       <Button
+                        className="rounded-none"
                         //   disabled={remove === true}
                         icon={<UploadOutlined />}>
                         Upload

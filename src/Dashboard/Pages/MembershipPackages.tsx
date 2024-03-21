@@ -74,8 +74,8 @@ const MembershipPackages: React.FC = () => {
       title: 'Package Name',
       // dataIndex: 'PackageName',
       key: 'name',
-      render: (record: any) => <Link to={`/Plans/${record._id}`}>{record.name}</Link>,
-      width: 150
+      render: (record: any) => <Link to={`/Plans/${record._id}`}>{record.name}</Link>
+      // width: 150
     },
     {
       title: 'Tier',
@@ -87,7 +87,7 @@ const MembershipPackages: React.FC = () => {
       title: 'Description',
       dataIndex: 'description',
       key: 'description',
-      width: 200,
+      // width: 200,
       ellipsis: { showTitle: false }
     },
     {
@@ -134,9 +134,9 @@ const MembershipPackages: React.FC = () => {
       <div className=" bg-[#F2F2F2] px-5 sm:px-10 md:px-12 py-10">
         <PageHeader details={details} name={'Membership'} />
         {/* Table Section */}
-        <div className="w-fit sm:w-auto bg-white p-10 mb-8">
-          <div className="mainDev flex h-[100px] items-center justify-between ">
-            <div className="section1 flex items-center gap-1 lg:gap-5 h-[70px] px-3 ">
+        <div className="w-full overflow-x-scroll bg-white p-4 md:p-10 ">
+          <div className="mainDev flex md:flex-row flex-col items-center md:justify-between justify-start ">
+            <div className="section1 flex items-center gap-3 lg:gap-5 h-[70px] px-3 ">
               <div className="heading font-bold  text-[20px] lg:text-[22px]">
                 <h1>Membership Packages </h1>
               </div>
@@ -217,7 +217,7 @@ const MembershipPackages: React.FC = () => {
             </div>
           </div>
 
-          <div>
+          <div className="w-full">
             <Table
               columns={columns}
               dataSource={mainData?.Membership || []}

@@ -90,7 +90,7 @@ const Amenities: React.FC = () => {
 
   const columns = [
     {
-      title: 'Image',
+      title: () => <div className="font-montserrat text-[#7E7E7E]">Icon</div>,
       // dataIndex: 'key',
       key: 'Image',
       render: (record: any) => (
@@ -99,13 +99,13 @@ const Amenities: React.FC = () => {
       // width: 100
     },
     {
-      title: 'Name',
+      title: () => <div className="font-montserrat text-[#7E7E7E]">Name</div>,
       // dataIndex: 'name',
       key: 'name',
       // width: 250,
       render: (record: any) => (
         <h1
-          className="font-medium text-base hover:text-blue-800 hover:underline cursor-pointer"
+          className="font-medium text-base font-montserrat hover:text-blue-800 hover:underline cursor-pointer"
           onClick={() => {
             setisUpdateModalOpen(true);
             setSelectedAmenity(record);
@@ -115,17 +115,19 @@ const Amenities: React.FC = () => {
       )
     },
     {
-      title: 'Descriptions',
+      title: () => <div className="font-montserrat text-[#7E7E7E]">Description</div>,
       // dataIndex: 'descriptions',
       key: 'descriptions',
       render: (record: any) => (
-        <p>{record.description !== 'undefined' ? record.description : ''}</p>
+        <p className="font-montserrat">
+          {record.description !== 'undefined' ? record.description : ''}
+        </p>
       ),
       // width: 250,
       ellipsis: { showTitle: false }
     },
     {
-      title: 'Status',
+      title: () => <div className="font-montserrat text-[#7E7E7E]">Status</div>,
       key: 'action',
       render: (record: any) => (
         <Switch
@@ -135,7 +137,7 @@ const Amenities: React.FC = () => {
           className="bg-red-200"
         />
       )
-    },
+    }
     // {
     //   title: 'Options',
     //   key: 'action',
@@ -203,7 +205,7 @@ const Amenities: React.FC = () => {
         </div>
       </div>
 
-    {/* Add modal */}
+      {/* Add modal */}
       <Modal
         title=""
         open={isModalVisible}
@@ -216,9 +218,9 @@ const Amenities: React.FC = () => {
       <Modal
         title=""
         open={isUpdateModalOpen}
-        onCancel={()=>setisUpdateModalOpen(false)}
+        onCancel={() => setisUpdateModalOpen(false)}
         footer={false}>
-        <UpdateAmenities data={selectedAmenity} modalClose={setisUpdateModalOpen}/>
+        <UpdateAmenities data={selectedAmenity} modalClose={setisUpdateModalOpen} />
       </Modal>
     </div>
   );
