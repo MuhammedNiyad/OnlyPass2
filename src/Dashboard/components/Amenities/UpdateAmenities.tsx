@@ -107,7 +107,7 @@ const UpdateAmenities = (props: any) => {
                   </Radio.Group>
                 </Form.Item>
               </div>
-              <div className="EquipmentName">
+              <div className="AmenityName">
                 <Form.Item
                   label={<p className="font-montserrat text-[#7e7e7e]">Amenity Name</p>}
                   name={'name'}
@@ -117,7 +117,7 @@ const UpdateAmenities = (props: any) => {
                     name="name"
                     //   value={reduxState.facilityName}
                     className="md:w-[300px] rounded-none"
-                    placeholder="Enter Equipment Name"
+                    placeholder="Enter Amenity Name"
                     // value={newAmenityName}
                     // onChange={(e) => setNewAmenityName(e.target.value)}
                   />

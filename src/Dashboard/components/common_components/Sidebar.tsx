@@ -169,7 +169,7 @@ const Sidebar = () => {
               className="border-2 border-[#5C5C5C] rounded-md p-[2px] font-extrabold"
             />
           ),
-          path: '/Facilities/TierManagement ' // want to create the page
+          path: '/Facilities/TierManagement' // want to create the page
         }
 
         // Add more submenus as needed

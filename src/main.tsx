@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App.tsx';
@@ -18,6 +19,7 @@ import MembershipPackages from './Dashboard/Pages/MembershipPackages.tsx';
 import Plans from './Dashboard/Pages/Plans.tsx';
 import CustomerDeatils from './Dashboard/Pages/CustomerDetails';
 import TransactionDetails from './Dashboard/Pages/TransactionDetails.tsx';
+import TierManage from './Dashboard/Pages/TierManage.tsx';
 
 const router = createBrowserRouter([
   {
@@ -67,6 +69,10 @@ const router = createBrowserRouter([
       {
         path: '/Plans/:id',
         element: <Plans />
+      },
+      {
+        path: 'Facilities/TierManagement',
+        element: <TierManage />
       }
     ]
   },
