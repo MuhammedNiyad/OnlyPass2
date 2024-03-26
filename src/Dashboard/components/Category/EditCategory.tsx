@@ -1,25 +1,25 @@
 /* eslint-disable prettier/prettier */
-import { Button, Form, Input, Radio, Upload } from 'antd';
-import { UploadOutlined } from '@ant-design/icons';
+
+import { Button, Form, Input, Radio, Upload, UploadFile } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
+import { UploadOutlined } from '@ant-design/icons';
 import { ApiClientPrivate } from '../../../utils/axios';
 import { useMutation } from 'react-query';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
-const AddAmenities = (props: any) => {
-  const [newAmenityIcon, setNewAmenityIcon] = useState();
+function EditCategory(props: any) {
+  const [newCategoryLogo, setNewCategoryLogo] = useState();
 
-  const addAmenity = (formData: FormData) => {
+  const updateCategory = (formData: FormData) => {
     console.log({ formData });
-    return ApiClientPrivate.post(`/amenities/create`, formData, {
+    return ApiClientPrivate.put(`/category/update/${props.data._id}`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data'
       }
     });
   };
-
   const mutation = useMutation((formData: any) => {
-    return addAmenity(formData);
+    return updateCategory(formData);
   });
 
   const onFinish = (values: any) => {
@@ -28,8 +28,8 @@ const AddAmenities = (props: any) => {
     formData.append('status', values.status);
     formData.append('description', values.description);
 
-    if (newAmenityIcon) {
-      formData.append('icon', newAmenityIcon);
+    if (newCategoryLogo) {
+      formData.append('icon', newCategoryLogo);
     }
 
     mutation.mutate(formData, {
@@ -38,34 +38,51 @@ const AddAmenities = (props: any) => {
       },
       onSuccess() {
         props.modalClose(false);
+        window.location.reload();
       }
     });
   };
 
-  const onAmenityIconChange = (info: any) => {
+  const categoryLogoChange = (info: any) => {
     try {
       const iconUrl = info.file;
       //   console.log({ suiii: info });
       console.log('amenity icon url:', iconUrl);
 
-      setNewAmenityIcon(iconUrl);
+      setNewCategoryLogo(iconUrl);
       // return(<Alert message="Success Text" type="success" />)
     } catch (error) {
       console.error('Error uploading icon:', error);
     }
   };
 
+  const [form] = Form.useForm();
+  useEffect(() => {
+    form.setFieldsValue({
+      status: props.data.status,
+      name: props.data.category_name,
+      description: props.data.description
+    });
+  }, [props.data, form]);
+  const [fileList] = useState<UploadFile[]>(
+    props.data.logo
+      ? [
+          {
+            uid: '1',
+            name: props.data.logo,
+            status: 'done',
+            url: props.data.logo ? `${props.data.logo}` : ''
+          }
+        ]
+      : []
+  );
+
   return (
     <div className=" ">
       <div className="text-[24px]  mb-10  w-full mt-2">
-        <h1 className="font-medium text-[24px] font-montserrat ">Add a new Amenity</h1>
+        <h1 className="font-medium text-[24px] font-montserrat ">Update Category</h1>
       </div>
-      <Form
-        // form={form}
-        onFinish={onFinish}
-        className=""
-        colon={false}
-        labelCol={{ span: 7 }}>
+      <Form form={form} onFinish={onFinish} className="" labelCol={{ span: 7 }}>
         <div className="">
           <div className="text-start">
             <div className="font-semibold font-montserrat mb-4 text-[16px] ">
@@ -75,24 +92,20 @@ const AddAmenities = (props: any) => {
             <div className="font-medium">
               <div className="Status">
                 <Form.Item
-                  label={<p className="text-[#7E7E7E] font-montserrat">Status</p>}
-                  className="font-montserrat"
+                  label={<p className="font-montserrat text-[#7e7e7e]">Status</p>}
                   name={'status'}
                   initialValue={true}
                   // rules={[{ required: true, message: 'Please Select your Category!' }]}
                 >
-                  <Radio.Group
-                    name="status"
-                    defaultValue={true}
-                    className="custom-radio-group font-montserrat">
+                  <Radio.Group name="status" defaultValue={true} className="custom-radio-group">
                     <Radio value={true}> Enable </Radio>
                     <Radio value={false}> Disable </Radio>
                   </Radio.Group>
                 </Form.Item>
               </div>
-              <div className="AmenityName">
+              <div className="nameField">
                 <Form.Item
-                  label={<p className="text-[#7E7E7E] font-montserrat">Amenity Name</p>}
+                  label={<p className="font-montserrat text-[#7e7e7e]">Category Name</p>}
                   name={'name'}
                   //   rules={[{ required: true, message: 'Please Enter Plan Name' }]}
                 >
@@ -108,7 +121,7 @@ const AddAmenities = (props: any) => {
               </div>
               <div className="Description">
                 <Form.Item
-                  label={<p className="text-[#7E7E7E] font-montserrat">Description</p>}
+                  label={<p className="font-montserrat text-[#7e7e7e]">Description</p>}
                   name={'description'}
 
                   // rules={[{ min: 10, max: 100, message: 'Description must be at most 100 characters' }]}
@@ -123,21 +136,21 @@ const AddAmenities = (props: any) => {
                   />
                 </Form.Item>
               </div>
-              <div className="Icon">
+              <div className="logo">
                 <Form.Item
-                  label={<p className="text-[#7E7E7E] font-montserrat">Icon</p>}
-                  name={'image'}
+                  label={<p className="font-montserrat text-[#7e7e7e]">Logo</p>}
+                  name={'logo'}
                   className="text-[14px]">
                   <Upload
                     maxCount={1}
                     beforeUpload={() => {
                       return false;
                     }}
-                    onChange={onAmenityIconChange}
+                    onChange={categoryLogoChange}
+                    defaultFileList={[...fileList]}
                     listType="picture">
                     <div className="flex items-center gap-3">
                       <Button
-                        className="rounded-none"
                         //   disabled={remove === true}
                         icon={<UploadOutlined />}>
                         Upload
@@ -154,18 +167,18 @@ const AddAmenities = (props: any) => {
         </div>
         <div className="flex gap-3 justify-center">
           {/* <Button
-            //   onClick={handleCancel()}
-            className="bg-white border-black rounded-none">
-            Cancel
-          </Button> */}
+              //   onClick={handleCancel()}
+              className="bg-white border-black rounded-none">
+              Cancel
+            </Button> */}
 
           <Button className="bg-black text-white  rounded-none" htmlType="submit">
-            Add
+            Update
           </Button>
         </div>
       </Form>
     </div>
   );
-};
+}
 
-export default AddAmenities;
+export default EditCategory;

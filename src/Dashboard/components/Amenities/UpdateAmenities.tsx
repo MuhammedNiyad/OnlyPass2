@@ -79,7 +79,7 @@ const UpdateAmenities = (props: any) => {
   return (
     <div className=" ">
       <div className="text-[24px]  mb-10  w-full mt-2">
-        <h1 className="font-medium text-[24px] font-montserrat ">Update Equipment</h1>
+        <h1 className="font-medium text-[24px] font-montserrat ">Update Amenity</h1>
       </div>
       <Form
         form={form}

@@ -66,32 +66,32 @@ const MembershipPackages: React.FC = () => {
 
   const columns = [
     {
-      title: 'Category',
+      title: () => <div className="font-montserrat text-[#7E7E7E]">Category</div>,
       dataIndex: 'category',
       key: 'category'
     },
     {
-      title: 'Package Name',
+      title: () => <div className="font-montserrat text-[#7E7E7E]">Package Name</div>,
       // dataIndex: 'PackageName',
       key: 'name',
       render: (record: any) => <Link to={`/Plans/${record._id}`}>{record.name}</Link>
       // width: 150
     },
     {
-      title: 'Tier',
+      title: () => <div className="font-montserrat text-[#7E7E7E]">Tier</div>,
       dataIndex: 'tier_id',
       key: 'tier_id'
       // width: 100
     },
     {
-      title: 'Description',
+      title: () => <div className="font-montserrat text-[#7E7E7E]">Description</div>,
       dataIndex: 'description',
       key: 'description',
       // width: 200,
       ellipsis: { showTitle: false }
     },
     {
-      title: 'Plans',
+      title: () => <div className="font-montserrat text-[#7E7E7E]">Plans</div>,
       key: 'plans',
       render: (record: any) => (
         <div>
@@ -102,7 +102,7 @@ const MembershipPackages: React.FC = () => {
     },
 
     {
-      title: 'Status',
+      title: () => <div className="font-montserrat text-[#7E7E7E]">Status</div>,
       key: 'sts',
       render: (record: any) => (
         <Switch
@@ -114,7 +114,7 @@ const MembershipPackages: React.FC = () => {
       )
     },
     {
-      title: 'Configure',
+      title: () => <div className="font-montserrat text-[#7E7E7E]">Cofigure</div>,
       key: 'configure',
       render: (record: any) => (
         <p

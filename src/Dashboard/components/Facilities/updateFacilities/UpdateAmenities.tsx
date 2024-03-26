@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { useEffect, useState } from 'react';
 import { ApiClientPrivate } from '../../../../utils/axios';
 import { Button, Checkbox } from 'antd';
@@ -96,7 +97,7 @@ const UpdateAmenities = (props: any) => {
             className="amentiesCheckBox flex bg-white mb-3 rounded-md shadow-md p-4 justify-between hover:bg-slate-100"
           >
             <div className="w-[150px] md:w-[200px] flex items-center gap-3">
-              <img src={`${iconURL}/${item.icon}`} alt="" className="w-5" />
+              <img src={`${item.icon}`} alt="" className="w-5" />
               {item.name}
             </div>
             <div className="flex items-center gap-3 ">

@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable prettier/prettier */
 import { Modal, Switch, Table } from 'antd';
-import React, { ChangeEvent, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { BiPlus } from 'react-icons/bi';
 // import { FaEdit } from 'react-icons/fa';
 // import { MdDeleteForever } from 'react-icons/md';
@@ -45,7 +45,7 @@ const Amenities: React.FC = () => {
     refetch();
   }, [isModalVisible, isUpdateModalOpen, refetch]);
 
-  const onChangeSearch = (e: ChangeEvent<HTMLInputElement>) => {
+  const onChangeSearch = (e:any) => {
     const value = e.target.value;
     const lowerCasedValue = value.toLowerCase();
     const filtered = amentyData.filter((item) => item.name.toLowerCase().includes(lowerCasedValue));

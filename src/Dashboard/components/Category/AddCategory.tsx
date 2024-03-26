@@ -1,64 +1,66 @@
 /* eslint-disable prettier/prettier */
-import { Button, Form, Input, Radio, Upload } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
+import { Button, Form, Input, Radio, Upload } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
+import { useState } from 'react';
 import { ApiClientPrivate } from '../../../utils/axios';
 import { useMutation } from 'react-query';
-import { useState } from 'react';
 
-const AddAmenities = (props: any) => {
-  const [newAmenityIcon, setNewAmenityIcon] = useState();
 
-  const addAmenity = (formData: FormData) => {
-    console.log({ formData });
-    return ApiClientPrivate.post(`/amenities/create`, formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data'
-      }
-    });
-  };
+function AddCategory(props:any) {
+    const [newCategoryLogo, setNewCategoryLogo] = useState();
 
-  const mutation = useMutation((formData: any) => {
-    return addAmenity(formData);
-  });
+    const addCategory = (formData: FormData) => {
+        console.log({ formData });
+        return ApiClientPrivate.post(`/category/create`, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        });
+      };
 
-  const onFinish = (values: any) => {
-    const formData = new FormData();
-    formData.append('name', values.name);
-    formData.append('status', values.status);
-    formData.append('description', values.description);
+      const mutation = useMutation((formData: any) => {
+        return addCategory(formData);
+      });
 
-    if (newAmenityIcon) {
-      formData.append('icon', newAmenityIcon);
-    }
+      const onFinish = (values: any) => {
+        const formData = new FormData();
+        formData.append('category_name', values.name);
+        formData.append('status', values.status);
+        formData.append('description', values.description);
+    
+        if (newCategoryLogo) {
+          formData.append('logo', newCategoryLogo);
+        }
+    
+        mutation.mutate(formData, {
+          onError(error) {
+            console.log(error);
+          },
+          onSuccess() {
+            props.modalClose(false);
+          }
+        });
+      };
 
-    mutation.mutate(formData, {
-      onError(error) {
-        console.log(error);
-      },
-      onSuccess() {
-        props.modalClose(false);
-      }
-    });
-  };
+      const onCategoryLogoChange = (info: any) => {
+        try {
+          const iconUrl = info.file;
+          //   console.log({ suiii: info });
+          console.log('category logo url:', iconUrl);
+    
+          setNewCategoryLogo(iconUrl);
+          // return(<Alert message="Success Text" type="success" />)
+        } catch (error) {
+          console.error('Error uploading logo:', error);
+        }
+      };
 
-  const onAmenityIconChange = (info: any) => {
-    try {
-      const iconUrl = info.file;
-      //   console.log({ suiii: info });
-      console.log('amenity icon url:', iconUrl);
-
-      setNewAmenityIcon(iconUrl);
-      // return(<Alert message="Success Text" type="success" />)
-    } catch (error) {
-      console.error('Error uploading icon:', error);
-    }
-  };
 
   return (
     <div className=" ">
       <div className="text-[24px]  mb-10  w-full mt-2">
-        <h1 className="font-medium text-[24px] font-montserrat ">Add a new Amenity</h1>
+        <h1 className="font-medium text-[24px] font-montserrat ">Add a new Category</h1>
       </div>
       <Form
         // form={form}
@@ -90,9 +92,9 @@ const AddAmenities = (props: any) => {
                   </Radio.Group>
                 </Form.Item>
               </div>
-              <div className="AmenityName">
+              <div className="nameField">
                 <Form.Item
-                  label={<p className="text-[#7E7E7E] font-montserrat">Amenity Name</p>}
+                  label={<p className="text-[#7E7E7E] font-montserrat">Category Name</p>}
                   name={'name'}
                   //   rules={[{ required: true, message: 'Please Enter Plan Name' }]}
                 >
@@ -100,7 +102,7 @@ const AddAmenities = (props: any) => {
                     name="name"
                     //   value={reduxState.facilityName}
                     className="md:w-[300px] rounded-none"
-                    placeholder="Enter Amenity Name"
+                    placeholder="Enter Category Name"
                     // value={newAmenityName}
                     // onChange={(e) => setNewAmenityName(e.target.value)}
                   />
@@ -123,17 +125,17 @@ const AddAmenities = (props: any) => {
                   />
                 </Form.Item>
               </div>
-              <div className="Icon">
+              <div className="Logo">
                 <Form.Item
-                  label={<p className="text-[#7E7E7E] font-montserrat">Icon</p>}
-                  name={'image'}
+                  label={<p className="text-[#7E7E7E] font-montserrat">Logo</p>}
+                  name={'logo'}
                   className="text-[14px]">
                   <Upload
                     maxCount={1}
                     beforeUpload={() => {
                       return false;
                     }}
-                    onChange={onAmenityIconChange}
+                    onChange={onCategoryLogoChange}
                     listType="picture">
                     <div className="flex items-center gap-3">
                       <Button
@@ -165,7 +167,7 @@ const AddAmenities = (props: any) => {
         </div>
       </Form>
     </div>
-  );
-};
+  )
+}
 
-export default AddAmenities;
+export default AddCategory

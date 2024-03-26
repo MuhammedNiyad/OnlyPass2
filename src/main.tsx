@@ -20,6 +20,7 @@ import Plans from './Dashboard/Pages/Plans.tsx';
 import CustomerDeatils from './Dashboard/Pages/CustomerDetails';
 import TransactionDetails from './Dashboard/Pages/TransactionDetails.tsx';
 import TierManage from './Dashboard/Pages/TierManage.tsx';
+import Catagories from './Dashboard/Pages/Catagories.tsx';
 
 const router = createBrowserRouter([
   {
@@ -73,7 +74,11 @@ const router = createBrowserRouter([
       {
         path: 'Facilities/TierManagement',
         element: <TierManage />
-      }
+      },
+      {
+        path: '/Facilities/facilityCategories',
+        element: <Catagories />
+      },
     ]
   },
   {

@@ -10,33 +10,33 @@ import { Link } from 'react-router-dom';
 const Payment: React.FC = () => {
   const columns = [
     {
-      title: 'Date & Time',
+      title: () => <div className="font-montserrat text-[#7E7E7E]">Data & Time</div>,
       dataIndex: 'dateAndTime',
       key: 'dateAndTime'
     },
     {
-      title: 'Transaction ID',
+      title: () => <div className="font-montserrat text-[#7E7E7E]">Transaction Id</div>,
       // dataIndex: 'transactionId',
       key: 'transactionId',
       render: (record: any) => <Link to={`/TransactionDetails/${record._id}`}>{record.name}</Link>
     },
     {
-      title: 'Faciity / Customer Name',
+      title: () => <div className="font-montserrat text-[#7E7E7E]">Facility / Cusomer Name</div>,
       dataIndex: 'name',
       key: 'name'
     },
     {
-      title: 'Description',
+      title: () => <div className="font-montserrat text-[#7E7E7E]">Description</div>,
       dataIndex: 'description',
       key: 'description'
     },
     {
-      title: 'Amount',
+      title: () => <div className="font-montserrat text-[#7E7E7E]">Amount</div>,
       dataIndex: 'amount',
       key: 'ampunt'
     },
     {
-      title: 'Status',
+      title: () => <div className="font-montserrat text-[#7E7E7E]">Status</div>,
       key: 'sts',
       dataIndex: 'sts',
       render: (sts: any) => (

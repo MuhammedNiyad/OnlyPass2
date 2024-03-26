@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Modal, Table, TableProps } from 'antd';
 import { useState } from 'react';
 import { FaEdit } from 'react-icons/fa';
@@ -16,7 +17,7 @@ const columns2: TableProps<amenityData>['columns'] = [
     key: 'amenity',
     render: (record: any) => (
       <div className="flex items-center gap-3">
-        <img src={`${iconURL}/${record.icon}`} alt={record} style={{ width: '25px' }} />
+        <img src={`${record.icon}`} alt={record} style={{ width: '25px' }} />
         <a>{record.amenity}</a>
       </div>
     )

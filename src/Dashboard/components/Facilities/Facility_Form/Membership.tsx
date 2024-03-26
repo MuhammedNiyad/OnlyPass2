@@ -2,9 +2,11 @@
 import { Button, Checkbox, Form, Input, Select } from 'antd';
 import { useDispatch } from 'react-redux';
 import { nextButton, prevButton } from '../../../Redux/Features/ButtonSlice';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { addData, setTier } from '../../../Redux/Features/FacilityFeature/FacilititySlice';
 import { useAppSelector } from '../../../Redux/hooks';
+import { useQuery } from 'react-query';
+import { ApiClientPrivate } from '../../../../utils/axios';
 
 // const { TextArea } = Input;
 interface CheckedState {
@@ -16,7 +18,14 @@ interface CheckedState {
   annual_pass: boolean;
 }
 
+interface TierData {
+  tier_name: string;
+ }
+
 const Membership = () => {
+
+  const [tierData, setTierData] = useState<TierData[] | undefined>();
+
   const data = [
     {
       id: 1,
@@ -49,6 +58,16 @@ const Membership = () => {
       name: 'annual_pass'
     }
   ];
+
+  const fetchTier = () => {
+    return ApiClientPrivate.get(`/tier/all-tier`);
+    // return response;
+  };
+  const { data: mainData } = useQuery('fetchTier', fetchTier);
+
+  useEffect(()=>{
+    setTierData(mainData?.data);
+  },[mainData])
 
   const reduxState = useAppSelector((state) => state.facility);
   const [checkedState, setCheckedState] = useState<CheckedState>({
@@ -171,25 +190,12 @@ const Membership = () => {
           <Select
             defaultValue={{ value: '', label: 'Select tier' }}
             style={{ width: 205 }}
-            className='font-montserrat'
+            className="font-montserrat"
             onChange={handleChange}
-            options={[
-              {
-                value: 'Platinum',
-                label: 'Platinum',
-                name: 'platinum'
-              },
-              {
-                value: 'Gold',
-                label: 'Gold',
-                name: 'gold'
-              },
-              {
-                value: 'Silver',
-                label: 'Silver',
-                name: 'silver'
-              }
-            ]}
+            options={tierData?.map((it: any) => ({
+              value: it.tier_name,
+              label: it.tier_name
+            }))} 
           />
         </Form.Item>
         <div className="flex gap-3 justify-center ">

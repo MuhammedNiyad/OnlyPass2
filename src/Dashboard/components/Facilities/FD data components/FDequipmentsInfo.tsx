@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Modal } from 'antd';
 import { useState } from 'react';
 import { FaEdit } from 'react-icons/fa';
@@ -6,6 +7,8 @@ import UpdateEquipments from '../updateFacilities/UpdateEquipments';
 
 const FDequipmentsInfo = ({ mainData }: any) => {
   const [equipmentsModalOpen, setEquipmentsModalOpen] = useState(false);
+  console.log(mainData);
+
   return (
     <div>
       <div className="equipments p-3 w-full">
@@ -15,8 +18,7 @@ const FDequipmentsInfo = ({ mainData }: any) => {
           </div>
           <div
             onClick={() => setEquipmentsModalOpen(true)}
-            className="flex items-center gap-1 bg-[#F2F2F2] w-[84px] h-[24px] px-2 justify-center"
-          >
+            className="flex items-center gap-1 bg-[#F2F2F2] w-[84px] h-[24px] px-2 justify-center">
             <FaEdit />
             <p>Edit</p>
           </div>
@@ -26,16 +28,11 @@ const FDequipmentsInfo = ({ mainData }: any) => {
             {mainData?.data?.equipments?.map((it: any, ind: number) => (
               <div
                 key={ind}
-                className="flex items-center gap-3 p-5 mb-2 bg-gray-100 rounded-md shadow-sm"
-              >
+                className="flex items-center gap-3 p-5 mb-2 bg-gray-100 rounded-md shadow-sm">
                 <div className="image-section">
-                  <img
-                    src={`${imaageURL}/${it.equipment_img}`}
-                    alt="image"
-                    className="md:h-8  md:w-10 w-8 h-4"
-                  />
+                  <img src={`${it.image}`} alt="image" className="md:h-8  md:w-10 w-8 h-4" />
                 </div>
-                <div className="Name-section">{it.equipment_name}</div>
+                <div className="Name-section">{it.name}</div>
               </div>
             ))}
           </div>
@@ -46,8 +43,7 @@ const FDequipmentsInfo = ({ mainData }: any) => {
         open={equipmentsModalOpen}
         onCancel={() => setEquipmentsModalOpen(false)}
         footer={false}
-        width={600}
-      >
+        width={600}>
         <UpdateEquipments
           facilityData={mainData?.data}
           cancel={() => setEquipmentsModalOpen(false)}

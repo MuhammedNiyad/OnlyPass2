@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { useEffect, useState } from 'react';
 import { ApiClientPrivate } from '../../../../utils/axios';
 import { imaageURL } from '../../../../utils/urls';
@@ -24,7 +25,7 @@ const UpdateEquipments = (props: any) => {
         return {
           ...it,
           checked: props.facilityData.equipments
-            .map((eq: any) => eq.equipment_name)
+            .map((eq: any) => eq.name)
             .includes(it.name)
             ? true
             : false
@@ -45,10 +46,10 @@ const UpdateEquipments = (props: any) => {
   const [selectedEquipments, setSelectedEquipments] = useState<
     { equipment_img: string; equipment_name: string }[]
   >(props.facilityData.equipments);
-  const onChange = (checked: boolean, equipment_name: string, equipment_img: string) => {
+  const onChange = (checked: boolean, equipment_name: string, equipment_img: string, equipment_id:string) => {
     if (checked) {
       // If checked, add the equipment to the selectedEquipments
-      setSelectedEquipments((prev) => [...prev, { equipment_img, equipment_name }]);
+      setSelectedEquipments((prev) => [...prev, { equipment_img, equipment_name, equipment_id }]);
     } else {
       // If unchecked, remove the equipment from the selectedEquipments
       setSelectedEquipments((prev) => prev.filter((eq) => eq.equipment_name !== equipment_name));
@@ -82,7 +83,7 @@ const UpdateEquipments = (props: any) => {
           >
             <div className="flex items-center gap-3">
               <div className="image-section">
-                <img src={`${imaageURL}/${item.image}`} alt="image" className="h-20 w-24" />
+                <img src={`${item.image}`} alt="image" className="h-20 w-24" />
               </div>
               <div className="Name-section">{item.name}</div>
             </div>
@@ -90,7 +91,7 @@ const UpdateEquipments = (props: any) => {
               <Checkbox
                 defaultChecked={item.checked}
                 // checked={selectedEquipments.includes(item._id)}
-                onChange={(e) => onChange(e.target.checked, item.name, item.image)}
+                onChange={(e) => onChange(e.target.checked, item.name, item.image, item._id)}
               />
             </div>
           </div>

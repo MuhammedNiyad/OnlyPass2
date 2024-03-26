@@ -59,6 +59,7 @@ const BasicInfo = () => {
   const handleInputChange = (e: any) => {
     const fieldName = e.target.name;
     const fieldValue = e.target.type == 'checked' ? e.target.checked : e.target.value;
+    
     dispatch(addData({ [fieldName]: fieldValue }));
   };
 
@@ -150,7 +151,7 @@ const BasicInfo = () => {
   const handleLogoRemove = () => {
     dispatch(addData({ logoUrl: '' }));
     // setFileList([]);
-    console.log('salman');
+    // console.log('salman');
 
     setRemove(false);
   };
@@ -187,25 +188,22 @@ const BasicInfo = () => {
           <div className="">
             <Form.Item
               label={<p className="text-[#7E7E7E] font-montserrat">Gender</p>}
-              className="text-start  "
+              className="text-start "
               name={'gender'}
               rules={[{ required: true, message: 'Please Select your Type!' }]}>
-              <Checkbox.Group name="gender" className="custom-checkbox-group">
-                <Row>
-                  <Col span={8}>
-                    <Checkbox value="gents"> Gents </Checkbox>
-                  </Col>
-                  <Col span={8}>
-                    <Checkbox value="ladies"> Ladies </Checkbox>
-                  </Col>
-                  <Col span={8}>
-                    <Checkbox value="unisex" className="text-nowrap">
-                      {' '}
-                      Unisex (mixed){' '}
-                    </Checkbox>
-                  </Col>
-                </Row>
-              </Checkbox.Group>
+              <div className="flex w-[350px]">
+                <Col span={8}>
+                  <Checkbox value="gents" name={'gender'}> Gents </Checkbox>
+                </Col>
+                <Col span={8}>
+                  <Checkbox value="ladies"  name={'gender'}> Ladies </Checkbox>
+                </Col>
+                <Col span={8}>
+                  <Checkbox value="unisex" className="text-nowrap" name={'gender'}>
+                    Unisex (mixed)
+                  </Checkbox>
+                </Col>
+              </div>
             </Form.Item>
           </div>
         </div>
@@ -281,7 +279,9 @@ const BasicInfo = () => {
                   listType="picture"
                   onRemove={handleLogoRemove}
                   // fileList={fileList}
-
+                  beforeUpload={() => {
+                    return false;
+                  }}
                   defaultFileList={[...fileList]}>
                   <Button
                     disabled={remove === true}
@@ -313,6 +313,9 @@ const BasicInfo = () => {
                 name={'images'}>
                 <Upload
                   // {...props}
+                  beforeUpload={() => {
+                    return false;
+                  }}
                   onChange={() => debouncedNormFileImages(form.getFieldValue('images'))}
                   multiple
                   defaultFileList={imgFileList}>

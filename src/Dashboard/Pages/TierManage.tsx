@@ -115,7 +115,7 @@ function TierManage() {
     refetch();
   }, [isModalOpen, refetch]);
 
-    const onChangeSearch = (e: ChangeEvent<HTMLInputElement>) => {
+    const onChangeSearch = (e:any) => {
       const value = e.target.value;
       const lowerCasedValue = value.toLowerCase();
       const filtered = tierData.filter((item) => item.tier_name.toLowerCase().includes(lowerCasedValue));
@@ -177,7 +177,7 @@ function TierManage() {
             description: value.description
         })
         setIsEditModal(false);
-        refetch();
+        window.location.reload();
     } catch (error) {
         alert('something went wrong')
     }

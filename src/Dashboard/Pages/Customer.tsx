@@ -23,27 +23,27 @@ const Customer: React.FC = () => {
 
   const columns = [
     {
-      title: 'Name',
+      title: () => <div className="font-montserrat text-[#7E7E7E]">Name</div>,
       key: 'name',
       render: (record: any) => <Link to={`/CustomerDetails/${record._id}`}>{record.name}</Link>
     },
     {
-      title: 'Gender',
+      title: () => <div className="font-montserrat text-[#7E7E7E]">Gender</div>,
       dataIndex: 'gender',
       key: 'gender'
     },
     {
-      title: 'Phone Number',
+      title: () => <div className="font-montserrat text-[#7E7E7E]">Phone No.</div>,
       dataIndex: 'phoneNumber',
       key: 'phoneNumber'
     },
     {
-      title: 'Email',
+      title: () => <div className="font-montserrat text-[#7E7E7E]">Email</div>,
       dataIndex: 'email',
       key: 'email'
     },
     {
-      title: 'Type',
+      title: () => <div className="font-montserrat text-[#7E7E7E]">Type</div>,
       // dataIndex: 'type',
       key: 'type',
       render:(record: any) =>{
@@ -53,7 +53,7 @@ const Customer: React.FC = () => {
     },
 
     {
-      title: 'Membership',
+      title: () => <div className="font-montserrat text-[#7E7E7E]">Membership</div>,
       key: 'membership',
       
       render: (membership:any) => {

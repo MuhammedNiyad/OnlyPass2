@@ -75,7 +75,7 @@ const Plans = () => {
 
   const columns = [
     {
-      title: 'Plan Name',
+      title: () => <div className="font-montserrat text-[#7E7E7E]">Plan Name</div>,
       // dataIndex: 'name',
       key: 'planName',
       render: (record: any) => (
@@ -90,19 +90,19 @@ const Plans = () => {
       )
     },
     {
-      title: 'No.of days',
+      title: () => <div className="font-montserrat text-[#7E7E7E]">No.of days</div>,
       dataIndex: 'no_of_days',
       key: 'days'
     },
     {
-      title: 'Description',
+      title: () => <div className="font-montserrat text-[#7E7E7E]">Description</div>,
       dataIndex: 'description',
       key: 'description',
       width: 150,
       ellipsis: { showTitle: false }
     },
     {
-      title: 'Pause',
+      title: () => <div className="font-montserrat text-[#7E7E7E]">Pause</div>,
       key: 'pause',
       render: (record: any) => (
         <Switch
@@ -115,17 +115,17 @@ const Plans = () => {
       )
     },
     {
-      title: 'Amount',
+      title: () => <div className="font-montserrat text-[#7E7E7E]">Amount</div>,
       dataIndex: 'amount',
       key: 'amount'
     },
     {
-      title: 'Offer Amount',
+      title: () => <div className="font-montserrat text-[#7E7E7E]">Offer amount</div>,
       dataIndex: 'offer_amount',
       key: 'offerAmount'
     },
     {
-      title: 'Status',
+      title: () => <div className="font-montserrat text-[#7E7E7E]">Status</div>,
       key: 'sts',
       render: (record: any) => (
         <Switch
