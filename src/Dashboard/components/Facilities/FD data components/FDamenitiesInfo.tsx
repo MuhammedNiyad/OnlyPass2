@@ -2,7 +2,6 @@
 import { Modal, Table, TableProps } from 'antd';
 import { useState } from 'react';
 import { FaEdit } from 'react-icons/fa';
-import { iconURL } from '../../../../utils/urls';
 import UpdateAmenities from '../updateFacilities/UpdateAmenities';
 
 interface amenityData {

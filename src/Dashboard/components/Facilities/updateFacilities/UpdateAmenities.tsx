@@ -1,10 +1,9 @@
 /* eslint-disable prettier/prettier */
+import { Button, Checkbox } from 'antd';
 import { useEffect, useState } from 'react';
 import { ApiClientPrivate } from '../../../../utils/axios';
-import { Button, Checkbox } from 'antd';
 import { setAmenitiesUpdateBtn } from '../../../Redux/Features/updateFacilityBtn';
 import { useAppDispatch } from '../../../Redux/hooks';
-import { iconURL } from '../../../../utils/urls';
 
 interface Amenity {
   key: string;

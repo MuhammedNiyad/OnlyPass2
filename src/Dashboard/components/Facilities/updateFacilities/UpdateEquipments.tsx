@@ -1,8 +1,7 @@
 /* eslint-disable prettier/prettier */
+import { Button, Checkbox } from 'antd';
 import { useEffect, useState } from 'react';
 import { ApiClientPrivate } from '../../../../utils/axios';
-import { imaageURL } from '../../../../utils/urls';
-import { Button, Checkbox } from 'antd';
 import { setEquipmentUpdateBtn } from '../../../Redux/Features/updateFacilityBtn';
 import { useAppDispatch } from '../../../Redux/hooks';
 
