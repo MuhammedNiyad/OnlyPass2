@@ -78,10 +78,10 @@ const BasicInfo = () => {
       });
 
       console.log('Image upload response:', response.data);
-      const facilityImagesArray = response.data.map((item: any) => item.facility_images);
+      // const facilityImagesArray = response.data.map((item: any) => item);
 
       // Dispatch the facility_images array to Redux
-      dispatch(addData({ images: facilityImagesArray }));
+      dispatch(addData({ images: response.data }));
     } catch (error: any) {
       // Handle errors
       console.error('Image upload error:', error);
@@ -92,8 +92,8 @@ const BasicInfo = () => {
     try {
       // Assuming ApiClientPrivate is an Axios instance
       const formData = new FormData();
-      formData.append('logo', e.file.originFileObj);
-      console.log('logooooooooo', e.file.originFileObj);
+      formData.append('logo', e.file);
+      console.log('logooooooooo', e.file);
 
       // Make the POST request to upload the logo
       if (remove !== true) {
@@ -104,7 +104,7 @@ const BasicInfo = () => {
         });
 
         console.log('Logo upload :', response.data.facility_images);
-        dispatch(addData({ ['logoUrl']: response.data.facility_images }));
+        dispatch(addData({ ['logoUrl']: response.data }));
       }
       setRemove(true);
       // Return the file list (or any other value you need)
@@ -235,7 +235,7 @@ const BasicInfo = () => {
               <Input name="contactPerson" className="md:w-[350px] rounded-none" />
             </Form.Item>
             <Form.Item
-              label={<p className="text-[#7E7E7E] font-montserrat">Phone Number</p>}
+              label={<p className="text-[#7E7E7E] font-montserrat">Phone No.</p>}
               name={'phoneNumber'}
               rules={[
                 { required: true, message: 'Please enter phone number' },
@@ -269,7 +269,9 @@ const BasicInfo = () => {
               <Input name="websiteURL" className="md:w-[350px] rounded-none" />
             </Form.Item>
 
-            <Form.Item label={<p className="text-[#7E7E7E] font-montserrat">Logo</p>} name={'logo'}>
+            <Form.Item 
+            label={<p className="text-[#7E7E7E] font-montserrat">Logo</p>}
+             name={'logo'}>
               <div className="w-[200px]">
                 <Upload
                   maxCount={1}

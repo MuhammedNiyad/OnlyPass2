@@ -75,6 +75,7 @@ const EquipmentForm = () => {
       if (response) {
         message.success('Processing complete!');
         navigate('/Facilities');
+        window.location.reload();
       }
       // console.log('Facility created successfully:', response.data);
     } catch (error) {

@@ -1,5 +1,6 @@
+/* eslint-disable prettier/prettier */
 import { UploadOutlined } from '@ant-design/icons';
-import { Button, Form, Input, Radio, Space, Upload, UploadFile, UploadProps } from 'antd';
+import { Button, Checkbox, Col, Form, Input, Radio, Space, Upload, UploadFile, UploadProps } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
 import { ApiClientPrivate } from '../../../../utils/axios';
 import { useState } from 'react';
@@ -20,7 +21,7 @@ export default function UpdateBasicInfo(props: any) {
             uid: '1',
             name: props.facilityData.logoUrl,
             // status: 'done',
-            url: props.facilityData.logoUrl ? `${dataLogo}/${props.facilityData.logoUrl}` : ''
+            url: props.facilityData.logoUrl ? `${props.facilityData.logoUrl}` : ''
           }
         ]
       : []
@@ -31,7 +32,7 @@ export default function UpdateBasicInfo(props: any) {
           uid: ind.toString(),
           name: it,
           // status: 'done',
-          url: props.facilityData.images ? `${dataImages}/${it}` : ''
+          url: props.facilityData.images ? `${it}` : ''
         }))
       : []
   );
@@ -77,8 +78,8 @@ export default function UpdateBasicInfo(props: any) {
     try {
       // Assuming ApiClientPrivate is an Axios instance
       const formData = new FormData();
-      formData.append('logo', e.file.originFileObj);
-      console.log('logooooooooo', e.file.originFileObj);
+      formData.append('logo', e.file);
+      console.log('logooooooooo', e.file);
 
       // Make the POST request to upload the logo
       if (remove !== true) {
@@ -89,7 +90,7 @@ export default function UpdateBasicInfo(props: any) {
         });
         const id = props.facilityData._id; // Replace 'id' with the actual identifier for your facility
         await ApiClientPrivate.put(`facilities/update/${id}`, {
-          logoUrl: response.data.facility_images
+          logoUrl: response.data
         });
       }
       setRemove(true);
@@ -121,7 +122,7 @@ export default function UpdateBasicInfo(props: any) {
       });
       const updatedImagesArray = [
         ...props.facilityData.images,
-        ...response.data.map((item: any) => item.facility_images)
+        ...response.data.map((item: any) => item)
       ];
       console.log('Updated images array:', updatedImagesArray);
       setFacilityImages(updatedImagesArray);
@@ -160,31 +161,40 @@ export default function UpdateBasicInfo(props: any) {
       >
         <div>
           <div className="text-start">
-            <Form.Item
-              label="Facility Type :"
+          <Form.Item
+              label={<p className="text-[#7E7E7E] font-montserrat">Facility Type</p>}
               className="text-left"
               name={'facility_type'}
-              rules={[{ required: true, message: 'Please Select your Type!' }]}
-            >
-              <Radio.Group name="facility_type">
-                <Radio value="acess"> Access </Radio>
+              rules={[{ required: true, message: 'Please Select your Type!' }]}>
+              <Radio.Group
+                name="facility_type"
+                defaultValue="access"
+                className="custom-radio-group">
+                <Radio value="access"> Access </Radio>
                 <Radio value="pass"> Pass </Radio>
               </Radio.Group>
             </Form.Item>
           </div>
 
           <div className="">
-            <Form.Item
-              label="Gender :"
-              className="text-start"
+          <Form.Item
+              label={<p className="text-[#7E7E7E] font-montserrat">Gender</p>}
+              className="text-start "
               name={'gender'}
-              rules={[{ required: true, message: 'Please Select your Type!' }]}
-            >
-              <Radio.Group name="gender">
-                <Radio value="gents"> Gents </Radio>
-                <Radio value="ladies"> Ladies </Radio>
-                <Radio value="unisex"> Unisex (mixed) </Radio>
-              </Radio.Group>
+              rules={[{ required: true, message: 'Please Select your Type!' }]}>
+              <div className="flex w-[350px]">
+                <Col span={8}>
+                  <Checkbox value="gents" name={'gender'}> Gents </Checkbox>
+                </Col>
+                <Col span={8}>
+                  <Checkbox value="ladies"  name={'gender'}> Ladies </Checkbox>
+                </Col>
+                <Col span={8}>
+                  <Checkbox value="unisex" className="text-nowrap" name={'gender'}>
+                    Unisex (mixed)
+                  </Checkbox>
+                </Col>
+              </div>
             </Form.Item>
           </div>
         </div>
@@ -192,7 +202,7 @@ export default function UpdateBasicInfo(props: any) {
         <div>
           <div>
             <Form.Item
-              label="Facility Name"
+              label={<p className="text-[#7E7E7E] font-montserrat">Facility Name</p>}
               name={'facilityName'}
               className="text-left"
               rules={[{ required: true, message: 'Please Enter Facilicty name' }]}
@@ -200,26 +210,26 @@ export default function UpdateBasicInfo(props: any) {
               <Input
                 name="facilityName"
                 value={props.facilityData.facilityName}
-                className="md:w-[350px]"
+                className="md:w-[350px] rounded-none"
               />
             </Form.Item>
             <Form.Item
-              label="Email"
+              label={<p className="text-[#7E7E7E] font-montserrat">Email</p>}
               name={'emailAddress'}
               rules={[{ required: true, message: 'Please Enter Email Address' }]}
               className=""
             >
-              <Input name="emailAddress" className="md:w-[350px]" />
+              <Input name="emailAddress" className="md:w-[350px] rounded-none" />
             </Form.Item>
             <Form.Item
-              label="Contact Person"
+              label={<p className="text-[#7E7E7E] font-montserrat">Contact Person</p>}
               name={'contactPerson'}
               rules={[{ required: true, message: 'Please Enter Contact person name' }]}
             >
-              <Input name="contactPerson" className="md:w-[350px]" />
+              <Input name="contactPerson" className="md:w-[350px] rounded-none" />
             </Form.Item>
             <Form.Item
-              label=" Phone No "
+              label={<p className="text-[#7E7E7E] font-montserrat">Phone No.</p>}
               name={'phoneNumber'}
               rules={[
                 { required: true, message: 'Please enter phone number' },
@@ -232,29 +242,33 @@ export default function UpdateBasicInfo(props: any) {
               ]}
               className="text-left"
             >
-              <Space.Compact className="md:w-[350px]">
+              <Space.Compact className="md:w-[350px] rounded-none gap-5">
                 <Input
                   type="tel"
                   name="phonCode"
-                  className="w-[15%]"
+                  className="w-[15%] rounded-none"
                   defaultValue={'+91'}
                   disabled
                 />
                 <Input
                   type="tel"
                   name="phoneNumber"
-                  className="w-[85%]"
+                  className="w-[80%] rounded-none"
                   defaultValue={props.facilityData.phoneNumber}
                   maxLength={10}
                 />
               </Space.Compact>
             </Form.Item>
 
-            <Form.Item label="Website url" className="" name={'websiteURL'}>
-              <Input name="websiteURL" className="md:w-[350px]" />
+            <Form.Item
+              label={<p className="text-[#7E7E7E] font-montserrat">Website URL</p>}
+              className="" name={'websiteURL'}>
+              <Input name="websiteURL" className="md:w-[350px] rounded-none" />
             </Form.Item>
 
-            <Form.Item label="Logo" name={'logo'}>
+            <Form.Item
+            label={<p className="text-[#7E7E7E] font-montserrat">Logo</p>}
+            name={'logo'}>
               <div className="w-[200px]">
                 <Upload
                   maxCount={1}
@@ -264,24 +278,29 @@ export default function UpdateBasicInfo(props: any) {
                   // action="https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188"
                   listType="picture"
                   onRemove={handleLogoRemove}
+                  beforeUpload={() => {
+                    return false;
+                  }}
                   // fileList={fileList}
 
                   defaultFileList={[...fileList]}
                 >
-                  <Button disabled={remove === true} icon={<UploadOutlined />}>
+                  <Button className='rounded-none font-montserrat' disabled={remove === true} icon={<UploadOutlined />}>
                     Upload
                   </Button>
                 </Upload>
               </div>
             </Form.Item>
 
-            <Form.Item label="Description" name={'description'}>
-              <TextArea name="description" rows={4} className="w-[350px]" />
+            <Form.Item
+              label={<p className="text-[#7E7E7E] font-montserrat">Description</p>}
+              name={'description'}>
+              <TextArea name="description" rows={4} className="w-[350px] rounded-none" />
             </Form.Item>
 
             <div className=" ">
               <Form.Item
-                label="Images (min.5 Nos)"
+                label={<p className="text-[#7E7E7E] font-montserrat">Images</p>}
                 getValueFromEvent={debouncedNormFileImages}
                 valuePropName="fileList"
                 name={'images'}
@@ -293,17 +312,20 @@ export default function UpdateBasicInfo(props: any) {
                   multiple
                   listType="picture"
                   onRemove={handleImgsRemove}
+                  beforeUpload={() => {
+                    return false;
+                  }}
                   defaultFileList={imgFileList}
                 >
-                  <Button icon={<UploadOutlined />}>Click to Upload</Button>
-                  <h1 className="text-red-600">(preview size is 16:9)</h1>
+                  <Button className='rounded-none font-montserrat' icon={<UploadOutlined />}>Click to Upload</Button>
+                  <h1 className="text-black opacity-50">(preview size is 16:9)</h1>
                 </Upload>
               </Form.Item>
             </div>
           </div>
         </div>
         <div className="flex justify-center">
-          <Button type="primary" htmlType="submit" className="bg-blue-600" onClick={handleUpdate}>
+          <Button type="primary" htmlType="submit" className="bg-black text-white font-montserrat rounded-none" onClick={handleUpdate}>
             Update
           </Button>
         </div>
