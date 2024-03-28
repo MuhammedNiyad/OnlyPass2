@@ -23,9 +23,7 @@ const UpdateEquipments = (props: any) => {
       const eqips = res.data.map((it: any) => {
         return {
           ...it,
-          checked: props.facilityData.equipments
-            .map((eq: any) => eq.name)
-            .includes(it.name)
+          checked: props.facilityData.equipments.map((eq: any) => eq.name).includes(it.name)
             ? true
             : false
         };
@@ -43,32 +41,29 @@ const UpdateEquipments = (props: any) => {
   }, []);
 
   const [selectedEquipments, setSelectedEquipments] = useState<
-    { equipment_img: string; equipment_name: string }[]
+    { image: string; name: string; _id: string }[]
   >(props.facilityData.equipments);
-  const onChange = (checked: boolean, equipment_name: string, equipment_img: string, equipment_id:string) => {
+  const onChange = (checked: boolean, name: string, image: string, _id: string) => {
     if (checked) {
       // If checked, add the equipment to the selectedEquipments
-      setSelectedEquipments((prev) => [...prev, { equipment_img, equipment_name, equipment_id }]);
+      setSelectedEquipments((prev) => [...prev, { image, name, _id }]);
     } else {
       // If unchecked, remove the equipment from the selectedEquipments
-      setSelectedEquipments((prev) => prev.filter((eq) => eq.equipment_name !== equipment_name));
+      setSelectedEquipments((prev) => prev.filter((eq) => eq._id !== _id));
     }
   };
 
   const handleUpdate = async () => {
     try {
-      // Perform the update operation using selectedEquipments
-      // For example, you can send a request to update the backend
+      // console.log(selectedEquipments)
 
-      const id = props.facilityData._id; // Replace with your actual identifier
+      const id = props.facilityData._id;
       await ApiClientPrivate.put(`facilities/update/${id}`, { equipments: selectedEquipments });
 
-      // Dispatch action to update Redux state or perform other necessary operations
       props.cancel();
       dispatch(setEquipmentUpdateBtn(true));
-    } catch (error) {
-      console.error('Error updating facility:', error);
-      // Handle error appropriately
+    } catch (error: any) {
+      alert(error.message);
     }
   };
 
@@ -78,8 +73,7 @@ const UpdateEquipments = (props: any) => {
         {equipmentsData.map((item, ind) => (
           <div
             key={ind}
-            className="object-section border flex items-center justify-between p-2 mb-4 bg-white rounded-md shadow-md"
-          >
+            className="object-section border flex items-center justify-between p-2 mb-4 bg-white rounded-md shadow-md">
             <div className="flex items-center gap-3">
               <div className="image-section">
                 <img src={`${item.image}`} alt="image" className="h-20 w-24" />
@@ -97,7 +91,10 @@ const UpdateEquipments = (props: any) => {
         ))}
       </div>
       <div className="flex justify-center">
-        <Button type="primary" htmlType="submit" className="bg-blue-600" onClick={handleUpdate}>
+        <Button
+          htmlType="submit"
+          className="bg-black text-white font-montserrat rounded-none"
+          onClick={handleUpdate}>
           Update
         </Button>
       </div>

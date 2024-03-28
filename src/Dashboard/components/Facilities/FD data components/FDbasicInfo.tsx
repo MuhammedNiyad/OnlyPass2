@@ -19,7 +19,7 @@ const FDbasicInfo = ({ data, mainData }: any) => {
               </div>
               <div
                 onClick={() => setBasicModalOpen(true)}
-                className="flex items-center gap-1 bg-[#F2F2F2] w-[84px] h-[24px] px-2 justify-center">
+                className="flex items-center gap-1 cursor-pointer bg-[#F2F2F2] w-[84px] h-[24px] px-2 justify-center">
                 <FaEdit />
                 <p>Edit</p>
               </div>

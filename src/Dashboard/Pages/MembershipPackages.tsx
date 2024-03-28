@@ -74,7 +74,7 @@ const MembershipPackages: React.FC = () => {
       title: () => <div className="font-montserrat text-[#7E7E7E]">Package Name</div>,
       // dataIndex: 'PackageName',
       key: 'name',
-      render: (record: any) => <Link to={`/Plans/${record._id}`}>{record.name}</Link>
+      render: (record: any) => <Link to={`/Manage/MembershipPackages/Plans/${record._id}`}>{record.name}</Link>
       // width: 150
     },
     {

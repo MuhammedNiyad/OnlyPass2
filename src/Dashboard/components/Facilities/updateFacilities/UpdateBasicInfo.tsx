@@ -2,12 +2,11 @@
 import { UploadOutlined } from '@ant-design/icons';
 import { Button, Checkbox, Col, Form, Input, Radio, Space, Upload, UploadFile, UploadProps } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
-import { ApiClientPrivate } from '../../../../utils/axios';
 import { useState } from 'react';
-import { dataImages, dataLogo } from '../../../../utils/urls';
 import { useDebounce } from '../../../../Hook/CustomHook';
-import { useAppDispatch } from '../../../Redux/hooks';
+import { ApiClientPrivate } from '../../../../utils/axios';
 import { setBasicUpdateBtn } from '../../../Redux/Features/updateFacilityBtn';
+import { useAppDispatch } from '../../../Redux/hooks';
 
 export default function UpdateBasicInfo(props: any) {
   const [facilityImages, setFacilityImages] = useState(props.facilityData.images);
@@ -325,7 +324,7 @@ export default function UpdateBasicInfo(props: any) {
           </div>
         </div>
         <div className="flex justify-center">
-          <Button type="primary" htmlType="submit" className="bg-black text-white font-montserrat rounded-none" onClick={handleUpdate}>
+          <Button htmlType="submit" className="bg-black text-white font-montserrat rounded-none" onClick={handleUpdate}>
             Update
           </Button>
         </div>

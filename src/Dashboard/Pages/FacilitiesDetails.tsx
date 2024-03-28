@@ -22,8 +22,17 @@ import {
   setMembershipUpdateBtn,
   setTimeUpdatebtn
 } from '../Redux/Features/updateFacilityBtn';
+import { PaymentInfo } from '../components/Facilities/FD data components/PaymentInfo';
 
 const FacilitiesDetails: React.FC = () => {
+  const { id } = useParams();
+  const fetchFacilityData = () => {
+    return ApiClientPrivate.get(`/facilities/${id}`);
+  };
+
+  const { isLoading, data: mainData, refetch } = useQuery('fetchData', fetchFacilityData);
+
+  console.log(">>>log1" ,mainData);
   const details = [
     {
       icon: svg4,
@@ -58,14 +67,7 @@ const FacilitiesDetails: React.FC = () => {
 
   console.log('redux>>>>>>>>:', basicUpdateBtn);
 
-  const { id } = useParams();
-  const fetchFacilityData = () => {
-    return ApiClientPrivate.get(`/facilities/${id}`);
-  };
-
-  const { isLoading, data: mainData, refetch } = useQuery('fetchData', fetchFacilityData);
-
-  // console.log(">>>log1" ,mainData);
+  
 
   useEffect(() => {
     const fetchData = async () => {
@@ -180,14 +182,18 @@ const FacilitiesDetails: React.FC = () => {
     },
     {
       id: 7,
-      path: <a href="#members">Members</a>
+      path: <a href="#paymentInfo">PaymentInfo</a>
     },
     {
       id: 8,
-      path: <a href="#paymentLog">Payment Log</a>
+      path: <a href="#members">Members</a>
     },
     {
       id: 9,
+      path: <a href="#paymentLog">Payment Log</a>
+    },
+    {
+      id: 10,
       path: <a href="#attendanceLog">Attendance Log</a>
     }
   ];
@@ -287,6 +293,9 @@ const FacilitiesDetails: React.FC = () => {
                   mainData={mainData}
                   //  refetch={refetch()}
                 />
+              </div>
+              <div id="paymentInfo" className="mb-10">
+                <PaymentInfo mainData={mainData} />
               </div>
               <div id="members" className="mb-10">
                 members sections !!!!!!!

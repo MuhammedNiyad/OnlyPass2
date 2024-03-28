@@ -228,7 +228,7 @@ const Sidebar = () => {
             />
           ),
           name: 'User Roles',
-          path: '/Manage/UserRoles'
+          path: '/Manage/MembershipPackages/UserRoles'
         }
 
         // Add more submenus as needed

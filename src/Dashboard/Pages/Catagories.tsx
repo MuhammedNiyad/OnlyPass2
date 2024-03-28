@@ -72,8 +72,15 @@ function Catagories() {
     },
     {
       title: () => <div className="font-montserrat text-[#7E7E7E]">Description</div>,
-      dataIndex: 'description',
-      key: 'description'
+      // dataIndex: 'descriptions',
+      key: 'descriptions',
+      render: (record: any) => (
+        <p className="font-montserrat">
+          {record.description !== 'undefined' ? record.description : 'No description'}
+        </p>
+      )
+      // width: 250,
+      // ellipsis: { showTitle: false }
     },
     {
       title: () => <div className="font-montserrat text-[#7E7E7E]">Status</div>,

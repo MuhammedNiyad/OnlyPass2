@@ -21,6 +21,7 @@ import CustomerDeatils from './Dashboard/Pages/CustomerDetails';
 import TransactionDetails from './Dashboard/Pages/TransactionDetails.tsx';
 import TierManage from './Dashboard/Pages/TierManage.tsx';
 import Catagories from './Dashboard/Pages/Catagories.tsx';
+import { UserRoles } from './Dashboard/Pages/UserRoles.tsx';
 
 const router = createBrowserRouter([
   {
@@ -68,7 +69,7 @@ const router = createBrowserRouter([
         element: <FacilitiesDetails />
       },
       {
-        path: '/Plans/:id',
+        path: '/Manage/MembershipPackages/Plans/:id',
         element: <Plans />
       },
       {
@@ -79,6 +80,10 @@ const router = createBrowserRouter([
         path: '/Facilities/facilityCategories',
         element: <Catagories />
       },
+      {
+        path:"/Manage/MembershipPackages/UserRoles",
+        element:<UserRoles/>
+      }
     ]
   },
   {
