@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable prettier/prettier */
 import svg2 from '../../../public/svg2-onlypass.svg';
 import svg3 from '../../../public/svg3-onlypass.svg';
@@ -55,18 +56,18 @@ const CustomerDeatils: React.FC = () => {
     {
       id: 2,
       label: ' Gender ',
-      input: data.gender
+      input: data?.gender
     },
 
     {
       id: 3,
       label: 'Customer Name ',
-      input: data.name
+      input: data?.name
     },
     {
       id: 4,
       label: 'Email Address',
-      input: data.email
+      input: data?.email
     },
     {
       id: 5,
@@ -76,19 +77,19 @@ const CustomerDeatils: React.FC = () => {
     {
       id: 6,
       label: 'Customer  Number',
-      input: data.phoneNumber
+      input: data?.phoneNumber
     }
   ];
   const personalInfo = [
     {
       id: 1,
       label: 'Height',
-      value: data.height
+      value: data?.height
     },
     {
       id: 2,
       label: 'Weight',
-      value: data.weight
+      value: data?.weight
     }
   ];
 
@@ -96,12 +97,12 @@ const CustomerDeatils: React.FC = () => {
     {
       id: 1,
       label: 'Contact person',
-      values: data.emergencyContactName
+      values: data?.emergencyContactName
     },
     {
       id: 2,
       label: ' Phone Number',
-      values: data.emergencyContactNumber
+      values: data?.emergencyContactNumber
     }
   ];
 
@@ -136,7 +137,7 @@ const CustomerDeatils: React.FC = () => {
     {
       id: 1,
       label: 'Status',
-      values: data?.activeMembership.length === 0 ? 'Inactive' : 'Active'
+      values: data?.activeMembership?.length === 0 ? 'Inactive' : 'Active'
     },
     {
       id: 2,
@@ -188,7 +189,7 @@ const CustomerDeatils: React.FC = () => {
   return (
     <div className="">
       <div className=" bg-[#F2F2F2] px-5 sm:px-10 md:px-12 py-10">
-        <PageHeader details={details} name={data.name} />
+        <PageHeader details={details} name={data?.name} />
         {/* Table Section */}
 
         <div className="bg-white px-2 sm:px-5 md:px-10 pb-10 ">
