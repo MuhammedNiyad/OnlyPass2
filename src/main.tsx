@@ -9,7 +9,7 @@ import Amenities from './Dashboard/Pages/Amenities.tsx';
 import Equipments from './Dashboard/Pages/Equipments.tsx';
 import Facilities from './Dashboard/Pages/Facilities.tsx';
 import { Provider } from 'react-redux';
-import { store } from './Dashboard/Redux/store.ts';
+import { persistor, store } from './Dashboard/Redux/store.ts';
 import Form from './Dashboard/Pages/Forms.tsx';
 import FacilitiesDetails from './Dashboard/Pages/FacilitiesDetails.tsx';
 import { QueryClient, QueryClientProvider } from 'react-query';
@@ -22,11 +22,18 @@ import TransactionDetails from './Dashboard/Pages/TransactionDetails.tsx';
 import TierManage from './Dashboard/Pages/TierManage.tsx';
 import Catagories from './Dashboard/Pages/Catagories.tsx';
 import { UserRoles } from './Dashboard/Pages/UserRoles.tsx';
+import Login from './Dashboard/Pages/Login.tsx';
+import { PersistGate } from 'redux-persist/integration/react';
+import { LoginProtector, RouteProtector } from './RouteProtector.tsx';
 
 const router = createBrowserRouter([
   {
-    path: '/',
-    element: <App />,
+    path:'/login-page',
+    element: <LoginProtector><Login /></LoginProtector>
+  },
+  {
+    // path: '/',
+    element: <RouteProtector><App /></RouteProtector>,
     children: [
       {
         path: '/dashbord',
@@ -97,7 +104,9 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
       <Provider store={store}>
+        <PersistGate loading={null} persistor={persistor}>
         <RouterProvider router={router} />
+        </PersistGate>
       </Provider>
     </QueryClientProvider>
   </React.StrictMode>

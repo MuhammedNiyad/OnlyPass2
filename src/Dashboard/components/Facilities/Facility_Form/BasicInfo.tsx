@@ -34,7 +34,7 @@ const BasicInfo = () => {
             uid: '1',
             name: reduxState.logoUrl,
             status: 'done',
-            url: reduxState.logoUrl ? `${dataLogo}/${reduxState.logoUrl}` : ''
+            url: reduxState.logoUrl ? `${reduxState.logoUrl}` : ''
           }
         ]
       : []
