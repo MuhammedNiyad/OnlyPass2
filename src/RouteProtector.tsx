@@ -12,7 +12,7 @@ export const RouteProtector = ({ children }: any) => {
   if (isLoggedIn) {
     return <>{children}</>;
   } else {
-    return <Navigate to={'/login-page'} />;
+    return <Navigate to={'/'} />;
   }
 };
 

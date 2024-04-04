@@ -25,10 +25,11 @@ import { UserRoles } from './Dashboard/Pages/UserRoles.tsx';
 import Login from './Dashboard/Pages/Login.tsx';
 import { PersistGate } from 'redux-persist/integration/react';
 import { LoginProtector, RouteProtector } from './RouteProtector.tsx';
+import Profile from './Dashboard/Pages/Profile.tsx';
 
 const router = createBrowserRouter([
   {
-    path:'/login-page',
+    path:'/',
     element: <LoginProtector><Login /></LoginProtector>
   },
   {
@@ -90,6 +91,10 @@ const router = createBrowserRouter([
       {
         path:"/Manage/MembershipPackages/UserRoles",
         element:<UserRoles/>
+      },
+      {
+        path:"/user/profile",
+        element:<Profile/>
       }
     ]
   },

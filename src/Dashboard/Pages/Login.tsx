@@ -74,7 +74,7 @@ const Login = () => {
           {/* Password */}
           <div className="input-box relative w-full h-[50px] border-b-2 border-black my-[10px]">
             <span
-              className="icon absolute top-4 right-1 text-[1.5em]"
+              className="icon absolute cursor-pointer top-4 right-1 text-[1.5em]"
               onClick={() => setShowPassword((prevState) => !prevState)}>
               {showPassword === false ? <MdLockOutline /> : <MdLockOpen />}
             </span>
@@ -87,7 +87,7 @@ const Login = () => {
             />
             <label className="absolute -top-2 left-[2px] translate-y-1">Password:</label>
           </div>
-          <button type="submit" className="btn uppercase mt-3 py-2 px-5 bg-black text-white ">
+          <button type="submit" className="btn uppercase cursor-pointer mt-3 py-2 px-5 bg-black text-white ">
             Sign In
           </button>
         </form>

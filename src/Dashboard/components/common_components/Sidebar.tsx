@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable prettier/prettier */
 import { useEffect, useState } from 'react';
 import { CiDiscount1, CiMoneyCheck1, CiWallet } from 'react-icons/ci';
@@ -12,10 +11,14 @@ import { SiNginxproxymanager } from 'react-icons/si';
 import { TbCategoryFilled, TbSettings2 } from 'react-icons/tb';
 import { NavLink, useLocation } from 'react-router-dom';
 import image1 from '../../../../public/javad.jpg';
+import { store } from '../../Redux/store';
 
 const Sidebar = () => {
   const [sidebarOpen, setSidebarOpen] = useState(true); //true bcz client request
   const [selectedItem, setSelectedItem] = useState({ id: '0', open: true });
+  const userDetails = store.getState().logedUser.currentUser.userDetails;
+
+  // console.log('userDetails :', userDetails);
 
   const openSubMenu = (id: string) => {
     setSelectedItem({
@@ -289,7 +292,9 @@ const Sidebar = () => {
                   key={it.id}
                   onClick={() => openSubMenu(it.id)}
                   className={`${
-                    location.pathname === it.path || location.pathname.startsWith(it.path) ? 'text-white bg-black' : 'hover:bg-slate-100'
+                    location.pathname === it.path || location.pathname.startsWith(it.path)
+                      ? 'text-white bg-black'
+                      : 'hover:bg-slate-100'
                   } p-3 font-semibold font-name text-md  flex items-center gap-3  `}>
                   <div>{it.icon}</div>
 
@@ -310,7 +315,7 @@ const Sidebar = () => {
                       to={subMenuItem.path}
                       key={subMenuItem.id}
                       className={`${
-                        location.pathname === subMenuItem.path? 'border-l-4 border-black' : ''
+                        location.pathname === subMenuItem.path ? 'border-l-4 border-black' : ''
                       }  hover:border-l-4 border-black duration-75 p-2 mt-1 ml-10 font-name text-md  items-center gap-3  ${
                         selectedItem.open === true ? 'flex ' : 'hidden '
                       } `}>
@@ -335,20 +340,22 @@ const Sidebar = () => {
             ))}
           </div>
 
-          <div className="profile p-2  bg-white rounded-lg  flex mb-2 gap-3 font-bold ">
-            <div className=" rounded-full bg-slate-200 ">
-              <img src={image1} alt="" className="h-12 w-12 rounded-full" />
-            </div>
-            <div className="flex justify-between items-center w-52">
-              <div>
-                <h1>Javad mohammed</h1>
-                <span className="text-xs text-slate-400 font-normal">Project Manager</span>
+          <NavLink to={'/user/profile'}>
+            <div className="profile p-2 bg-white rounded-lg  flex mb-2 gap-3 font-bold ">
+              <div className=" rounded-full bg-slate-200 ">
+                <img src={userDetails.profile} alt="" className="h-12 w-14 rounded-full" />
               </div>
-              <span>
-                <IoIosArrowDown size={20} />
-              </span>
+              <div className="flex cursor-pointer  justify-between items-center w-52">
+                <div>
+                  <h1>{userDetails.name}</h1>
+                  <span className="text-xs text-slate-400 font-normal">{userDetails.email}</span>
+                </div>
+                <span>
+                  <IoIosArrowDown size={20} />
+                </span>
+              </div>
             </div>
-          </div>
+          </NavLink>
         </div>
       </div>
     </div>

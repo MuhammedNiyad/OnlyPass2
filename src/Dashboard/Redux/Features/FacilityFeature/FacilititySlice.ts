@@ -71,7 +71,7 @@ const initialState: FacilitiesState = {
   amenities: [],
   facilityTiming: [
     {
-      day: 'Monday',
+      day: 'Mon',
       morning: {
         start: '6:00 am',
         end: '11:00 am',
@@ -85,7 +85,7 @@ const initialState: FacilitiesState = {
       // fullDay: false,
     },
     {
-      day: 'Tuesday',
+      day: 'Tue',
       morning: {
         start: '6:00 am',
         end: '11:00 am',
@@ -99,7 +99,7 @@ const initialState: FacilitiesState = {
       // fullDay: false,
     },
     {
-      day: 'Wednesday',
+      day: 'Wed',
       morning: {
         start: '6:00 am',
         end: '11:00 am',
@@ -113,7 +113,7 @@ const initialState: FacilitiesState = {
       // fullDay: false,
     },
     {
-      day: 'Thursday',
+      day: 'Thu',
       morning: {
         start: '6:00 am',
         end: '11:00 am',
@@ -127,7 +127,7 @@ const initialState: FacilitiesState = {
       // fullDay: false,
     },
     {
-      day: 'Friday',
+      day: 'Fri',
       morning: {
         start: '6:00 am',
         end: '11:00 am',
@@ -141,7 +141,7 @@ const initialState: FacilitiesState = {
       // fullDay: false,
     },
     {
-      day: 'Saturday',
+      day: 'Sat',
       morning: {
         start: '6:00 am',
         end: '11:00 am',
@@ -155,7 +155,7 @@ const initialState: FacilitiesState = {
       // fullDay: false,
     },
     {
-      day: 'Sunday',
+      day: 'Sun',
       morning: {
         start: '',
         end: '',
