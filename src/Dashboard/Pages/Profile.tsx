@@ -18,7 +18,7 @@ const Profile = () => {
     });
     // return response;
   };
-  const { data: mainData, refetch } = useQuery('fetchUsers', fetchUsers);
+  const { data: mainData } = useQuery('fetchUsers', fetchUsers);
 
   console.log('users:', mainData);
 
