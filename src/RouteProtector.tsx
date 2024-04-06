@@ -7,7 +7,7 @@ import { Navigate } from 'react-router-dom';
 export const RouteProtector = ({ children }: any) => {
   const state = store.getState();
   const isLoggedIn =
-    state.logedUser && state.logedUser.currentUser && state.logedUser.currentUser.accessToken;
+    state.logedUser && state.logedUser.currentUser && state.logedUser.accessToken;
 
   if (isLoggedIn) {
     return <>{children}</>;
@@ -20,7 +20,7 @@ export const RouteProtector = ({ children }: any) => {
 export const LoginProtector = ({ children }: any) => {
   const state = store.getState();
   const isLoggedIn =
-    state.logedUser && state.logedUser.currentUser && state.logedUser.currentUser.accessToken;
+    state.logedUser && state.logedUser.currentUser && state.logedUser.accessToken;
 
     if(isLoggedIn){
         return <Navigate to={'/Facilities'} />

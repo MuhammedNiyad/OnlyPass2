@@ -16,7 +16,7 @@ import { store } from '../../Redux/store';
 const Sidebar = () => {
   const [sidebarOpen, setSidebarOpen] = useState(true); //true bcz client request
   const [selectedItem, setSelectedItem] = useState({ id: '0', open: true });
-  const userDetails = store.getState().logedUser.currentUser.userDetails;
+  const userDetails = store.getState().logedUser.currentUser;
 
   // console.log('userDetails :', userDetails);
 
