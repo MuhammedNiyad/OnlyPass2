@@ -12,13 +12,29 @@ import { TbCategoryFilled, TbSettings2 } from 'react-icons/tb';
 import { NavLink, useLocation } from 'react-router-dom';
 import image1 from '../../../../public/javad.jpg';
 import { store } from '../../Redux/store';
+import { useQuery } from 'react-query';
+import { ApiClientPrivate } from '../../../utils/axios';
 
 const Sidebar = () => {
   const [sidebarOpen, setSidebarOpen] = useState(true); //true bcz client request
   const [selectedItem, setSelectedItem] = useState({ id: '0', open: true });
-  const userDetails = store.getState().logedUser.currentUser;
+  const accessToken = store.getState().logedUser.accessToken;
 
   // console.log('userDetails :', userDetails);
+
+  const fetchUser = () => {
+    return ApiClientPrivate.get('/user/user-one', {
+      headers: {
+        token: `Barrior ${accessToken}`
+      }
+    });
+  };
+
+  const { data: userData , refetch } = useQuery('fetchUser', fetchUser);
+
+  useEffect(()=>{
+refetch()
+  },[userData]);
 
   const openSubMenu = (id: string) => {
     setSelectedItem({
@@ -284,7 +300,7 @@ const Sidebar = () => {
         </div>
 
         <div className="common flex flex-col  z-10 ">
-          <div className=" text-[#5C5C5C] h-[615px] ">
+          <div className=" text-[#5C5C5C] h-[500px] ">
             {sideBarItems.map((it: any, ind: number) => (
               <div key={ind} className="mb-3 ">
                 <NavLink
@@ -343,12 +359,12 @@ const Sidebar = () => {
           <NavLink to={'/user/profile'}>
             <div className="profile p-2 bg-white rounded-lg  flex mb-2 gap-3 font-bold ">
               <div className=" rounded-full bg-slate-200 ">
-                <img src={userDetails.profile} alt="" className="h-12 w-14 rounded-full" />
+                <img src={userData?.data?.profile} alt="" className="h-12 w-14 rounded-full" />
               </div>
               <div className="flex cursor-pointer  justify-between items-center w-52">
                 <div>
-                  <h1>{userDetails.name}</h1>
-                  <span className="text-xs text-slate-400 font-normal">{userDetails.email}</span>
+                  <h1>{userData?.data?.name}</h1>
+                  <span className="text-xs text-slate-400 font-normal">{userData?.data?.email}</span>
                 </div>
                 <span>
                   <IoIosArrowDown size={20} />
