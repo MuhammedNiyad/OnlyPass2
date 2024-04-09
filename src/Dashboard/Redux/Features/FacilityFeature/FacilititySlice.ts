@@ -44,7 +44,7 @@ export interface FacilitiesState {
 }
 
 const initialState: FacilitiesState = {
-  facility_type: 'access',
+  facility_type: '',
   gender: '',
   tier: '',
   facilityName: '',
@@ -57,8 +57,8 @@ const initialState: FacilitiesState = {
   images: [],
   address: '',
   pin_code: '',
-  state: 'India',
-  country: 'Kerala',
+  state: '',
+  country: '',
   latitude_longitude: '',
   admission_fee: '',
   daily_pass: '',

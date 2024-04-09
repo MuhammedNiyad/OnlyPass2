@@ -30,11 +30,11 @@ const Sidebar = () => {
     });
   };
 
-  const { data: userData , refetch } = useQuery('fetchUser', fetchUser);
+  const { data: userData } = useQuery('fetchUser', fetchUser);
 
-  useEffect(()=>{
-refetch()
-  },[userData]);
+//   useEffect(()=>{
+// refetch()
+//   },[userData]);
 
   const openSubMenu = (id: string) => {
     setSelectedItem({

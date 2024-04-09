@@ -1,17 +1,18 @@
 /* eslint-disable prettier/prettier */
 import { Button, Form, Input } from 'antd';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
+import { MdOutlineMyLocation } from 'react-icons/md';
 import { useDispatch } from 'react-redux';
 import { nextButton, prevButton } from '../../../Redux/Features/ButtonSlice';
 import { addData } from '../../../Redux/Features/FacilityFeature/FacilititySlice';
 import { useAppSelector } from '../../../Redux/hooks';
-import TimeTable from './TimeTable';
 import './Location.css';
-import axios from 'axios';
-import { useState } from 'react';
+import TimeTable from './TimeTable';
 
 const Location = () => {
   const [pincode, setPincode] = useState('');
-  const [pincodeData, setPincodeData] = useState(null);
+  const [pincodeData, setPincodeData] = useState<any>(null);
 
   const dispatch = useDispatch();
   const handleNext = () => {
@@ -33,8 +34,8 @@ const Location = () => {
   form.setFieldsValue({
     address: reduxState.address,
     pin_code: reduxState.pin_code,
-    country: 'India',
-    state: 'Kerala',
+    country: reduxState.country,
+    state: reduxState.state,
     latitude_longitude: reduxState.latitude_longitude
   });
 
@@ -57,7 +58,12 @@ const Location = () => {
   const getPincodeInfo = async (pin: number) => {
     try {
       const response = await axios.get(`https://api.postalpincode.in/pincode/${pin}`);
-      setPincodeData(response.data);
+
+      const pinData = response?.data;
+      const foundData = pinData.map((data: any) =>
+        data.PostOffice.find((postOffice: any) => postOffice.BranchType === 'Sub Post Office')
+      );
+      setPincodeData(foundData[0]);
     } catch (error) {
       console.error('Error fetching pincode information', error);
       setPincodeData(null);
@@ -76,7 +82,17 @@ const Location = () => {
     }
   };
 
-  console.log('pin', pincodeData);
+  console.log('pincode Data:', pincodeData);
+
+  useEffect(() => {
+    if (pincodeData) {
+      // Update the form fields with the new pincodeData
+      form.setFieldsValue({
+        state: pincodeData.State,
+        country: pincodeData.Country
+      });
+    }
+  }, [pincodeData, form]);
 
   return (
     <div className="">
@@ -112,14 +128,27 @@ const Location = () => {
                   { min: 6, message: 'Pin number must be at least 6 digits' },
                   { max: 6, message: 'Pin number must be at most 6 digits' }
                 ]}>
-                <Input
-                  name="pin_code"
-                  type="tel"
-                  className="w-[100px] rounded-none"
-                  maxLength={6}
-                  value={pincode}
-                  onChange={handlePincodeChange}
-                />
+                <div className="flex gap-3 items-center">
+                  <Input
+                    name="pin_code"
+                    type="tel"
+                    className="w-[100px] rounded-none"
+                    maxLength={6}
+                    value={pincode}
+                    onChange={handlePincodeChange}
+                  />
+                  <p>
+                    {pincodeData
+                      ? pincodeData?.Name +
+                        ', ' +
+                        pincodeData?.District +
+                        ', ' +
+                        pincodeData?.State +
+                        ', ' +
+                        pincodeData?.Country
+                      : ''}
+                  </p>
+                </div>
               </Form.Item>
               {/* State ............! */}
               <Form.Item
@@ -127,8 +156,8 @@ const Location = () => {
                 className=""
                 name="state">
                 <Input
-                  disabled
-                  value={'Kerala'}
+                  // disabled
+                  // defaultValue={pincodeData?.State}
                   name="state"
                   className="md:w-[350px] rounded-none"
                 />
@@ -139,18 +168,31 @@ const Location = () => {
                 className=""
                 name="country">
                 <Input
-                  disabled
-                  value="India"
+                  // disabled
+                  // defaultValue={pincodeData?.Country}
                   name="country"
                   className="md:w-[350px] rounded-none"
                 />
               </Form.Item>
               {/* Latitude Longitude */}
               <Form.Item
-                label={<p className="text-[#7E7E7E] font-montserrat">Latitude-Longitude</p>}
+                label={<p className="text-[#7E7E7E] font-montserrat ">Latitude-Longitude</p>}
                 name="latitude_longitude"
                 rules={[{ required: true, message: 'latitude_longitude ' }]}>
-                <Input name="latitude_longitude" className="md:w-[350px] rounded-none" />
+                <div className="flex items-center gap-3">
+                  <Input name="latitude_longitude" className="md:w-[300px] rounded-none" />
+                  <span>
+                    <MdOutlineMyLocation size={20} />
+                  </span>
+                </div>
+              </Form.Item>
+              {/* location link */}
+              <Form.Item
+                label={<p className="text-[#7E7E7E] font-montserrat">Location Link</p>}
+                name="link"
+                // rules={[{ required: true, message: 'location link ' }]}
+              >
+                <Input name="link" className="md:w-[350px] rounded-none" />
               </Form.Item>
             </div>
           </div>
