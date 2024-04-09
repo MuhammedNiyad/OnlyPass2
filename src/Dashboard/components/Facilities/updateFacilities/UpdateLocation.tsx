@@ -28,7 +28,8 @@ const UpdateLocation = (props: any) => {
     pin_code: props.facilityData.pin_code,
     state: props.facilityData.state,
     country: props.facilityData.country,
-    latitude_longitude: props.facilityData.latitude_longitude
+    latitude_longitude: props.facilityData.latitude_longitude,
+    link: props.facilityData.link
   });
   return (
     <div>
@@ -38,8 +39,7 @@ const UpdateLocation = (props: any) => {
           onFinish={(values) => console.log({ values })}
           //   onChange={handleInputChange}
           labelCol={{ span: 7 }}
-          className="text-start"
-        >
+          className="text-start">
           <div>
             <div className="font-semibold text-center text-2xl mb-10">
               <h1>Location</h1>
@@ -48,42 +48,63 @@ const UpdateLocation = (props: any) => {
             <div>
               {/* Address...........! */}
               <Form.Item
-                label="Address"
+                label={<p className="text-[#7E7E7E] font-montserrat">Address</p>}
                 name={'address'}
                 className="text-start"
-                rules={[{ required: true, message: 'Enter address field' }]}
-              >
-                <TextArea rows={3} name="address" className="md:w-[350px]" />
+                rules={[{ required: true, message: 'Enter address field' }]}>
+                <TextArea rows={3} name="address" className="md:w-[350px] rounded-none" />
               </Form.Item>
               {/* Pin code ...........! */}
               <Form.Item
-                label="Pin Code"
+                label={<p className="text-[#7E7E7E] font-montserrat">Pin Code</p>}
                 name={'pin_code'}
-                rules={[{ required: true, message: 'Enter pin code' }]}
-              >
+                rules={[{ required: true, message: 'Enter pin code' }]}>
                 <Input
                   name="pin_code"
                   type="number"
-                  className="w-[100px]"
+                  className="w-[100px] rounded-none"
                   //   value={pincode}
                   //   onChange={handlePincodeChange}
                 />
               </Form.Item>
               {/* State ............! */}
-              <Form.Item label="State" className="" name="state">
-                <Input disabled value={'Kerala'} name="state" className="md:w-[350px]" />
+              <Form.Item
+                label={<p className="text-[#7E7E7E] font-montserrat">State</p>}
+                className=""
+                name="state">
+                <Input
+                  disabled
+                  value={'Kerala'}
+                  name="state"
+                  className="md:w-[350px] rounded-none"
+                />
               </Form.Item>
               {/* Country ...........! */}
-              <Form.Item label="Country" className="" name="country">
-                <Input disabled value="India" name="country" className="md:w-[350px]" />
+              <Form.Item
+                label={<p className="text-[#7E7E7E] font-montserrat">Country</p>}
+                className=""
+                name="country">
+                <Input
+                  disabled
+                  value="India"
+                  name="country"
+                  className="md:w-[350px] rounded-none"
+                />
               </Form.Item>
               {/* Latitude Longitude */}
               <Form.Item
-                label="Latitude_Longitude"
+                label={<p className="text-[#7E7E7E] font-montserrat ">Latitude-Longitude</p>}
                 name="latitude_longitude"
-                rules={[{ required: true, message: 'latitude_longitude ' }]}
+                rules={[{ required: true, message: 'latitude_longitude ' }]}>
+                <Input name="latitude_longitude" className="md:w-[300px] rounded-none" />
+              </Form.Item>
+              {/* location link */}
+              <Form.Item
+                label={<p className="text-[#7E7E7E] font-montserrat">Location Link</p>}
+                name="link"
+                // rules={[{ required: true, message: 'location link ' }]}
               >
-                <Input name="latitude_longitude" className="md:w-[350px]" />
+                <Input name="link" className="md:w-[350px] rounded-none" />
               </Form.Item>
             </div>
           </div>

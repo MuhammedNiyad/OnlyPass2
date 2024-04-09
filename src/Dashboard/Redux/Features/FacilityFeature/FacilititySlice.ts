@@ -18,6 +18,7 @@ export interface FacilitiesState {
   country: string;
   state: string;
   latitude_longitude: string;
+  link:string;
   admission_fee: string;
   daily_pass: string;
   monthly_pass: string;
@@ -60,6 +61,7 @@ const initialState: FacilitiesState = {
   state: '',
   country: '',
   latitude_longitude: '',
+  link:'',
   admission_fee: '',
   daily_pass: '',
   monthly_pass: '',

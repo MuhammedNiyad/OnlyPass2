@@ -220,6 +220,11 @@ const FacilitiesDetails: React.FC = () => {
       id: 4,
       label: 'latitude_longitude',
       input: mainData?.data?.latitude_longitude
+    },
+    {
+      id: 5,
+      label: 'link',
+      input: mainData?.data?.link
     }
   ];
   return (

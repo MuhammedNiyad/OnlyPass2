@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { Button, Form, Input } from 'antd';
+import { Button, Form, Input, Select } from 'antd';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { MdOutlineMyLocation } from 'react-icons/md';
@@ -13,6 +13,8 @@ import TimeTable from './TimeTable';
 const Location = () => {
   const [pincode, setPincode] = useState('');
   const [pincodeData, setPincodeData] = useState<any>(null);
+  const [finalPinData, setFinalPinData] = useState<any>(null);
+  
 
   const dispatch = useDispatch();
   const handleNext = () => {
@@ -36,7 +38,8 @@ const Location = () => {
     pin_code: reduxState.pin_code,
     country: reduxState.country,
     state: reduxState.state,
-    latitude_longitude: reduxState.latitude_longitude
+    latitude_longitude: reduxState.latitude_longitude,
+    link: reduxState.link
   });
 
   const { TextArea } = Input;
@@ -60,10 +63,7 @@ const Location = () => {
       const response = await axios.get(`https://api.postalpincode.in/pincode/${pin}`);
 
       const pinData = response?.data;
-      const foundData = pinData.map((data: any) =>
-        data.PostOffice.find((postOffice: any) => postOffice.BranchType === 'Sub Post Office')
-      );
-      setPincodeData(foundData[0]);
+      setPincodeData(pinData[0].PostOffice);
     } catch (error) {
       console.error('Error fetching pincode information', error);
       setPincodeData(null);
@@ -82,17 +82,29 @@ const Location = () => {
     }
   };
 
+  const pincodeSelectChange = (value: string) => {
+    const filteredData = pincodeData.filter((data: any) => data.Name === value);
+
+    console.log('hello', filteredData[0]);
+
+    setFinalPinData(filteredData[0]);
+  };
+
   console.log('pincode Data:', pincodeData);
 
   useEffect(() => {
-    if (pincodeData) {
+    if (finalPinData) {
       // Update the form fields with the new pincodeData
       form.setFieldsValue({
-        state: pincodeData.State,
-        country: pincodeData.Country
+        address:
+          reduxState.address + finalPinData
+            ? ', ' + finalPinData?.Name + ', ' + finalPinData?.District
+            : '',
+        state: finalPinData.State,
+        country: finalPinData.Country
       });
     }
-  }, [pincodeData, form]);
+  }, [finalPinData, form, reduxState]);
 
   return (
     <div className="">
@@ -130,24 +142,23 @@ const Location = () => {
                 ]}>
                 <div className="flex gap-3 items-center">
                   <Input
-                    name="pin_code"
+                    name={'pin_code'}
                     type="tel"
                     className="w-[100px] rounded-none"
                     maxLength={6}
                     value={pincode}
                     onChange={handlePincodeChange}
                   />
-                  <p>
-                    {pincodeData
-                      ? pincodeData?.Name +
-                        ', ' +
-                        pincodeData?.District +
-                        ', ' +
-                        pincodeData?.State +
-                        ', ' +
-                        pincodeData?.Country
-                      : ''}
-                  </p>
+                  <Select
+                    defaultValue={{ value: '', label: 'Select Place' }}
+                    style={{ width: 235 }}
+                    className="font-montserrat"
+                    onChange={pincodeSelectChange}
+                    options={pincodeData?.map((it: any) => ({
+                      value: it.Name,
+                      label: it.Name
+                    }))}
+                  />
                 </div>
               </Form.Item>
               {/* State ............! */}
