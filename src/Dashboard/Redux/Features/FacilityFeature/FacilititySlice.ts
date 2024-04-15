@@ -42,6 +42,16 @@ export interface FacilitiesState {
     };
     // fullDay: boolean;
   }[];
+  rushHours: {
+    morning: {
+      start: string;
+      end: string;
+    };
+    evening: {
+      start: string;
+      end: string;
+    };
+  };
 }
 
 const initialState: FacilitiesState = {
@@ -170,7 +180,17 @@ const initialState: FacilitiesState = {
       }
       // fullDay: false,
     }
-  ]
+  ],
+  rushHours: {
+    morning: {
+      start: '',
+      end: ''
+    },
+    evening: {
+      start: '',
+      end: ''
+    }
+  }
 };
 
 export const FacilitySlice = createSlice({
@@ -182,8 +202,6 @@ export const FacilitySlice = createSlice({
       // action: PayloadAction<Partial<FacilitiesState>>
       action: PayloadAction<Partial<any>>
     ) => {
-      console.log('niyad', action.payload);
-
       const payloadKeys = Object.keys(action.payload) as Array<keyof FacilitiesState>; // Type assertion
       payloadKeys.forEach((key) => {
         if (key !== 'images' && key !== 'gender') {
@@ -283,7 +301,7 @@ export const FacilitySlice = createSlice({
       };
     },
     setAllTimingField: (state, action) => {
-      console.log('hello', action.payload);
+      // console.log('hello', action.payload);
       // Extract Monday's timing from the payload
       const mondayTiming = action.payload.find((item: any) => item.day === 'Monday');
 
@@ -306,6 +324,14 @@ export const FacilitySlice = createSlice({
       return state;
     },
 
+    setRushHours: (state, action) => {
+      console.log('rushHours:::=', action.payload);
+      state.rushHours = {
+        ...state.rushHours,
+        ...action.payload
+      };
+    },
+
     reset: (state) => {
       Object.assign(state, initialState);
     }
@@ -318,7 +344,8 @@ export const {
   setAmenties,
   setEquipments,
   setfacilityTiming,
-  setAllTimingField
+  setAllTimingField,
+  setRushHours
 } = FacilitySlice.actions;
 
 export default FacilitySlice.reducer;

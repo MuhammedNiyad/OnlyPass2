@@ -288,7 +288,6 @@ const Location = () => {
               <TimeTable />
             </div>
           </div>
-
           <div className="flex gap-3 justify-center ">
             <Button className="bg-white rounded-none font-montserrat" onClick={handlePrevious}>
               Previous

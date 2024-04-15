@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable prettier/prettier */
 import { Switch, Tooltip } from 'antd';
 import React, { useState } from 'react';
@@ -9,6 +10,7 @@ import {
   setfacilityTiming
 } from '../../../Redux/Features/FacilityFeature/FacilititySlice';
 import { IoMdColorFill } from 'react-icons/io';
+import RushHours from '../../common_components/RushHours';
 
 const TimeTable = () => {
   const { facilityTiming } = useAppSelector((state) => state.facility);
@@ -93,6 +95,9 @@ const TimeTable = () => {
             </Tooltip>
           </div>
         ))}
+      </div>
+      <div>
+        <RushHours/>
       </div>
     </div>
   );
@@ -249,6 +254,7 @@ export const TimeMorning: React.FC<TimeMorningProps> = (props) => {
       }
       // fullDay: props.data.fullDay,
     };
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     //@ts-ignore
     timeData[value.timeType][value.holder] = value.time;
 
@@ -442,6 +448,7 @@ export const TimeEvening: React.FC<TimeEveningProps> = (props) => {
       }
       // fullDay: props.data.fullDay,
     };
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     //@ts-ignore
     timeData[value.timeType][value.holder] = value.time;
 

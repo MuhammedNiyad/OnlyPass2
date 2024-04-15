@@ -77,7 +77,7 @@ const BasicInfo = () => {
         }
       });
 
-      console.log('Image upload response:', response.data);
+      // console.log('Image upload response:', response.data);
       // const facilityImagesArray = response.data.map((item: any) => item);
 
       // Dispatch the facility_images array to Redux
@@ -93,7 +93,7 @@ const BasicInfo = () => {
       // Assuming ApiClientPrivate is an Axios instance
       const formData = new FormData();
       formData.append('logo', e.file);
-      console.log('logooooooooo', e.file);
+      // console.log('logooooooooo', e.file);
 
       // Make the POST request to upload the logo
       if (remove !== true) {
