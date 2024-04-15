@@ -133,7 +133,31 @@ const Location = () => {
       dispatch(addData({ ['state']: finalPinData.State }));
       dispatch(addData({ ['country']: finalPinData.Country }));
     }
-  }, [finalPinData]);
+  }, [finalPinData, dispatch, form]);
+
+  const getGeoLocation = ()=>{
+    if(navigator.geolocation){
+      console.log(navigator.geolocation.getCurrentPosition(
+         // Success callback
+      (position) => {
+        // console.log("Latitude: " + position.coords.latitude);
+        // console.log("Longitude: " + position.coords.longitude);
+        const lat = position.coords.latitude;
+        const long = position.coords.longitude;
+        form.setFieldsValue({
+          latitude_longitude: `${lat}, ${long}`
+        });
+        dispatch(addData({["latitude_longitude"]:`${lat}, ${long}`}))
+      },
+      // Error callback
+      (error) => {
+        console.error("Error Code = " + error.code + " - " + error.message);
+      }
+      ));
+    }else{
+      alert("Geo location is not available")
+    }
+  };
 
   return (
     <div className="">
@@ -241,8 +265,8 @@ const Location = () => {
                     onChange={handleLatLong}
                   />
                 </Form.Item>
-                <span className="absolute right-[130px] top-[443px]">
-                  <MdOutlineMyLocation size={20} />
+                <span className="absolute right-[130px] top-[443px] cursor-pointer">
+                  <MdOutlineMyLocation size={20}  onClick={getGeoLocation} />
                 </span>
               </div>
               {/* location link */}

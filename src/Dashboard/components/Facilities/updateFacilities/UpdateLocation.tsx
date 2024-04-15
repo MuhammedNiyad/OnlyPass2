@@ -73,6 +73,32 @@ const UpdateLocation = (props: any) => {
     }
   };
 
+  const getGeoLocation = () => {
+    if (navigator.geolocation) {
+      console.log(
+        navigator.geolocation.getCurrentPosition(
+          // Success callback
+          (position) => {
+            // console.log("Latitude: " + position.coords.latitude);
+            // console.log("Longitude: " + position.coords.longitude);
+            const lat = position.coords.latitude;
+            const long = position.coords.longitude;
+            form.setFieldsValue({
+              latitude_longitude: `${lat}, ${long}`
+            });
+            // dispatch(addData({ ['latitude_longitude']: `${lat}, ${long}` }));
+          },
+          // Error callback
+          (error) => {
+            console.error('Error Code = ' + error.code + ' - ' + error.message);
+          }
+        )
+      );
+    } else {
+      alert('Geo location is not available');
+    }
+  };
+
   return (
     <div>
       <div className="font-semibold  ">
@@ -171,8 +197,8 @@ const UpdateLocation = (props: any) => {
                     // onChange={handleLatLong}
                   />
                 </Form.Item>
-                <span className="absolute right-[30px] top-[365px]">
-                  <MdOutlineMyLocation size={20} />
+                <span className="absolute right-[30px] top-[365px] cursor-pointer">
+                  <MdOutlineMyLocation size={20} onClick={getGeoLocation} />
                 </span>
               </div>
               {/* location link */}

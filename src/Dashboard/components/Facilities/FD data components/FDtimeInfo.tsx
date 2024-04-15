@@ -20,8 +20,7 @@ const FDtimeInfo = ({ mainData }: any) => {
           </div>
           <div
             onClick={() => setTimeModalOpen(true)}
-            className="flex items-center gap-1 bg-[#F2F2F2] w-[84px] h-[24px] px-2 justify-center"
-          >
+            className="flex items-center gap-1 bg-[#F2F2F2] w-[84px] h-[24px] px-2 justify-center cursor-pointer">
             <FaEdit />
             <p>Edit</p>
           </div>
@@ -91,8 +90,7 @@ const FDtimeInfo = ({ mainData }: any) => {
         open={timeModalOpen}
         onCancel={() => setTimeModalOpen(false)}
         footer={false}
-        width={600}
-      >
+        width={600}>
         <UpdateTime facilityData={mainData?.data} cancel={() => setTimeModalOpen(false)} />
       </Modal>
     </div>
