@@ -1,10 +1,16 @@
-import { Button, Form, Input } from 'antd';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { Button, Form, Input, Select } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
+import axios from 'axios';
+import { useState } from 'react';
+import { MdOutlineMyLocation } from 'react-icons/md';
 import { ApiClientPrivate } from '../../../../utils/axios';
 import { setLocationUpdateBtn } from '../../../Redux/Features/updateFacilityBtn';
 import { useAppDispatch } from '../../../Redux/hooks';
 
 const UpdateLocation = (props: any) => {
+  const [pincodeData, setPincodeData] = useState<any>(null);
+  const [finalPinData, setFinalPinData] = useState<any>(null);
   const [form] = Form.useForm();
   const dispatch = useAppDispatch();
 
@@ -23,14 +29,50 @@ const UpdateLocation = (props: any) => {
       // Handle error appropriately
     }
   };
-  form.setFieldsValue({
-    address: props.facilityData.address,
-    pin_code: props.facilityData.pin_code,
-    state: props.facilityData.state,
-    country: props.facilityData.country,
-    latitude_longitude: props.facilityData.latitude_longitude,
-    link: props.facilityData.link
-  });
+  // form.setFieldsValue({
+  //   address: props.facilityData.address,
+  //   pin_code: props.facilityData.pin_code,
+  //   state: props.facilityData.state,
+  //   country: props.facilityData.country,
+  //   latitude_longitude: props.facilityData.latitude_longitude,
+  //   link: props.facilityData.link
+  // });
+
+  const handlePincodeChange = async (e: any) => {
+    const newPincode = e.target.value;
+    // dispatch(addData({ ['pin_code']: e.target.value }));
+
+    // Fetch pincode data only if the length is valid (e.g., 6 digits)
+    if (newPincode.length === 6) {
+      // getPincodeInfo(newPincode);
+      try {
+        const response = await axios.get(`https://api.postalpincode.in/pincode/${newPincode}`);
+
+        const pinData = response?.data;
+        setPincodeData(pinData[0].PostOffice);
+      } catch (error) {
+        console.error('Error fetching pincode information', error);
+        setPincodeData(null);
+      }
+    } else {
+      setPincodeData(null);
+    }
+  };
+
+  const pincodeSelectChange = (value: string) => {
+    const filteredData = pincodeData.filter((data: any) => data.Name === value);
+    if (filteredData.length > 0) {
+      setFinalPinData(filteredData[0]);
+
+      // Update the form field with the new address
+      form.setFieldsValue({
+        address: filteredData[0].Name + ', ' + filteredData[0].District,
+        state: finalPinData.State,
+        country: finalPinData.Country
+      });
+    }
+  };
+
   return (
     <div>
       <div className="font-semibold  ">
@@ -39,6 +81,14 @@ const UpdateLocation = (props: any) => {
           onFinish={(values) => console.log({ values })}
           //   onChange={handleInputChange}
           labelCol={{ span: 7 }}
+          initialValues={{
+            address: props.facilityData.address,
+            pin_code: props.facilityData.pin_code,
+            state: props.facilityData.state,
+            country: props.facilityData.country,
+            latitude_longitude: props.facilityData.latitude_longitude,
+            link: props.facilityData.link
+          }}
           className="text-start">
           <div>
             <div className="font-semibold text-center text-2xl mb-10">
@@ -46,6 +96,37 @@ const UpdateLocation = (props: any) => {
             </div>
 
             <div>
+              {/* Pin code ...........! */}
+              <div className="reletive">
+                <Form.Item
+                  label={<p className="text-[#7E7E7E] font-montserrat">Pin-Code</p>}
+                  name={'pin_code'}
+                  rules={[
+                    { required: true, message: 'Please enter Pin-code' },
+                    { pattern: /^[0-9]+$/, message: 'Please enter valid Pin number' },
+                    { min: 6, message: 'Pin number must be at least 6 digits' },
+                    { max: 6, message: 'Pin number must be at most 6 digits' }
+                  ]}>
+                  <Input
+                    name={'pin_code'}
+                    type="tel"
+                    className="w-[100px] rounded-none"
+                    maxLength={6}
+                    // value={pincode}
+                    onChange={handlePincodeChange}
+                  />
+                </Form.Item>
+                <Select
+                  defaultValue="Select Place"
+                  style={{ width: 235 }}
+                  className="font-montserrat absolute right-[15px] top-[93px] z-10"
+                  onChange={pincodeSelectChange}
+                  options={pincodeData?.map((it: any) => ({
+                    value: it.Name,
+                    label: it.Name
+                  }))}
+                />
+              </div>
               {/* Address...........! */}
               <Form.Item
                 label={<p className="text-[#7E7E7E] font-montserrat">Address</p>}
@@ -54,19 +135,6 @@ const UpdateLocation = (props: any) => {
                 rules={[{ required: true, message: 'Enter address field' }]}>
                 <TextArea rows={3} name="address" className="md:w-[350px] rounded-none" />
               </Form.Item>
-              {/* Pin code ...........! */}
-              <Form.Item
-                label={<p className="text-[#7E7E7E] font-montserrat">Pin Code</p>}
-                name={'pin_code'}
-                rules={[{ required: true, message: 'Enter pin code' }]}>
-                <Input
-                  name="pin_code"
-                  type="number"
-                  className="w-[100px] rounded-none"
-                  //   value={pincode}
-                  //   onChange={handlePincodeChange}
-                />
-              </Form.Item>
               {/* State ............! */}
               <Form.Item
                 label={<p className="text-[#7E7E7E] font-montserrat">State</p>}
@@ -74,7 +142,7 @@ const UpdateLocation = (props: any) => {
                 name="state">
                 <Input
                   disabled
-                  value={'Kerala'}
+                  // value={'Kerala'}
                   name="state"
                   className="md:w-[350px] rounded-none"
                 />
@@ -86,18 +154,27 @@ const UpdateLocation = (props: any) => {
                 name="country">
                 <Input
                   disabled
-                  value="India"
+                  // value="India"
                   name="country"
                   className="md:w-[350px] rounded-none"
                 />
               </Form.Item>
               {/* Latitude Longitude */}
-              <Form.Item
-                label={<p className="text-[#7E7E7E] font-montserrat ">Latitude-Longitude</p>}
-                name="latitude_longitude"
-                rules={[{ required: true, message: 'latitude_longitude ' }]}>
-                <Input name="latitude_longitude" className="md:w-[300px] rounded-none" />
-              </Form.Item>
+              <div className="reletive">
+                <Form.Item
+                  label={<p className="text-[#7E7E7E] font-montserrat ">Lat-Long</p>}
+                  name="latitude_longitude"
+                  rules={[{ required: true, message: 'latitude_longitude ' }]}>
+                  <Input
+                    name="latitude_longitude"
+                    className="md:w-[300px] rounded-none"
+                    // onChange={handleLatLong}
+                  />
+                </Form.Item>
+                <span className="absolute right-[30px] top-[365px]">
+                  <MdOutlineMyLocation size={20} />
+                </span>
+              </div>
               {/* location link */}
               <Form.Item
                 label={<p className="text-[#7E7E7E] font-montserrat">Location Link</p>}
@@ -109,7 +186,11 @@ const UpdateLocation = (props: any) => {
             </div>
           </div>
           <div className="flex justify-center">
-            <Button type="primary" htmlType="submit" className="bg-blue-600" onClick={handleUpdate}>
+            <Button
+              type="primary"
+              htmlType="submit"
+              className="bg-black rounded-none"
+              onClick={handleUpdate}>
               Update
             </Button>
           </div>

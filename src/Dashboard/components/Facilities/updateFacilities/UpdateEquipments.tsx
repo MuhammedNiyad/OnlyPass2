@@ -28,9 +28,9 @@ const UpdateEquipments = (props: any) => {
             : false
         };
       });
-      console.log({ eqips });
-
-      setEquipmentsData(eqips);
+      // console.log({ eqips });
+      const filteredData = eqips.filter((item:any) => item.status === true);
+      setEquipmentsData(filteredData);
     } catch (error) {
       console.error(error);
     }

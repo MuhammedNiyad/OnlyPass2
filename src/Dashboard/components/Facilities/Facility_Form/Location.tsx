@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable prettier/prettier */
 import { Button, Form, Input, Select } from 'antd';
 import axios from 'axios';
@@ -11,10 +12,8 @@ import './Location.css';
 import TimeTable from './TimeTable';
 
 const Location = () => {
-  const [pincode, setPincode] = useState('');
   const [pincodeData, setPincodeData] = useState<any>(null);
   const [finalPinData, setFinalPinData] = useState<any>(null);
-  
 
   const dispatch = useDispatch();
   const handleNext = () => {
@@ -33,14 +32,14 @@ const Location = () => {
   console.log({ reduxState });
   const [form] = Form.useForm();
 
-  form.setFieldsValue({
-    address: reduxState.address,
-    pin_code: reduxState.pin_code,
-    country: reduxState.country,
-    state: reduxState.state,
-    latitude_longitude: reduxState.latitude_longitude,
-    link: reduxState.link
-  });
+  // form.setFieldsValue({
+  //   address: reduxState.address,
+  //   pin_code: reduxState.pin_code,
+  //   country: reduxState.country,
+  //   state: reduxState.state,
+  //   latitude_longitude: reduxState.latitude_longitude,
+  //   link: reduxState.link
+  // });
 
   const { TextArea } = Input;
 
@@ -50,33 +49,60 @@ const Location = () => {
     const fieldName = e.target.name;
 
     const fieldValue = e.target.value;
+
     // console.log({fieldValue});
     dispatch(addData({ [fieldName]: fieldValue }));
     return;
     // console.log(e.target.value);
   };
 
-  // pincode api fetching :
-
-  const getPincodeInfo = async (pin: number) => {
-    try {
-      const response = await axios.get(`https://api.postalpincode.in/pincode/${pin}`);
-
-      const pinData = response?.data;
-      setPincodeData(pinData[0].PostOffice);
-    } catch (error) {
-      console.error('Error fetching pincode information', error);
-      setPincodeData(null);
-    }
+  // const handleAddress = (e: any) => {
+  //   setAddress(e.target.value);
+  //   // dispatch(addData({ ['address']: e.target.value }));
+  // };
+  const handleState = (e: any) => {
+    dispatch(addData({ ['state']: e.target.value }));
+  };
+  const handleCountry = (e: any) => {
+    dispatch(addData({ ['country']: e.target.value }));
+  };
+  const handleLatLong = (e: any) => {
+    dispatch(addData({ ['latitude_longitude']: e.target.value }));
+  };
+  const handleLink = (e: any) => {
+    dispatch(addData({ ['link']: e.target.value }));
   };
 
-  const handlePincodeChange = (e: any) => {
+  // pincode api fetching :
+
+  // const getPincodeInfo = async (pin: number) => {
+  //   try {
+  //     const response = await axios.get(`https://api.postalpincode.in/pincode/${pin}`);
+
+  //     const pinData = response?.data;
+  //     setPincodeData(pinData[0].PostOffice);
+  //   } catch (error) {
+  //     console.error('Error fetching pincode information', error);
+  //     setPincodeData(null);
+  //   }
+  // };
+
+  const handlePincodeChange = async (e: any) => {
     const newPincode = e.target.value;
-    setPincode(newPincode);
+    dispatch(addData({ ['pin_code']: e.target.value }));
 
     // Fetch pincode data only if the length is valid (e.g., 6 digits)
     if (newPincode.length === 6) {
-      getPincodeInfo(newPincode);
+      // getPincodeInfo(newPincode);
+      try {
+        const response = await axios.get(`https://api.postalpincode.in/pincode/${newPincode}`);
+  
+        const pinData = response?.data;
+        setPincodeData(pinData[0].PostOffice);
+      } catch (error) {
+        console.error('Error fetching pincode information', error);
+        setPincodeData(null);
+      }
     } else {
       setPincodeData(null);
     }
@@ -84,27 +110,30 @@ const Location = () => {
 
   const pincodeSelectChange = (value: string) => {
     const filteredData = pincodeData.filter((data: any) => data.Name === value);
+    if (filteredData.length > 0) {
+      setFinalPinData(filteredData[0]);
 
-    console.log('hello', filteredData[0]);
-
-    setFinalPinData(filteredData[0]);
-  };
-
-  console.log('pincode Data:', pincodeData);
-
-  useEffect(() => {
-    if (finalPinData) {
-      // Update the form fields with the new pincodeData
+      // Update the form field with the new address
       form.setFieldsValue({
-        address:
-          reduxState.address + finalPinData
-            ? ', ' + finalPinData?.Name + ', ' + finalPinData?.District
-            : '',
+        address: filteredData[0].Name + ', ' + filteredData[0].District,
         state: finalPinData.State,
         country: finalPinData.Country
       });
     }
-  }, [finalPinData, form, reduxState]);
+  };
+
+  // console.log('pincode Data:', pincodeData);
+
+  useEffect(() => {
+    if (finalPinData) {
+      form.setFieldsValue({
+        state: finalPinData.State,
+        country: finalPinData.Country
+      });
+      dispatch(addData({ ['state']: finalPinData.State }));
+      dispatch(addData({ ['country']: finalPinData.Country }));
+    }
+  }, [finalPinData]);
 
   return (
     <div className="">
@@ -113,6 +142,14 @@ const Location = () => {
           form={form}
           onFinish={handleNext}
           onChange={handleInputChange}
+          initialValues={{
+            address: reduxState.address,
+            pin_code: reduxState.pin_code,
+            country: reduxState.country,
+            state: reduxState.state,
+            latitude_longitude: reduxState.latitude_longitude,
+            link: reduxState.link
+          }}
           labelCol={{ span: 7 }}
           colon={false}
           className="text-start">
@@ -122,44 +159,49 @@ const Location = () => {
             </div>
 
             <div>
+              {/* Pin code ...........! */}
+              <div className="reletive">
+                <Form.Item
+                  label={<p className="text-[#7E7E7E] font-montserrat">Pin-Code</p>}
+                  name={'pin_code'}
+                  rules={[
+                    { required: true, message: 'Please enter Pin-code' },
+                    { pattern: /^[0-9]+$/, message: 'Please enter valid Pin number' },
+                    { min: 6, message: 'Pin number must be at least 6 digits' },
+                    { max: 6, message: 'Pin number must be at most 6 digits' }
+                  ]}>
+                  <Input
+                    name={'pin_code'}
+                    type="tel"
+                    className="w-[100px] rounded-none"
+                    maxLength={6}
+                    // value={pincode}
+                    onChange={handlePincodeChange}
+                  />
+                </Form.Item>
+                <Select
+                  defaultValue= 'Select Place' 
+                  style={{ width: 235 }}
+                  className="font-montserrat absolute right-[125px] top-[168px] z-10"
+                  onChange={pincodeSelectChange}
+                  options={pincodeData?.map((it: any) => ({
+                    value: it.Name,
+                    label: it.Name
+                  }))}
+                />
+              </div>
               {/* Address...........! */}
               <Form.Item
                 label={<p className="text-[#7E7E7E] font-montserrat">Address</p>}
                 name={'address'}
                 className="text-start"
                 rules={[{ required: true, message: 'Enter address field' }]}>
-                <TextArea rows={3} name="address" className="md:w-[350px] rounded-none" />
-              </Form.Item>
-              {/* Pin code ...........! */}
-              <Form.Item
-                label={<p className="text-[#7E7E7E] font-montserrat">Pin-Code</p>}
-                name={'pin_code'}
-                rules={[
-                  { required: true, message: 'Please enter Pin-code' },
-                  { pattern: /^[0-9]+$/, message: 'Please enter valid Pin number' },
-                  { min: 6, message: 'Pin number must be at least 6 digits' },
-                  { max: 6, message: 'Pin number must be at most 6 digits' }
-                ]}>
-                <div className="flex gap-3 items-center">
-                  <Input
-                    name={'pin_code'}
-                    type="tel"
-                    className="w-[100px] rounded-none"
-                    maxLength={6}
-                    value={pincode}
-                    onChange={handlePincodeChange}
-                  />
-                  <Select
-                    defaultValue={{ value: '', label: 'Select Place' }}
-                    style={{ width: 235 }}
-                    className="font-montserrat"
-                    onChange={pincodeSelectChange}
-                    options={pincodeData?.map((it: any) => ({
-                      value: it.Name,
-                      label: it.Name
-                    }))}
-                  />
-                </div>
+                <TextArea
+                  rows={3}
+                  name="address"
+                  className="md:w-[350px] rounded-none"
+                  // onChange={handleAddress}
+                />
               </Form.Item>
               {/* State ............! */}
               <Form.Item
@@ -167,10 +209,11 @@ const Location = () => {
                 className=""
                 name="state">
                 <Input
-                  // disabled
+                  disabled
                   // defaultValue={pincodeData?.State}
                   name="state"
                   className="md:w-[350px] rounded-none"
+                  onChange={handleState}
                 />
               </Form.Item>
               {/* Country ...........! */}
@@ -179,31 +222,36 @@ const Location = () => {
                 className=""
                 name="country">
                 <Input
-                  // disabled
+                  disabled
                   // defaultValue={pincodeData?.Country}
                   name="country"
                   className="md:w-[350px] rounded-none"
+                  onChange={handleCountry}
                 />
               </Form.Item>
               {/* Latitude Longitude */}
-              <Form.Item
-                label={<p className="text-[#7E7E7E] font-montserrat ">Latitude-Longitude</p>}
-                name="latitude_longitude"
-                rules={[{ required: true, message: 'latitude_longitude ' }]}>
-                <div className="flex items-center gap-3">
-                  <Input name="latitude_longitude" className="md:w-[300px] rounded-none" />
-                  <span>
-                    <MdOutlineMyLocation size={20} />
-                  </span>
-                </div>
-              </Form.Item>
+              <div className="reletive">
+                <Form.Item
+                  label={<p className="text-[#7E7E7E] font-montserrat ">Latitude-Longitude</p>}
+                  name="latitude_longitude"
+                  rules={[{ required: true, message: 'latitude_longitude ' }]}>
+                  <Input
+                    name="latitude_longitude"
+                    className="md:w-[300px] rounded-none"
+                    onChange={handleLatLong}
+                  />
+                </Form.Item>
+                <span className="absolute right-[130px] top-[443px]">
+                  <MdOutlineMyLocation size={20} />
+                </span>
+              </div>
               {/* location link */}
               <Form.Item
                 label={<p className="text-[#7E7E7E] font-montserrat">Location Link</p>}
                 name="link"
                 // rules={[{ required: true, message: 'location link ' }]}
               >
-                <Input name="link" className="md:w-[350px] rounded-none" />
+                <Input name="link" className="md:w-[350px] rounded-none" onChange={handleLink} />
               </Form.Item>
             </div>
           </div>

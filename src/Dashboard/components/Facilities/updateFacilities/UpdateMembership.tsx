@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { ApiClientPrivate } from '../../../../utils/axios';
 import { setMembershipUpdateBtn } from '../../../Redux/Features/updateFacilityBtn';
 import { useAppDispatch } from '../../../Redux/hooks';
+import { useQuery } from 'react-query';
 
 interface CheckedState {
   admission_fee: boolean;
@@ -16,6 +17,7 @@ interface CheckedState {
 export const UpdateMembership = (props: any) => {
   const [form] = Form.useForm();
   const dispatch = useAppDispatch();
+  const [tierData, setTierData] = useState<any>();
 
   const handleUpdate = async () => {
     try {
@@ -111,11 +113,24 @@ export const UpdateMembership = (props: any) => {
     });
   }, [props]);
 
+  const fetchTier = () => {
+    return ApiClientPrivate.get(`/tier/all-tier`);
+    // return response;
+  };
+  const { data: mainData } = useQuery('fetchTier', fetchTier);
+
+  useEffect(() => {
+    if (mainData?.data) {
+      const filteredData = mainData.data.filter((item: any) => item.status === true);
+      setTierData(filteredData);
+    }
+  }, [mainData]);
+
   return (
     <div>
       <div className="font-semibold  ">
         <Form form={form} onFinish={handleUpdate}>
-          <div className="font-semibold text-center text-2xl mb-10">
+          <div className="font-semibold font-montserrat text-2xl mb-10">
             <h1>Membership options</h1>
           </div>
           {data.map((item) => (
@@ -125,14 +140,13 @@ export const UpdateMembership = (props: any) => {
                 valuePropName="checked"
                 // wrapperCol={{ span: 30 }}
               >
-                <div className=" w-[150px] md:w-[200px]  flex justify-between gap-3">
+                <div className=" w-[150px] md:w-[200px]  flex justify-between font-montserrat text-[#7E7E7E] gap-3">
                   {item.label}
 
                   <Checkbox
                     name={item.name}
                     checked={checkedState[item.name as keyof typeof checkedState]}
-                    onChange={handleCheckBox}
-                  >
+                    onChange={handleCheckBox}>
                     {' '}
                   </Checkbox>
                 </div>
@@ -140,13 +154,12 @@ export const UpdateMembership = (props: any) => {
 
               <div className="flex gap-1 w-40">
                 <Form.Item
-                  label="Price"
+                  label={<p className="text-[#7E7E7E] font-montserrat">Price</p>}
                   name={item.name}
                   hidden={!checkedState[item.name as keyof typeof checkedState]}
-                  wrapperCol={{ span: 6 }}
-                >
+                  wrapperCol={{ span: 6 }}>
                   <InputNumber
-                    className="w-20 price"
+                    className="w-20 price rounded-none"
                     name={item.name}
                     type="number"
                     //   onChange={(value:any) =>
@@ -159,46 +172,40 @@ export const UpdateMembership = (props: any) => {
             </div>
           ))}
 
-          <Form.Item label="Other Options" labelCol={{ span: 7 }} name={'other'}>
+          <Form.Item
+            label={<p className="text-[#7E7E7E] font-montserrat">Other Option</p>}
+            labelCol={{ span: 7 }}
+            name={'other'}>
             <Input
               name="other"
-              className="w-52"
+              className="w-52 rounded-none"
               //    onChange={handleOtherchange}
             />
           </Form.Item>
 
           <Form.Item
-            label="Facility Tier"
+            label={<p className="text-[#7E7E7E] font-montserrat">Facility Tier</p>}
             name="tier"
             className="text-start"
             rules={[{ required: true, message: 'Please Select your Tier!' }]}
-            labelCol={{ span: 7 }}
-          >
+            labelCol={{ span: 7 }}>
             <Select
               defaultValue={{ value: '', label: 'Select tier' }}
               style={{ width: 205 }}
-              //   onChange={handleChange}
-              options={[
-                {
-                  value: 'Platinum',
-                  label: 'Platinum',
-                  name: 'platinum'
-                },
-                {
-                  value: 'Gold',
-                  label: 'Gold',
-                  name: 'gold'
-                },
-                {
-                  value: 'Silver',
-                  label: 'Silver',
-                  name: 'silver'
-                }
-              ]}
+              className="font-montserrat"
+              // onChange={handleChange}
+              options={tierData?.map((it: any) => ({
+                value: it.tier_name,
+                label: it.tier_name
+              }))}
             />
           </Form.Item>
           <div className="flex justify-center">
-            <Button type="primary" htmlType="submit" className="bg-blue-600" onClick={handleUpdate}>
+            <Button
+              type="primary"
+              htmlType="submit"
+              className="bg-black rounded-none"
+              onClick={handleUpdate}>
               update
             </Button>
           </div>

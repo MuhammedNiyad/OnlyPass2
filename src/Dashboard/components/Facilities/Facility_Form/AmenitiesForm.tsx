@@ -45,7 +45,8 @@ const AmenitiesForm = () => {
         initialSelectedTypes[item.name] = null;
       });
       setSelectedTypes(initialSelectedTypes);
-      setAmentyData(mainData?.data);
+      const filteredData = mainData?.data.filter((item:any) => item.status === true);
+      setAmentyData(filteredData);
   },[mainData,refetch]);
 
   useEffect(()=>{

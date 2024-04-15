@@ -17,6 +17,7 @@ interface Equipment {
   name: string;
 }
 
+
 const EquipmentForm = () => {
   const [equipmentsData, setEquipmetsData] = useState<Equipment[]>([]);
   const { equipments } = useAppSelector((state) => state.facility);
@@ -37,7 +38,8 @@ const EquipmentForm = () => {
   console.log('equipments data :', mainData?.data);
 
   useEffect(()=>{
-    setEquipmetsData(mainData?.data);
+    const filteredData = mainData?.data.filter((item:any) => item.status === true);
+    setEquipmetsData(filteredData);
   },[mainData, refetch])
 
   useEffect(()=>{

@@ -3,7 +3,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 export interface FacilitiesState {
   facility_type: string;
-  gender: string;
+  gender: any[];
   tier: string;
   facilityName: string;
   contactPerson: string;
@@ -18,7 +18,7 @@ export interface FacilitiesState {
   country: string;
   state: string;
   latitude_longitude: string;
-  link:string;
+  link: string;
   admission_fee: string;
   daily_pass: string;
   monthly_pass: string;
@@ -46,7 +46,7 @@ export interface FacilitiesState {
 
 const initialState: FacilitiesState = {
   facility_type: '',
-  gender: '',
+  gender: [],
   tier: '',
   facilityName: '',
   contactPerson: '',
@@ -61,7 +61,7 @@ const initialState: FacilitiesState = {
   state: '',
   country: '',
   latitude_longitude: '',
-  link:'',
+  link: '',
   admission_fee: '',
   daily_pass: '',
   monthly_pass: '',
@@ -186,13 +186,23 @@ export const FacilitySlice = createSlice({
 
       const payloadKeys = Object.keys(action.payload) as Array<keyof FacilitiesState>; // Type assertion
       payloadKeys.forEach((key) => {
-        if (key !== 'images') {
+        if (key !== 'images' && key !== 'gender') {
           state[key] = action.payload[key]!;
         }
       });
       if (action.payload.images) {
         // state.images = state.images.concat(action.payload.images);
         state.images = action.payload.images;
+      }
+      if (action.payload.gender) {
+        const index = state.gender.indexOf(action.payload.gender); // Check if the payload value exists in the gender array
+        if (index !== -1) {
+          // If it exists, remove it from the gender array
+          state.gender.splice(index, 1);
+        } else {
+          // If it doesn't exist, push it to the gender array
+          state.gender.push(action.payload.gender);
+        }
       }
     },
     setTier: (state, action) => {

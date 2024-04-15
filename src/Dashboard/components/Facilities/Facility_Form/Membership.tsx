@@ -66,7 +66,10 @@ const Membership = () => {
   const { data: mainData } = useQuery('fetchTier', fetchTier);
 
   useEffect(()=>{
-    setTierData(mainData?.data);
+    if (mainData?.data) {
+      const filteredData = mainData.data.filter((item:any) => item.status === true);
+      setTierData(filteredData);
+    }
   },[mainData])
 
   const reduxState = useAppSelector((state) => state.facility);
@@ -78,7 +81,7 @@ const Membership = () => {
     sixMonth_pass: reduxState.sixMonth_pass ? true : false,
     annual_pass: reduxState.annual_pass ? true : false
   });
-  console.log('check', checkedState);
+  console.log('tierData', tierData );
 
   const [form] = Form.useForm();
 

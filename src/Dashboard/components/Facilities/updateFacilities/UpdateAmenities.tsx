@@ -35,7 +35,8 @@ const UpdateAmenities = (props: any) => {
       const res = await ApiClientPrivate.get('/amenities');
       const test = res.data.includes(props.facilityData.amenities);
       console.log('test1 >>>>', test);
-      setAmentyData(res.data);
+      const filteredData = res.data.filter((item:any) => item.status === true);
+      setAmentyData(filteredData);
     } catch (error) {
       console.log(error);
     }
@@ -43,7 +44,7 @@ const UpdateAmenities = (props: any) => {
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [props]);
 
   const handleTypeChange = (name: string, type: string) => {
     setSelectedTypes((prevSelectedTypes) => {
@@ -118,7 +119,7 @@ const UpdateAmenities = (props: any) => {
         ))}
       </div>
       <div className="flex justify-center">
-        <Button type="primary" htmlType="submit" className="bg-blue-600" onClick={handleUpdate}>
+        <Button type="primary" htmlType="submit" className="bg-black rounded-none" onClick={handleUpdate}>
           Update
         </Button>
       </div>
